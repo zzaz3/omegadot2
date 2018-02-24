@@ -1,7 +1,6 @@
 # JerryBooks+
 
 ## Workflow
-hahaha
 
 ##### Pull Changes
 Step 1: Switch to development branch.
