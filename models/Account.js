@@ -18,6 +18,10 @@ const AccountSchema = Schema({
         type: String,
         required: true
     },
+    number: {
+        type: Number,
+        required: true
+    },
     category: {
         type: String,
         required: true
@@ -26,7 +30,7 @@ const AccountSchema = Schema({
         type: String,
         required: true
     },
-    currBalance: {
+    balance: {
         type: Number,
         required: true
     },
