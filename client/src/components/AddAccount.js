@@ -9,7 +9,7 @@ class AddAccount extends React.Component{
     }
 
     componentDidMount(){
-
+        // debugger;
     }
 
     render(){
@@ -18,9 +18,8 @@ class AddAccount extends React.Component{
                 <h1>Create Account</h1>
                 <form className="form-group">
                     <select name="accountName">
-                        <option value="cash">Cash</option>
-                        <option value="revenue">Revenue</option>
-                        <option value="drawings">Drawings</option>
+                        {/* {this.state.accounts.map(account => <option>account.name</option>)} */}
+                        <option value="test">Test</option>
                     </select>
                     <input type="submit" value="Create"/>
                 </form>
