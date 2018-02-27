@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+var cors = require('cors');
 
 const server = express();
+
+server.use(cors());
 
 // Load Routes
 const test = require('./api/test');
