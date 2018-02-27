@@ -12,7 +12,7 @@ router.get('/api/team', (req, res) => {
     Member.find()
         .then(members => {
             res.json(members);
-        })
+        });
   });
 
 // GET All Team Members From DB

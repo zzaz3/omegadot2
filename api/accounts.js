@@ -7,6 +7,13 @@ const router = express.Router();
 require('../models/Account');
 const Account = mongoose.model('account');
 
+router.get('/accounts', (req, res) => {
+    Account.find()
+        .then(accounts => {
+            res.json(accounts);
+        });
+});
+
 // Save New Account to Database
 router.post('/account/add', (req, res, next) => {
    // Create Account

@@ -6,8 +6,21 @@ class Accounts extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            
+            accounts: []
         }
+    }
+
+    getAccountStatus(account){
+        if(account.isActive)
+            return 'active';
+        else
+            return 'inactive';
+    }
+
+    componentDidMount(){
+        fetch('/accounts')
+            .then(res => res.json())
+            .then(accounts => this.setState({accounts: accounts}, () => console.log('Accounts fetched...', accounts)));
     }
 
     render(){
@@ -29,27 +42,15 @@ class Accounts extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>101</td>
-                            <td>Cash</td>
-                            <td>$421,000</td>
-                            <td>Asset</td>
-                            <td>active</td>
-                        </tr>
-                        <tr>
-                            <td>401</td>
-                            <td>Sales</td>
-                            <td>$112,000</td>
-                            <td>Revenue</td>
-                            <td>active</td>
-                        </tr>
-                        <tr>
-                            <td>201</td>
-                            <td>Notes Payable</td>
-                            <td>$97,000</td>
-                            <td>Liability</td>
-                            <td>inactive</td>
-                        </tr>
+                        {this.state.accounts.map(account =>
+                            <tr>
+                                <td>{account.number}</td>
+                                <td>{account.name}</td>
+                                <td>{account.balance}</td>
+                                <td>{account.category}</td>
+                                <td>{this.getAccountStatus(account)}</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
