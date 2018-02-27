@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { ImplicitCallback } from '@okta/okta-react';
 
 import Home from '../components/Home';
 import Accounts from '../components/Accounts';
@@ -7,19 +8,20 @@ import AddAccount from '../components/AddAccount'
 import Journalize from '../components/Journalize'
 import Post from '../components/Post';
 import Balance from '../components/Balance';
-import SignUp from '../components/SignUp';
+import Login from '../components/Login/Login';
 import Team from '../components/Team';
 
 function Routes(){
     return(
         <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" exact={true} component={Home} />
+            <Route exact path="/implicit/callback" component={ImplicitCallback} />
             <Route exact path="/accounts" component={Accounts} />
             <Route exact path="/accounts/add" component={AddAccount} />
             <Route exact path="/journalize" component={Journalize} />
             <Route exact path="/post" component={Post} />
             <Route exact path="/balance" component={Balance} />
-            <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/login" component={Login} />
             <Route exact path="/team" component={Team} />
         </Switch>
     )

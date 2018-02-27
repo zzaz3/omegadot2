@@ -1,68 +1,121 @@
 import React from 'react';
+// Fetch and Auth
+import fetch from 'isomorphic-fetch';
+import { withAuth } from '@okta/okta-react';
+
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 // import withRouter from 'react-router-dom';
 
-class Team extends React.Component {
+export default withAuth(class Team extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
+    this.handleLastNameChange = this.handleLastNameChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+
     this.state = {
-      members: []
+      members: [],
+      firstName: '',
+      lastName: ''
     };
   }
 
+  handleFirstNameChange(e) {
+    this.setState({ firstName: e.target.value });
+  }
+
+  handleLastNameChange(e) {
+    this.setState({ lastName: e.target.value });
+  }
   
-  addNewMember(newTeamMember){
-    fetch('/api/team', {
-      method: 'POST',
-      body: JSON.stringify(newTeamMember),
-      headers: new Headers({
-        "Content-Type": "application/json"
-      })
-    }).then(res => res.json())
-    .catch(err => console.log(`ERROR MESSAGE ${err}`));
+  async addNewMember(newTeamMember){
+    debugger;
+    try {
+      const response = await fetch('/api/team', {
+        method: 'POST', 
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: 'Bearer ' + await this.props.auth.getAccessToken(),
+        }),
+        body: JSON.stringify(newTeamMember)
+      });
+      const data = await response.json();
+      this.setState({ 
+        firstName: '', 
+        lastName: '',
+        members: this.state.members.concat(data)
+      });
+    } catch (err) {
+      // handle error here
+    }
   }
 
   onSubmit(e){
     e.preventDefault();
     const newTeamMember = {
-      firstName: this.refs.firstName.value,
-      lastName: this.refs.lastName.value
+      firstName: this.state.firstName,
+      lastName: this.state.lastName
     }
     this.addNewMember(newTeamMember);
-    this.setState({
-      members: this.state.members.concat(newTeamMember)
-    });
-    this.refs.firstName.value = '';
-    this.refs.lastName.value = '';
-    // this.props.history.push('/');
   }
 
-  componentDidMount() {
-    fetch('/api/team')
-      .then(res => res.json())
-      .then(members => this.setState({members: members}, () => console.log('Customers fetched...', members)));
+  async componentDidMount() {
+    try {
+      const response = await fetch('http://localhost:3000/api/team', {
+        headers: {
+          Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
+        }
+      });
+      const data = await response.json();
+      this.setState({ members: data});
+    } catch (err) {
+      // handle error here
+    }
   }
 
   render() {
+    const { members, firstName, lastName } = this.state;
+
     return (
       <div>
-        <h1>SOFTWARE TEAM</h1>
-        <div>
-          <form onSubmit={this.onSubmit.bind(this)}>
-            <label htmlFor="firstName">First Name:</label>
-            <input type="text" name="firstName" ref="firstName"/>
-            <label htmlFor="lastName">Last Name:</label>
-            <input type="text" name="lastName" ref="lastName"/>
-            <input type="submit" value="Join"/>
-          </form>
+      <div className="row justify-content-center">
+        <div className="col-10 col-sm-7 col-md-5 col-lg-4">
+          <Form>
+            <FormGroup>
+              <Label for="firstName">First Name</Label>
+              <Input
+                type="name"
+                name="name"
+                id="name"
+                placeholder="first name"
+                value={firstName}
+                onChange={this.handleFirstNameChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">Last Name</Label>
+              <Input
+                type="lastname"
+                name="lastname"
+                id="lastname"
+                placeholder="last name"
+                value={lastName}
+                onChange={this.handleLastNameChange}
+              />
+            </FormGroup>
+            <Button onClick={this.onSubmit.bind(this)}>Submit</Button>
+          </Form>
         </div>
-        <ul className="list-group">
-        {this.state.members.map(member => 
-          <li className="list-group-item" key={member.id}>{member.firstName} {member.lastName}</li>
-        )}
-        </ul>
       </div>
-    );  
+      <br />
+      <ul className="list-group">
+      {members.map(member => 
+        <li className="list-group-item" key={member._id}>{member.firstName} {member.lastName}</li>
+      )}
+      </ul>
+      </div>
+    );
   }
-}
+});
 
-export default Team;

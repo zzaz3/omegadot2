@@ -1,7 +1,6 @@
 // Test Pull
 import React from 'react';
-import {BrowserRouter, Link} from 'react-router-dom';
-import Routes from '../routes/routes';
+import { Link} from 'react-router-dom';
 
 class Accounts extends React.Component{
     constructor(props){
