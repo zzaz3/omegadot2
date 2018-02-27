@@ -42,7 +42,7 @@ router.get('/api/team', authenticationRequired, (req, res) => {
     Member.find()
         .then(members => {
             res.json(members);
-        })
+        });
   });
 
 // GET All Team Members From DB
