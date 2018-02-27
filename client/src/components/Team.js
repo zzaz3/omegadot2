@@ -11,7 +11,7 @@ class Team extends React.Component {
 
   
   addNewMember(newTeamMember){
-    fetch('http://localhost:3000/api/team', {
+    fetch('/api/team', {
       method: 'POST',
       body: JSON.stringify(newTeamMember),
       headers: new Headers({
@@ -31,6 +31,8 @@ class Team extends React.Component {
     this.setState({
       members: this.state.members.concat(newTeamMember)
     });
+    this.refs.firstName.value = '';
+    this.refs.lastName.value = '';
     // this.props.history.push('/');
   }
 
