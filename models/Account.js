@@ -18,36 +18,39 @@ const AccountSchema = Schema({
         type: String,
         required: true
     },
+    number: {
+        type: Number,
+        required: true
+    },
     category: {
         type: String,
         required: true
     },
-    normalSide: {
-        type: String,
-        required: true
-    },
-    currBalance: {
+    balance: {
         type: Number,
         required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now,
-        required: true
-    },
-    creatorId: {
-        type: String,
-        required: true 
     },
     isActive: {
         type: Boolean,
         required: true
     },
-    priority: {
-        type: Number,
-        min: 1,
-        required: true
-    }
+    // normalSide: {
+    //     type: String,
+    //     required: false
+    // },
+    // date: {
+    //     type: Date,
+    //     default: Date.now,
+    //     required: true
+    // },
+    // creatorId: {
+    //     type: String,
+    //     required: true 
+    // priority: {
+    //     type: Number,
+    //     min: 1,
+    //     required: true
+    // }
 });
 
 mongoose.model('account', AccountSchema);
