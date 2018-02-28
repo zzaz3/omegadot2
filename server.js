@@ -13,7 +13,12 @@ server.use(cors());
 // Load passport
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-// Setup passport
+// Link passport to express session
+server.use(require('express-session')({
+  secret: 'beepboop',
+  resave: false,
+  saveUninitialized: false
+}));
 server.use(passport.initialize());
 server.use(passport.session());
 // Configure Passport
