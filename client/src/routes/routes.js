@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { ImplicitCallback } from '@okta/okta-react';
 
 import Home from '../components/Home';
 import Accounts from '../components/Accounts';
@@ -8,23 +7,22 @@ import AddAccount from '../components/AddAccount'
 import Journalize from '../components/Journalize'
 import Post from '../components/Post';
 import Balance from '../components/Balance';
-import Login from '../components/Login/Login';
+import LoginContainer from '../components/Login/LoginContainer';
 import Team from '../components/Team';
 
-function Routes(){
-    return(
-        <Switch>
-            <Route exact path="/" exact={true} component={Home} />
-            <Route exact path="/implicit/callback" component={ImplicitCallback} />
-            <Route exact path="/accounts" component={Accounts} />
-            <Route exact path="/accounts/add" component={AddAccount} />
-            <Route exact path="/journalize" component={Journalize} />
-            <Route exact path="/post" component={Post} />
-            <Route exact path="/balance" component={Balance} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/team" component={Team} />
-        </Switch>
-    )
+function Routes() {
+  return (
+    <Switch>
+      <Route exact path="/" exact={true} component={Home} />
+      <Route exact path="/accounts" component={Accounts} />
+      <Route exact path="/accounts/add" component={AddAccount} />
+      <Route exact path="/journalize" component={Journalize} />
+      <Route exact path="/post" component={Post} />
+      <Route exact path="/balance" component={Balance} />
+      <Route exact path="/login" component={LoginContainer} />
+      <Route exact path="/team" component={Team} />
+    </Switch>
+  )
 }
 
 export default Routes;
