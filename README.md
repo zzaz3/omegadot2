@@ -29,10 +29,3 @@ git checkout development
 git merge dev-:yourname:
 git push origin development
 ```
-
-### Todos
-Zach
- - Create login endpoints and view.
-
-Stephens
- - Create Chart of Accounts view and schema.
