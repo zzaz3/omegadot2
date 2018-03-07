@@ -68,7 +68,7 @@ class AddAccount extends React.Component {
       .then(accounts => this.setState({ accounts: accounts }));
   }
 
-  /render() {
+  render() {
     return (
       <div>
         <h1>Create Account</h1>
