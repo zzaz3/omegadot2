@@ -29,6 +29,3 @@ git checkout development
 git merge dev-:yourname:
 git push origin development
 ```
-
-##### README Change
-##### Another README Change
