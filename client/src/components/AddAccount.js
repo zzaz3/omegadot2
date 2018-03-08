@@ -106,9 +106,6 @@ class AddAccount extends React.Component {
               <label htmlFor="isActive" className="form-check-label">Active</label>
             </div>
             <input type="submit" value="Create" className="btn btn-primary" />
-            <p>{this.state.selectedAccount}</p>
-            <p>{this.state.selectedAccountType}</p>
-            <p>{this.state.isActive.toString()}</p>
           </form>
         </div>
       </div>
