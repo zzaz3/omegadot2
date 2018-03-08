@@ -1,5 +1,6 @@
 // Test Pull
 import React from 'react';
+import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
 import 'react-bootstrap';
 
@@ -10,6 +11,8 @@ class Accounts extends React.Component {
     this.state = {
       accounts: []
     }
+
+    this.getAccountStatus.bind(this);
   }
 
   getAccountStatus(account) {
@@ -25,6 +28,25 @@ class Accounts extends React.Component {
       .then(accounts => this.setState({ accounts: accounts }, () => console.log('Accounts fetched...', accounts)));
   }
 
+  getTableColumns(){
+    const columns = [
+      {
+        Header: '#',
+        accessor: 'number'
+      },
+      {
+        Header: 'Name',
+        accessor: 'name'
+      },
+      {
+        Header: 'Balance',
+        accessor: 'balance'
+      }
+    ]
+
+    return columns;
+  }
+
   render() {
     return (
       <div className="container text-left mt-5">
@@ -32,29 +54,43 @@ class Accounts extends React.Component {
         <Link to='/accounts/add'>
           <button className="btn btn-primary mb-4">Create Account</button>
         </Link>
-        <table className="table table-striped">
-          <thead>
-            {/* Number, Name, Balance, Type, Status*/}
-            <tr>
-              <th>Number</th>
-              <th>Name</th>
-              <th>Balance</th>
-              <th>Type</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.accounts.map(account =>
-              <tr>
-                <td>{account.number}</td>
-                <td>{account.name}</td>
-                <td>{account.balance}</td>
-                <td>{account.category}</td>
-                <td>{this.getAccountStatus(account)}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <ReactTable 
+            data={this.state.accounts}
+            columns={[
+              {
+                Header: '#',
+                accessor: 'number'
+              },
+              {
+                Header: 'Account Name',
+                accessor: 'name'
+              },
+              {
+                Header: 'Balance',
+                accessor: 'balance'
+              },
+              {
+                Header: 'Type',
+                accessor: 'category'
+              },
+              {
+                Header: 'Status',
+                id: 'status',
+                accessor: d => this.getAccountStatus(d),
+                Cell: row => (
+                  <span>
+                    <span style={{color: row.value === 'inactive' ? '#ff2e00' : '#57d500'}}>
+                      &#x25cf;
+                    </span>
+                    {row.value}
+                  </span>
+                )
+              }
+            ]} 
+
+            className="-striped -highlight"
+            defaultPageSize={10}           
+        />
       </div>
     )
   }

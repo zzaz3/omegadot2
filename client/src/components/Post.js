@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactTable from 'react-table';
+import "react-table/react-table.css";
 
 class Post extends React.Component {
   constructor(props) {
@@ -11,7 +13,6 @@ class Post extends React.Component {
   render() {
     return (
       <div>
-        <h1>POST</h1>
       </div>
     )
   }
