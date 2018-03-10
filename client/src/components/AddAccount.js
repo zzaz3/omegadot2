@@ -6,17 +6,26 @@ class AddAccount extends React.Component {
     this.state = {
       accounts: [],
       selectedAccount: 'none',
-      selectedAccountType: 'none',
+      accountNumber: '',
+      accountType: '',
+      accountSubType: '',
       isActive: true
     }
   }
 
   onAccountChange(e) {
     this.setState({ selectedAccount: e.target.value });
-  }
-
-  onAccountTypeChange(e) {
-    this.setState({ selectedAccountType: e.target.value });
+    const accounts = this.state.accounts;
+    accounts.forEach(account => {
+      if(account.name == e.target.value){
+        this.setState({
+          accountNumber: account.number,
+          accountType: account.type,
+          accountSubType: account.subtype
+        });
+        console.log(`${account.name} ${account.number} ${account.type}`);
+      }
+    });
   }
 
   onActiveChecked(e) {
@@ -48,17 +57,26 @@ class AddAccount extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const newAccount = {
-      name: this.state.selectedAccount,
-      number: this.refs.accountNumber.value,
-      category: this.state.selectedAccountType,
-      initBalance: this.refs.initBalance.value,
-      isActive: this.state.isActive
+    if(Math.sign(this.refs.initBalance.value) === -1) {
+      console.log('NEGATIVE BALANCE!');
+      return;
+    } else {
+      const newAccount = {
+        name: this.state.selectedAccount,
+        number: this.state.accountNumber,
+        type: this.state.accountType,
+        subtype: this.state.accountSubType,
+        initBalance: this.refs.initBalance.value,
+        isActive: this.state.isActive
+      }
+      this.createAccount(newAccount);
+      this.setState({
+        selectedAccount: 'none',
+        accountNumber: '',
+        accountType: '',
+        accountSubType: ''
+      });
     }
-    this.createAccount(newAccount);
-    this.refs.accountNumber.value = '';
-    this.refs.initBalance.value = '';
-    // console.log(newAccount);
   }
 
   componentDidMount() {
@@ -83,19 +101,15 @@ class AddAccount extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="accountNumber">Account Number</label>
-              <input type="text" name="accountNumber" ref="accountNumber" className="form-control" />
+              <input type="text" name="accountNumber" ref="accountNumber" className="form-control" value={this.state.accountNumber} disabled/>
             </div>
             <div className="form-group">
               <label htmlFor="accountType">Account Type</label>
-              <select onChange={this.onAccountTypeChange.bind(this)} value={this.state.selectedAccountType} className="form-control" name="accountType">
-                <option value="None" selected>None</option>
-                <option value="Asset">Asset</option>
-                <option value="Liability">Liability</option>
-                <option value="Revenue">Revenue</option>
-                <option value="Owner's Equity">Owner's Equity</option>
-                <option value="Operating Expense">Operating Expense</option>
-                <option value="Other">Other</option>
-              </select>
+              <input type="text" name="accountType" className="form-control" value={this.state.accountType} disabled/>
+            </div>
+            <div>
+              <label htmlFor="accountSubType">Account Sub-Type</label>
+              <input type="text" name="accountSubType" className="form-control" value={this.state.accountSubType} disabled/>
             </div>
             <div className="form-group">
               <label htmlFor="initialBalance">Initial Balance</label>
@@ -106,6 +120,13 @@ class AddAccount extends React.Component {
               <label htmlFor="isActive" className="form-check-label">Active</label>
             </div>
             <input type="submit" value="Create" className="btn btn-primary" />
+            <p>
+              {this.state.selectedAccount}
+              {this.state.accountNumber}
+              {this.state.accountType}
+              {this.state.accountSubType}
+              {this.state.isActive}
+            </p>
           </form>
         </div>
       </div>

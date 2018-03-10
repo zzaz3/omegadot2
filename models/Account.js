@@ -23,9 +23,13 @@ const AccountSchema = Schema({
     type: Number,
     required: true
   },
-  category: {
+  type: {
     type: String,
     required: true
+  },
+  subtype: {
+    type: String,
+    require: true
   },
   balance: {
     type: Number,

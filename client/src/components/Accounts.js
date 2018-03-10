@@ -71,7 +71,11 @@ class Accounts extends React.Component {
               },
               {
                 Header: 'Type',
-                accessor: 'category'
+                accessor: 'type'
+              },
+              {
+                Header: "Sub-Type",
+                accessor: 'subtype'
               },
               {
                 Header: 'Status',

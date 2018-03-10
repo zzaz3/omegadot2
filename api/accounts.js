@@ -33,7 +33,8 @@ router.post('/account/add', (req, res, next) => {
   const account = new Account({
     name: req.body.name,
     number: req.body.number,
-    category: req.body.category,
+    type: req.body.type,
+    subtype: req.body.subtype,
     balance: req.body.initBalance,
     isActive: req.body.isActive
   });
