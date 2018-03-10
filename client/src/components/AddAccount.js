@@ -42,7 +42,7 @@ class AddAccount extends React.Component {
       headers: new Headers({
         "Content-Type": "application/json"
       })
-    }).then(res => +res.json())
+    }).then(res => res.json())
       .catch(err => console.log(`ERROR MESSAGE ${err}`));
   }
 
