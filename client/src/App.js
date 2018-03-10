@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import {Provider as AlertProvider} from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
 
 import Nav from './components/NavBar/NavBarContainer';
-import Routes from './routes/routes';
+import Routes from './routes/Routes';
 
 export default function App(props) {
   const { authentication, progress } = props;
-
+  const options = {
+    position: 'bottom right',
+    timeout: 5000,
+    transition: 'scale'
+  }
 
   return (
     <Router>
-      <div className="App text-center">
-        <Nav auth={authentication} />
-        <Routes />
-      </div>
+      <AlertProvider template={AlertTemplate} {...options}>   
+        <div className="App text-center">
+          <Nav auth={authentication} />
+          <Routes />   
+        </div>
+      </AlertProvider>
     </Router>
   );
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-var cors = require('cors');
+const cors = require('cors');
 
 const User = require('./models/User');
 
@@ -36,7 +36,7 @@ const auth = require('./api/auth');
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 
-//Import DB Config
+// Import DB Config
 const database = require('./config/database');
 // Connect to Mongoose
 mongoose.connect(database.mongoURI);
