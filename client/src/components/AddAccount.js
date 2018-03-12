@@ -1,4 +1,5 @@
 import React from 'react';
+import {withAlert} from 'react-alert';
 
 class AddAccount extends React.Component {
   constructor(props) {
@@ -57,26 +58,30 @@ class AddAccount extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    if(Math.sign(this.refs.initBalance.value) === -1) {
-      console.log('NEGATIVE BALANCE!');
-      return;
-    } else {
-      const newAccount = {
-        name: this.state.selectedAccount,
-        number: this.state.accountNumber,
-        type: this.state.accountType,
-        subtype: this.state.accountSubType,
-        initBalance: this.refs.initBalance.value,
-        isActive: this.state.isActive
-      }
-      this.createAccount(newAccount);
-      this.setState({
-        selectedAccount: 'none',
-        accountNumber: '',
-        accountType: '',
-        accountSubType: ''
-      });
+    
+    if(this.state.selectedAccount == 'none'){
+      return this.props.alert.error('SELECT AN ACCOUNT');
     }
+
+    if(Math.sign(this.refs.initBalance.value) === -1 || isNaN(this.refs.initBalance.value)) {
+      return this.props.alert.error('INVALID BALANCE');
+    }
+    
+    const newAccount = {
+      name: this.state.selectedAccount,
+      number: this.state.accountNumber,
+      type: this.state.accountType,
+      subtype: this.state.accountSubType,
+      initBalance: this.refs.initBalance.value,
+      isActive: this.state.isActive
+    }
+    this.createAccount(newAccount);
+    this.setState({
+      selectedAccount: 'none',
+      accountNumber: '',
+      accountType: '',
+      accountSubType: ''
+    });
   }
 
   componentDidMount() {
@@ -113,25 +118,23 @@ class AddAccount extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="initialBalance">Initial Balance</label>
-              <input type="text" ref="initBalance" className="form-control" />
+              <input type="text" ref="initBalance" className="form-control" placeholder="$0.00"/>
             </div>
             <div className="form-group">
               <input type="checkbox" checked={this.state.isActive} onChange={this.onActiveChecked.bind(this)} name="isActive" className="form-check-input" />
               <label htmlFor="isActive" className="form-check-label">Active</label>
             </div>
             <input type="submit" value="Create" className="btn btn-primary" />
-            <p>
-              {this.state.selectedAccount}
-              {this.state.accountNumber}
-              {this.state.accountType}
-              {this.state.accountSubType}
-              {this.state.isActive}
-            </p>
+            <p>{this.state.selectedAccount}</p>
+            <p>{this.state.accountNumber}</p>
+            <p>{this.state.accountType}</p>
+            <p>{this.state.accountSubType}</p>
+            <p>{this.state.isActive}</p>
           </form>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default AddAccount;
+export default withAlert(AddAccount);
