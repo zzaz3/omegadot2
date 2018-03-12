@@ -1,6 +1,7 @@
 const initialState = {
   firstName: '',
   id: '',
+  role: 'general',
   isLoggedIn: false,
   isLoggingIn: false,
   lastName: '',
@@ -25,6 +26,7 @@ export default function reducer(state = initialState, action) {
       const newState = Object.assign({}, state);
       newState.firstName = action.json.firstName;
       newState.id = action.json._id;
+      newState.role = action.json.role;
       newState.isLoggedIn = true;
       newState.isLoggingIn = false;
       newState.lastName = action.json.lastName;

@@ -16,10 +16,10 @@ export default function App(props) {
 
   return (
     <Router>
-      <AlertProvider template={AlertTemplate} {...options}>   
+      <AlertProvider template={AlertTemplate} {...options}>
         <div className="App text-center">
           <Nav auth={authentication} />
-          <Routes />   
+          <Routes />
         </div>
       </AlertProvider>
     </Router>

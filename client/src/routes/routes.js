@@ -9,6 +9,7 @@ import Post from '../components/Post';
 import Balance from '../components/Balance';
 import LoginContainer from '../components/Login/LoginContainer';
 import Team from '../components/Team';
+import Register from '../components/Register';
 
 function Routes() {
   return (
@@ -21,6 +22,7 @@ function Routes() {
       <Route exact path="/balance" component={Balance} />
       <Route exact path="/login" component={LoginContainer} />
       <Route exact path="/team" component={Team} />
+      <Route exact path="/register" component={Register} />
     </Switch>
   )
 }
