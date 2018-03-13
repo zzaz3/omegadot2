@@ -30,6 +30,7 @@ passport.deserializeUser(User.deserializeUser());
 const test = require('./api/test');
 const accountList = require('./api/accountList');
 const accounts = require('./api/accounts');
+const transactions = require('./api/transactions');
 const auth = require('./api/auth');
 
 // Body Parser Middleware
@@ -45,6 +46,7 @@ mongoose.connect(database.mongoURI);
 server.use('/', test);
 server.use('/', accountList);
 server.use('/', accounts);
+server.use('/', transactions);
 server.use('/auth/', auth);
 
 const port = 5000;

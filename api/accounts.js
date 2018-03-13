@@ -28,7 +28,7 @@ router.post('/account/add', (req, res, next) => {
   // Save Account to Database
   account.save((err, member) => {
     if (err)
-      console.log('ERROR...COULD NOT SAVE TO DATABASE');
+      console.log('ERROR...COULD NOT SAVE ACCOUNT');
     res.status(201).json(account);
   });
 });
