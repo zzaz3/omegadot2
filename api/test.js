@@ -36,4 +36,9 @@ router.post('/api/team', (req, res, next) => {
   });
 });
 
+// Testing Connect Flash
+router.get('/alert', (req, res) => {
+  
+});
+
 module.exports = router;

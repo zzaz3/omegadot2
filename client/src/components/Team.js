@@ -5,13 +5,16 @@ import fetch from 'isomorphic-fetch';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 // import withRouter from 'react-router-dom';
 
-export default class Team extends React.Component {
+import {withAlert} from 'react-alert';
+
+class Team extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onAlert = this.onAlert.bind(this);
 
     this.state = {
       members: [],
@@ -57,6 +60,10 @@ export default class Team extends React.Component {
     this.addNewMember(newTeamMember);
   }
 
+  onAlert(e){
+    return this.props.alert.info('ALERT');
+  }
+
   async componentDidMount() {
     try {
       const response = await fetch('http://localhost:3000/api/team', {
@@ -100,6 +107,7 @@ export default class Team extends React.Component {
               </FormGroup>
               <Button onClick={this.onSubmit.bind(this)}>Submit</Button>
             </Form>
+            <Button onClick={this.onAlert}>ALERT</Button>
           </div>
         </div>
         <br />
@@ -111,5 +119,6 @@ export default class Team extends React.Component {
       </div>
     );
   }
-};
+}
 
+export default withAlert(Team);

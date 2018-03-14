@@ -42,7 +42,7 @@ class AddAccount extends React.Component {
       headers: new Headers({
         "Content-Type": "application/json"
       })
-    }).then(res => +res.json())
+    }).then(res => res.json())
       .catch(err => console.log(`ERROR MESSAGE ${err}`));
   }
 
@@ -106,9 +106,6 @@ class AddAccount extends React.Component {
               <label htmlFor="isActive" className="form-check-label">Active</label>
             </div>
             <input type="submit" value="Create" className="btn btn-primary" />
-            <p>{this.state.selectedAccount}</p>
-            <p>{this.state.selectedAccountType}</p>
-            <p>{this.state.isActive.toString()}</p>
           </form>
         </div>
       </div>

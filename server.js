@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-var cors = require('cors');
+const cors = require('cors');
 
 const User = require('./models/User');
 
@@ -31,12 +31,13 @@ const test = require('./api/test');
 const accountList = require('./api/accountList');
 const accounts = require('./api/accounts');
 const auth = require('./api/auth');
+const log = require('./api/log');
 
 // Body Parser Middleware
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 
-//Import DB Config
+// Import DB Config
 const database = require('./config/database');
 // Connect to Mongoose
 mongoose.connect(database.mongoURI);
@@ -46,6 +47,7 @@ server.use('/', test);
 server.use('/', accountList);
 server.use('/', accounts);
 server.use('/auth/', auth);
+server.use('/', log);
 
 const port = 5000;
 server.listen(port, () => {

@@ -5,8 +5,8 @@ class NonAuthNavBar extends React.Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="collapse navbar-collapse">
+      <nav className="navbar navbar-expand navbar-light bg-light">
+        <div className="navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink exact to="/" className="nav-link">Home</NavLink>
