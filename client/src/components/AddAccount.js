@@ -13,6 +13,7 @@ class AddAccount extends React.Component {
       accountNumber: '',
       accountType: '',
       accountSubType: '',
+      initBalance: 0,
       isActive: true
     }
   }
@@ -71,7 +72,7 @@ class AddAccount extends React.Component {
       return this.props.alert.error('SELECT AN ACCOUNT');
     }
 
-    if(Math.sign(this.refs.initBalance.value) === -1 || isNaN(this.refs.initBalance.value)) {
+    if(Math.sign(this.state.initBalance) === -1 || isNaN(this.state.initBalance)) {
       return this.props.alert.error('INVALID BALANCE');
     }
 
@@ -80,7 +81,7 @@ class AddAccount extends React.Component {
       number: this.state.accountNumber,
       type: this.state.accountType,
       subtype: this.state.accountSubType,
-      initBalance: this.refs.initBalance.value,
+      initBalance: this.state.initBalance,
       isActive: this.state.isActive
     }
     this.createAccount(newAccount);
@@ -126,7 +127,7 @@ class AddAccount extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="initialBalance">Initial Balance</label>
-              <input type="text" ref="initBalance" className="form-control" placeholder="$0.00"/>
+              <input type="text" name="initBalance" className="form-control" value={this.state.initBalance} placeholder="$0.00"/>
             </div>
             <div className="form-group">
               <input type="checkbox" checked={this.state.isActive} onChange={this.onActiveChecked.bind(this)} name="isActive" className="form-check-input" />
