@@ -15,7 +15,7 @@ router.get('/accounts', (req, res) => {
 });
 
 // Save New Account to Database
-router.post('/account/add', (req, res, next) => {
+router.post('/account/add', (req, res) => {
   let errors = [];
 
   if(!req.body.number)
@@ -26,9 +26,6 @@ router.post('/account/add', (req, res, next) => {
       errors: errors
     })
   }
-
-  next();
-
   // Create Account
   const account = new Account({
     name: req.body.name,
@@ -42,7 +39,8 @@ router.post('/account/add', (req, res, next) => {
   account.save((err) => {
     if (err)
       console.log('ERROR...COULD NOT SAVE ACCOUNT');
-    res.status(201).json(account);
+    else
+      res.status(201).json(account);
   });
 });
 
