@@ -27,12 +27,13 @@ router.post('/transaction/add', (req, res) => {
     const transaction = new Transaction({
         debitAccount: req.body.debitAccount,
         debitAmount: req.body.debitAmount,
+        debitRefNum: req.body.debitRefNum,
         creditAccount: req.body.creditAccount,
         creditAmount: req.body.creditAmount,
+        creditRefNum: req.body.creditRefNum,
         description: req.body.description,
         date: req.body.date,
-        status: req.body.status,
-        ref: req.body.ref
+        status: req.body.status
     });
     // Save Transaction to Database
     transaction.save((err) => {

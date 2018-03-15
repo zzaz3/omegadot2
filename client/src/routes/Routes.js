@@ -22,6 +22,9 @@ function Routes() {
       <Route exact path="/accounts" component={Accounts} />
       <Route exact path="/accounts/add" component={AddAccount} />
       <Route exact path="/journalize" component={Journalize} />
+      <Route exact path="/transactions/view" component={ViewTransactions} />
+      <Route exact path="/transactions/record" component={RecordTransactions} />
+      <Route exact path="/transactions/review" component={ReviewTransactions} />
       <Route exact path="/post" component={Post}/>
       <Route exact path="/balance" component={Balance} />
       <Route exact path="/login" component={LoginContainer} />

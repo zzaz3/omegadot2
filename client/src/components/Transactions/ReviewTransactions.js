@@ -10,14 +10,14 @@ class ReviewTransactions extends React.Component{
     }
 
     componentDidMount(){
-        // fetch('/transactions/pending')
-        //     .then(res => res.json())
-        //     .then(transactions => this.setState({transactions: transactions}), () => console.log('Transactions fetched...', transactions));
+        fetch('/transactions/pending')
+            .then(res => res.json())
+            .then(transactions => this.setState({transactions: transactions}), () => console.log('Transactions fetched..'));
     }
 
     render(){
         return(
-            <div>
+            <div className="container">
                 <h2>REVIEW TRANSACTIONS</h2>
                 <ReactTable
                     data={this.state.transactions}
@@ -36,33 +36,14 @@ class ReviewTransactions extends React.Component{
                             accessor: 'creditAmount'
                         },
                         {
-                            Header: 'Debit',
-                            accessor: 'debitAmount'
+                            Header: 'Debits / Credits',
+                            id: 'debits/credits',
+                            accessor: d => <DebitsCredits debitAmount={d.debitAmount} creditAmount={d.creditAmount} />
                         },
                         {
-                            Header: 'Credit',
-                            accessor: 'creditAmount'
-                        },
-                        {
-                            Header: 'Status',
-                            accessor: 'status',
-                            Cell: row => (
-                                <span>
-                                    <span style={{
-                                    color: row.value === 'rejected' ? '#ff2e00'
-                                        : row.value === 'pending' ? '#ffbf00'
-                                        : '#57d500',
-                                    transition: 'all .3s ease'
-                                    }}>
-                                        &#x25cf;
-                                    </span> 
-                                    {
-                                        row.value === 'rejected' ? 'Rejected'
-                                        : row.value === 'pending' ? `Pending`
-                                        : 'Accepted'
-                                    }
-                                </span>
-                                )
+                            Header: 'Review',
+                            id: 'review',
+                            accessor: d => <AcceptReject />
                         }
                     ]}
                 />
@@ -78,6 +59,24 @@ function TestComponent(props){
         <div>
             <div className="text-left">{props.debit}</div>
             <div className="text-right">{props.credit}</div>
+        </div>
+    )
+}
+
+function DebitsCredits(props){
+    return (
+        <div>
+            <div className="text-left">{props.debitAmount}</div>
+            <div className="text-right">{props.creditAmount}</div>
+        </div>
+    )
+}
+
+function AcceptReject(props){
+    return (
+        <div className="d-flex flex-row justify-content-around row-hl">
+            <button className="btn btn-success">Accept</button>
+            <button className="btn btn-danger">Reject</button>
         </div>
     )
 }

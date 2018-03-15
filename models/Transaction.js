@@ -11,6 +11,10 @@ const TransactionSchema = Schema({
       type: Number,
       required: true
   },
+  debitRefNum: {
+    type: Number,
+    required: true
+  },
   creditAccount: {
       type: String,
       required: true
@@ -18,6 +22,10 @@ const TransactionSchema = Schema({
   creditAmount: {
       type: Number,
       required: true
+  },
+  creditRefNum: {
+    type: Number,
+    required: true
   },
   date: {
       type: String,

@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {withAlert} from 'react-alert';
+import Dropzone from 'react-dropzone';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -101,45 +102,42 @@ class RecordTransactions extends React.Component{
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-5">
-                        <div className="row">
-                            <div className="col-md-2">
-                                <button className="btn btn-primary">Add</button>
+                    <div className="col-md-12">
+                        <DatePicker 
+                            inline
+                            selected={this.state.date}
+                            onChange={this.handleChange}
+                        />  
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="row form-group">
+                            <div className="col-md-12">
+                                <label htmlFor="debit">DEBIT</label>
                             </div>
-                            <div className="col-md-6 text-left">
-                                <label htmlFor="debits">Debit(s):</label>
-                            </div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-md-6">
+                            <div className="col-md-12">
                                 <select onChange={this.onAccountChange} value={this.state.selectedDebitAccount} className="form-control" name="debitAccount">
-                                        <option value="None" selected>None</option>
-                                        {this.state.accounts.map(account => <option>{account.name}</option>)}
+                                    <option value="None" selected>None</option>
+                                    {this.state.accounts.map(account => <option>{account.name}</option>)}
                                 </select>
-                                <input type="text" placeholder="$0.00" ref="debitAmount" className="form-control mt-2"/>
+                                <input type="text" placeholder="$0.00" ref="debitAmount" className="form-control"/>
                             </div>
-                            <div className="col-md-2">
-                                <input type="text" placeholder="Ref #" ref="referenceNum" className="form-control"/>
-                            </div>
+                        </div>
+                        <div className="row form-group">
+
                         </div>
                     </div>
-                    <div className="col-md-5">
-                        <div className="row">
-                            <label htmlFor="credits">Credit(s)</label>
-                        </div>
-                    </div>
-                    <div className="col-md-2">
-                        <div className="row">
-                            <div className="col">
-                                <label htmlFor="comments">Comments:</label>
-                                <textarea name="comments" id="comments" cols="30" rows="10"></textarea>
+                    <div className="col-md-6">
+                        <div className="row form-group">
+                            <div className="col-md-6">
+                                <textarea className="form-control" name="comments" ref="comments" cols="30" rows="10"></textarea>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <label htmlFor="attachments">Attachments:</label>
-                                <button className="btn btn-primary" disabled="disabled">+</button>
-                            </div>
+                            <div className="col-md-6">
+                                <Dropzone onDrop={this.onDrop}>
+                                    <p>Click or Drag and Drop to Add Files</p>
+                                </Dropzone>
+                            </div> 
                         </div>
                     </div>
                 </div>
