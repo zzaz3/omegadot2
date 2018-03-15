@@ -58,6 +58,9 @@ class AuthNavBar extends React.Component {
             <li className="nav-item">
               <NavLink to="/balance" className="nav-link">Balance</NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to="/log" className="nav-link">Log</NavLink>
+            </li>
           </ul>
 
           <Link to="/" onClick={this.tryLogout} className="btn btn-primary mr-2" role="button">Logout</Link>

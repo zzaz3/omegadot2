@@ -1,5 +1,11 @@
 import React from 'react';
+<<<<<<< HEAD
 import {withAlert} from 'react-alert';
+=======
+import { bindActionCreators } from 'redux';
+import {loadLog, makeLog} from "../actions/log";
+import {connect} from "react-redux";
+>>>>>>> 143c5bfc8f4b56089f2c1d1e662ae6a30139c2a9
 
 class AddAccount extends React.Component {
   constructor(props) {
@@ -46,13 +52,23 @@ class AddAccount extends React.Component {
 
   // POST Request For Adding Account To DB
   createAccount(newAccount) {
+    const { logAction } = this.props;
+
     fetch('/account/add', {
       method: 'POST',
       body: JSON.stringify(newAccount),
       headers: new Headers({
         "Content-Type": "application/json"
       })
+<<<<<<< HEAD
     }).then(res => res.json())
+=======
+    })
+      .then((res) => {
+        logAction(res.json);
+        return res.json();
+    })
+>>>>>>> 143c5bfc8f4b56089f2c1d1e662ae6a30139c2a9
       .catch(err => console.log(`ERROR MESSAGE ${err}`));
   }
 
@@ -125,11 +141,14 @@ class AddAccount extends React.Component {
               <label htmlFor="isActive" className="form-check-label">Active</label>
             </div>
             <input type="submit" value="Create" className="btn btn-primary" />
+<<<<<<< HEAD
             <p>{this.state.selectedAccount}</p>
             <p>{this.state.accountNumber}</p>
             <p>{this.state.accountType}</p>
             <p>{this.state.accountSubType}</p>
             <p>{this.state.isActive}</p>
+=======
+>>>>>>> 143c5bfc8f4b56089f2c1d1e662ae6a30139c2a9
           </form>
         </div>
       </div>
@@ -137,4 +156,20 @@ class AddAccount extends React.Component {
   }
 }
 
+<<<<<<< HEAD
 export default withAlert(AddAccount);
+=======
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logAction: makeLog,
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    log: state.log,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddAccount);
+>>>>>>> 143c5bfc8f4b56089f2c1d1e662ae6a30139c2a9

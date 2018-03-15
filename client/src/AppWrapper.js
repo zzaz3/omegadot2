@@ -42,6 +42,8 @@ class AppWrapper extends React.Component {
     });
   }
 
+
+
   render() {
     const { authentication, progress } = this.props;
     return (

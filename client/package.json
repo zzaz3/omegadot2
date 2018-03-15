@@ -5,12 +5,18 @@
   "dependencies": {
     "@okta/okta-auth-js": "^1.13.0",
     "@okta/okta-react": "0.0.12",
+<<<<<<< HEAD
     "moment": "^2.21.0",
+=======
+>>>>>>> 143c5bfc8f4b56089f2c1d1e662ae6a30139c2a9
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-alert": "^3.2.1",
     "react-alert-template-basic": "^1.0.0",
+<<<<<<< HEAD
     "react-datepicker": "^1.2.2",
+=======
+>>>>>>> 143c5bfc8f4b56089f2c1d1e662ae6a30139c2a9
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.9",
     "react-hot-loader": "^4.0.0",
