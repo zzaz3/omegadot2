@@ -7,12 +7,35 @@ class ReviewTransactions extends React.Component{
         this.state = {
             transactions: []
         }
+
+        this.updateTranactionStatus = this.updateTranactionStatus.bind(this);
+        this.updateStatus = this.updateStatus.bind(this);
+    }
+
+    updateTranactionStatus(transaction, transactionStatus){
+        fetch(`/transaction/status/update/${transaction._id}`, {
+            method: 'PUT',
+            body: JSON.stringify(transactionStatus),
+            headers: new Headers({
+                "Content-Type": "application/json"
+            })
+        }).then(res => res.json())
+            .catch(err => console.log(`ERROR MESSAGE ${err}`));
+    }
+
+    onAcceptOrReject(){
+        const approved = {status: 'approved'}
+        this.updateTranactionStatus()
+    }
+
+    updateStatus(e){
+        console.log(`Status Updated !!! ${e.target.value}`);
     }
 
     componentDidMount(){
-        fetch('/transactions/pending')
+        fetch('/transactions')
             .then(res => res.json())
-            .then(transactions => this.setState({transactions: transactions}), () => console.log('Transactions fetched..'));
+            .then(transactions => this.setState({transactions: transactions}), () => console.log('Transactions fetched...'));
     }
 
     render(){
@@ -27,13 +50,14 @@ class ReviewTransactions extends React.Component{
                             accessor: 'date'
                         },
                         {
+                            Header: 'Ref #',
+                            id: 'refNums',
+                            accessor: d => <ReferenceNums debitRefNum={d.debitRefNum} creditRefNum={d.creditRefNum}/>
+                        },
+                        {
                             Header: 'Accounts',
                             id: 'accounts',
                             accessor: d => <TestComponent debit={d.debitAccount} credit={d.creditAccount} />
-                        },
-                        {
-                            Header: 'Ref #',
-                            accessor: 'creditAmount'
                         },
                         {
                             Header: 'Debits / Credits',
@@ -43,7 +67,7 @@ class ReviewTransactions extends React.Component{
                         {
                             Header: 'Review',
                             id: 'review',
-                            accessor: d => <AcceptReject />
+                            accessor: d => <AcceptReject updateStatus={this.updateStatus} />
                         }
                     ]}
                 />
@@ -63,6 +87,15 @@ function TestComponent(props){
     )
 }
 
+function ReferenceNums(props){
+    return (
+        <div>
+            <div className="text-left">{props.debitRefNum}</div>
+            <div className="text-right">{props.creditRefNum}</div>
+        </div>
+    )
+}
+
 function DebitsCredits(props){
     return (
         <div>
@@ -75,8 +108,8 @@ function DebitsCredits(props){
 function AcceptReject(props){
     return (
         <div className="d-flex flex-row justify-content-around row-hl">
-            <button className="btn btn-success">Accept</button>
-            <button className="btn btn-danger">Reject</button>
+            <button value="approved" onClick={props.updateStatus} className="btn btn-success">Approve</button>
+            <button value="rejected" onClick={props.updateStatus} className="btn btn-danger">Reject</button>
         </div>
     )
 }

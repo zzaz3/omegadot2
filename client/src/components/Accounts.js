@@ -28,25 +28,6 @@ class Accounts extends React.Component {
       .then(accounts => this.setState({ accounts: accounts }, () => console.log('Accounts fetched...', accounts)));
   }
 
-  getTableColumns(){
-    const columns = [
-      {
-        Header: '#',
-        accessor: 'number'
-      },
-      {
-        Header: 'Name',
-        accessor: 'name'
-      },
-      {
-        Header: 'Balance',
-        accessor: 'balance'
-      }
-    ]
-
-    return columns;
-  }
-
   render() {
     return (
       <div className="container text-left mt-5">
@@ -58,7 +39,7 @@ class Accounts extends React.Component {
             data={this.state.accounts}
             columns={[
               {
-                Header: '#',
+                Header: 'Account #',
                 accessor: 'number'
               },
               {

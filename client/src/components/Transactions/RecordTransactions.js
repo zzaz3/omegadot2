@@ -126,19 +126,21 @@ class RecordTransactions extends React.Component {
                 <form onSubmit={this.onSubmit} className="m-auto">
                     <div className="row">
                         <div className="col-md-2">
+                            <label htmlFor="debit">Debit</label>
                             <select onChange={this.onAccountChange} value={this.state.selectedDebitAccount} className="form-control" name="debitAccount">
                             <option value="None" selected>None</option>
                             {this.state.accounts.map(account => <option>{account.name}</option>)}
                             </select>
-                            <input type="text" placeholder="ref #" onChange={this.handleDebitRefNumChange} value={this.state.debitRefNum} className="form-control" />
+                            <input type="text" className="my-2" placeholder="ref #" onChange={this.handleDebitRefNumChange} value={this.state.debitRefNum} className="form-control" />
                             <input type="text" placeholder="$0.00" ref="debitAmount" className="form-control" />
                         </div>
                         <div className="col-md-2">
+                            <label htmlFor="credit">Credit</label>
                             <select onChange={this.onAccountChange} value={this.state.selectedCreditAccount} className="form-control" name="creditAccount">
                             <option value="None" selected>None</option>
                             {this.state.accounts.map(account => <option>{account.name}</option>)}
                             </select>
-                            <input type="text" placeholder="ref #" onChange={this.handleCreditRefNumChange} value={this.state.creditRefNum} className="form-control" />
+                            <input type="text" className="mt-5" placeholder="ref #" onChange={this.handleCreditRefNumChange} value={this.state.creditRefNum} className="form-control" />
                             <input type="text" placeholder="$0.00" ref="creditAmount" className="form-control" />
                         </div>
                         <div className="col-md-4 d-flex">

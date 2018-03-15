@@ -13,9 +13,11 @@ class AddAccount extends React.Component {
       accountNumber: '',
       accountType: '',
       accountSubType: '',
-      initBalance: 0,
+      initBalance: '',
       isActive: true
     }
+
+    this.onInitBalanceChange = this.onInitBalanceChange.bind(this);
   }
 
   onAccountChange(e) {
@@ -46,6 +48,10 @@ class AddAccount extends React.Component {
   onChecked(e) {
     this.setState({ checked: e.target.checked });
     console.log(this.state.checked);
+  }
+
+  onInitBalanceChange(e){
+    this.setState({initBalance: e.target.value});
   }
 
   // POST Request For Adding Account To DB
@@ -89,7 +95,8 @@ class AddAccount extends React.Component {
       selectedAccount: 'none',
       accountNumber: '',
       accountType: '',
-      accountSubType: ''
+      accountSubType: '',
+      initBalance: ''
     });
   }
 
@@ -127,7 +134,7 @@ class AddAccount extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="initialBalance">Initial Balance</label>
-              <input type="text" name="initBalance" className="form-control" value={this.state.initBalance} placeholder="$0.00"/>
+              <input type="text" name="initBalance" className="form-control" onChange={this.onInitBalanceChange} value={this.state.initBalance} placeholder="$0.00"/>
             </div>
             <div className="form-group">
               <input type="checkbox" checked={this.state.isActive} onChange={this.onActiveChecked.bind(this)} name="isActive" className="form-check-input" />
@@ -159,4 +166,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(AddAccount));

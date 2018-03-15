@@ -38,10 +38,6 @@ const TransactionSchema = Schema({
   status: {
       type: String,
       required: true
-  },
-  ref: {
-      type: Number,
-      required: true
   }
 });
 

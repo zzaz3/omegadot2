@@ -22,6 +22,14 @@ router.get('/transactions/pending', (req, res) => {
     });
 });
 
+router.get('/transactions/approved', (req, res) => {
+    Transaction.find({
+        status: 'approved'
+    }).then(transactions => {
+        res.json(transactions);
+    })
+});
+
 router.post('/transaction/add', (req, res) => {
     // Create Transaction
     const transaction = new Transaction({
@@ -41,6 +49,21 @@ router.post('/transaction/add', (req, res) => {
             console.log('ERROR...COULD NOT SAVE TRANSACTION');
             res.status(201).json(transaction);
         }
+    });
+});
+
+router.put('transaction/update/status/:id', (req, res) => {
+    Transaction.findOne({
+        _id: req.params.id
+    })
+    .then(transaction => {
+        transaction.status = req.body.status;
+
+        transaction.save(err => {
+            if(err){
+                console.log('ERROR...COULD NOT UPDATE TRANSACTION');
+            }
+        })
     });
 });
 
