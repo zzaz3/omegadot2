@@ -20,12 +20,20 @@ const TransactionSchema = Schema({
       required: true
   },
   date: {
-      type: Date,
+      type: String,
       required: true
   },
   description: {
       type: String,
       required: false
+  },
+  status: {
+      type: String,
+      required: true
+  },
+  ref: {
+      type: Number,
+      required: true
   }
 });
 

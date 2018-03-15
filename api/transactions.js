@@ -14,6 +14,14 @@ router.get('/transactions', (req, res) => {
      })
 });
 
+router.get('/transactions/pending', (req, res) => {
+    Transaction.find({
+      status: 'pending'  
+    }).then(transactions => {
+        res.json(transactions);
+    });
+});
+
 router.post('/transaction/add', (req, res) => {
     // Create Transaction
     const transaction = new Transaction({
@@ -22,7 +30,9 @@ router.post('/transaction/add', (req, res) => {
         creditAccount: req.body.creditAccount,
         creditAmount: req.body.creditAmount,
         description: req.body.description,
-        date: req.body.date
+        date: req.body.date,
+        status: req.body.status,
+        ref: req.body.ref
     });
     // Save Transaction to Database
     transaction.save((err) => {

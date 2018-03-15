@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {withAlert} from 'react-alert';
+import Dropzone from 'react-dropzone';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -11,14 +12,24 @@ class RecordTransactions extends React.Component{
         super(props);
         this.state = {
             accounts: [],
+            files: [],
             date: moment(),
             selectedDebitAccount: 'None',
-            selectedCreditAccount: 'None'
+            selectedCreditAccount: 'None',
+            ref: ''
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.onAccountChange = this.onAccountChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleRefChange = this.handleRefChange.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+    }
+
+    onDrop(file){
+        this.setState({
+            files: this.state.files.concat(file)
+        });
     }
 
     onAccountChange(e) {
@@ -33,6 +44,10 @@ class RecordTransactions extends React.Component{
 
     handleChange(date){
         this.setState({date: date});
+    }
+
+    handleRefChange(e){
+        this.setState({ref: e.target.value});
     }
 
       // POST Request For Adding Transaction To DB
@@ -63,14 +78,16 @@ class RecordTransactions extends React.Component{
         if(Math.sign(this.refs.creditAmount.value) === -1 || isNaN(this.refs.creditAmount.value)) {
             return this.props.alert.error('INVALID CREDIT AMOUNT');
         }
-        
+
         const newTransaction = {
         debitAccount: this.state.selectedDebitAccount,
         debitAmount: this.refs.debitAmount.value,
         creditAccount: this.state.selectedCreditAccount,
         creditAmount: this.refs.creditAmount.value,
         description: this.refs.description.value,
-        date: this.state.date.toDate()
+        date: this.state.date.format('L').toString(),
+        status: 'pending',
+        ref: this.state.ref
         }
         this.createTransacton(newTransaction);
         this.setState({
@@ -91,72 +108,79 @@ class RecordTransactions extends React.Component{
 
     render(){
         return(
-            <div>
-                <button className="btn btn-primary" data-toggle="modal" data-target="#createTransactionModal">Create Transaction</button>
-                
-                <div className="modal" id="createTransactionModal">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Create Transaction</h4>
-                                <button className="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div className="modal-body">
-                                <form onSubmit={this.onSubmit}>
-                                    <div className="form-group row">
-                                        <div className="col-md-6">
-                                            <label htmlFor="transactionDate">DATE</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <DatePicker
-                                                selected={this.state.date}
-                                                onChange={this.handleChange}
-                                                className="form-control"
-                                            />                                            
-                                        </div>
-                                    </div>
-                                    <div className="form-group row">
-                                        <div className="col-md-6">
-                                            <label htmlFor="debit">DEBIT</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <select onChange={this.onAccountChange} value={this.state.selectedDebitAccount} className="form-control" name="debitAccount">
-                                                <option value="None" selected>None</option>
-                                                {this.state.accounts.map(account => <option>{account.name}</option>)}
-                                            </select>
-                                            <p>{this.state.selectedDebitAccount}</p>
-                                            <input type="text" placeholder="$0.00" ref="debitAmount" className="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div className="form-group row">
-                                        <div className="col-md-6">
-                                            <label htmlFor="credit">CREDIT</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <select onChange={this.onAccountChange} value={this.state.selectedCreditAccount} className="form-control" name="creditAccount">
-                                                <option value="None" selected>None</option>
-                                                {this.state.accounts.map(account => <option>{account.name}</option>)}
-                                            </select>
-                                            <p>{this.state.selectedCreditAccount}</p>
-                                            <input type="text" placeholder="$0.00" ref="creditAmount" className="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div className="form-group row">
-                                        <div className="col-md-6">
-                                            <label htmlFor="description">DESCRIPTION</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <textarea name="description"cols="25" rows="5" className="form-control" ref="description"></textarea>
-                                        </div>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <input type="submit" value="Create" className="btn btn-primary"/>
-                                    </div>
-                                </form>
-                            </div>
+            <div className="container mt-3">
+                <form onSubmit={this.onSubmit} className="m-auto">
+                    <div className="form-group row">
+                        <div className="col-md-3">
+                            <label htmlFor="transactionDate">DATE</label>
+                        </div>
+                        <div className="col-md-9">
+                            <DatePicker
+                                inline
+                                selected={this.state.date}
+                                onChange={this.handleChange}
+                                className="form-control"
+                            />                                            
                         </div>
                     </div>
-                </div>
+                    <div className="form-group row">
+                        <div className="col-md-3">
+                            <label htmlFor="referenceNum"> REF #</label>
+                        </div>
+                        <div className="col-md-9">
+                            <input type="text" className="form-control" onChange={this.handleRefChange} value={this.state.ref}/>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-3">
+                            <label htmlFor="debit">DEBIT</label>
+                        </div>
+                        <div className="col-md-9">
+                            <select onChange={this.onAccountChange} value={this.state.selectedDebitAccount} className="form-control" name="debitAccount">
+                                <option value="None" selected>None</option>
+                                {this.state.accounts.map(account => <option>{account.name}</option>)}
+                            </select>
+                            <p>{this.state.selectedDebitAccount}</p>
+                            <input type="text" placeholder="$0.00" ref="debitAmount" className="form-control"/>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-3">
+                            <label htmlFor="credit">CREDIT</label>
+                        </div>
+                        <div className="col-md-9">
+                            <select onChange={this.onAccountChange} value={this.state.selectedCreditAccount} className="form-control" name="creditAccount">
+                                <option value="None" selected>None</option>
+                                {this.state.accounts.map(account => <option>{account.name}</option>)}
+                            </select>
+                            <p>{this.state.selectedCreditAccount}</p>
+                            <input type="text" placeholder="$0.00" ref="creditAmount" className="form-control"/>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-3">
+                            <label htmlFor="description">DESCRIPTION</label>
+                        </div>
+                        <div className="col-md-9">
+                            <textarea name="description"cols="25" rows="5" className="form-control" ref="description"></textarea>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <div className="col-md-3">
+                            <label htmlFor="attachments">ATTACHMENTS</label>
+                        </div>
+                        <div className="col-md-9">
+                            <Dropzone className="" onDrop={this.onDrop}>
+                                {/* <button className="btn btn-success">Attach</button> */}
+                                <p>Click or Drag and Drop to add files</p>
+                            </Dropzone>
+                        </div>
+                        <div className="row">
+                            {this.state.files.map(file => <label>{file.name} {file.path}</label>)}
+                        </div>
+                    </div>
+                    <input type="submit" value="Create" className="btn btn-primary mb-5"/>
+                </form>
             </div>
         );
     }

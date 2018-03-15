@@ -1,4 +1,6 @@
 import React from 'react';
+import RecordTransactions from './Transactions/RecTrans' 
+import Basic from './BasicAttachment';
 
 class Home extends React.Component {
   render() {
