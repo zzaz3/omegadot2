@@ -4,12 +4,8 @@ import {Provider as AlertProvider} from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 
 import Nav from './components/NavBar/NavBarContainer';
-<<<<<<< HEAD
 import Log from './components/Log';
 import Routes from './routes/Routes';
-=======
-import Routes from './routes/routes';
->>>>>>> changed route rile name, update view transactions
 
 export default function App(props) {
   const { authentication, progress, log } = props;
