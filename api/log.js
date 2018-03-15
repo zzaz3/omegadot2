@@ -27,10 +27,11 @@ router.post('/log', (req, res) => {
     afterValue: req.body.afterValue,
   });
 
-  newLog.save((err, member) => {
+  newLog.save((err) => {
     if (err)
       console.log('ERROR...COULD NOT SAVE TO DATABASE');
-    res.status(201).json(newLog);
+    else
+      res.status(201).json(newLog);
   });
 });
 

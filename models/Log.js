@@ -26,24 +26,7 @@ const LogSchema = Schema({
   afterValue: {
     type: Number,
     required: true
-  },
-  // normalSide: {
-  //     type: String,
-  //     required: false
-  // },
-  // date: {
-  //     type: Date,
-  //     default: Date.now,
-  //     required: true
-  // },
-  // creatorId: {
-  //     type: String,
-  //     required: true
-  // priority: {
-  //     type: Number,
-  //     min: 1,
-  //     required: true
-  // }
+  }
 });
 
 mongoose.model('log', LogSchema);

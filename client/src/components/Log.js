@@ -1,15 +1,15 @@
 // Test Pull
 import React from 'react';
 import ReactTable from 'react-table';
-import { Link } from 'react-router-dom';
 import 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadLog } from '../actions/log';
+import { loadLog, makeLog } from '../actions/log';
 
 class Log extends React.Component {
   constructor(props) {
     super(props);
+
   }
 
   componentWillMount() {
@@ -33,11 +33,16 @@ class Log extends React.Component {
       return null
     })
     .then((json) => {
-        loadLogAction(json);
+      loadLogAction(json);
     })
     .catch((error) => {
       // Error handling here.
     });
+  }
+
+  getFormattedDate(data) {
+    let date = new Date(data.time)
+    return date.toDateString();
   }
 
   render() {
@@ -51,10 +56,6 @@ class Log extends React.Component {
               {
                 Header: 'Name',
                 accessor: 'name'
-              },
-              {
-                Header: 'Time',
-                accessor: 'time'
               },
               {
                 Header: 'Type',
@@ -72,7 +73,16 @@ class Log extends React.Component {
                 Header: 'To',
                 accessor: 'afterValue'
               },
-
+              {
+                Header: 'Date',
+                id: 'time',
+                accessor: d => this.getFormattedDate(d),
+                Cell: row => (
+                  <span>
+                    {row.value}
+                  </span>
+                )
+              }
             ]}
 
             className="-striped -highlight"
@@ -85,6 +95,7 @@ class Log extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    makeLogAction: makeLog,
     loadLogAction: loadLog,
   }, dispatch);
 }

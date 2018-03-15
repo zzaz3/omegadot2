@@ -20,7 +20,7 @@ router.post('/account/add', (req, res, next) => {
 
   if(!req.body.number)
     errors.push({text: 'Missing Account Number'});
-  
+
   if(errors.length > 0){
     res.send({
       errors: errors
@@ -38,10 +38,11 @@ router.post('/account/add', (req, res, next) => {
     isActive: req.body.isActive
   });
   // Save Account to Database
-  account.save((err, member) => {
+  account.save((err) => {
     if (err)
       console.log('ERROR...COULD NOT SAVE TO DATABASE');
-    res.status(201).json(account);
+    else
+      res.status(201).json(account);
   });
 });
 

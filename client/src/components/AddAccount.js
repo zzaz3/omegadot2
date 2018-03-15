@@ -1,4 +1,7 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import {loadLog, makeLog} from "../actions/log";
+import {connect} from "react-redux";
 
 class AddAccount extends React.Component {
   constructor(props) {
@@ -36,13 +39,19 @@ class AddAccount extends React.Component {
 
   // POST Request For Adding Account To DB
   createAccount(newAccount) {
+    const { logAction } = this.props;
+
     fetch('/account/add', {
       method: 'POST',
       body: JSON.stringify(newAccount),
       headers: new Headers({
         "Content-Type": "application/json"
       })
-    }).then(res => res.json())
+    })
+      .then((res) => {
+        logAction(res.json);
+        return res.json();
+    })
       .catch(err => console.log(`ERROR MESSAGE ${err}`));
   }
 
@@ -113,4 +122,16 @@ class AddAccount extends React.Component {
   }
 }
 
-export default AddAccount;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logAction: makeLog,
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    log: state.log,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddAccount);
