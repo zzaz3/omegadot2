@@ -10,7 +10,7 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "author": "Stephens Jean-Jacques",
+  "author": "Stephens Jean-Jacques / Zach Comstock",
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^1.14.6"

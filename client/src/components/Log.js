@@ -4,7 +4,7 @@ import ReactTable from 'react-table';
 import 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadLog, makeLog } from '../actions/log';
+import { loadLog } from '../actions/log';
 
 class Log extends React.Component {
   constructor(props) {
@@ -95,7 +95,6 @@ class Log extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    makeLogAction: makeLog,
     loadLogAction: loadLog,
   }, dispatch);
 }

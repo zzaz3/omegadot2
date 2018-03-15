@@ -13,6 +13,7 @@ import LoginContainer from '../components/Login/LoginContainer';
 import Team from '../components/Team';
 import Register from '../components/Register';
 import Log from '../components/Log';
+import Journalize from '../components/Journalize';
 
 function Routes() {
   return (

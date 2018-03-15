@@ -54,7 +54,7 @@ class Accounts extends React.Component {
         <Link to='/accounts/add'>
           <button className="btn btn-primary mb-4">Create Account</button>
         </Link>
-        <ReactTable 
+        <ReactTable
             data={this.state.accounts}
             columns={[
               {
@@ -71,15 +71,11 @@ class Accounts extends React.Component {
               },
               {
                 Header: 'Type',
-<<<<<<< HEAD
                 accessor: 'type'
               },
               {
                 Header: "Sub-Type",
                 accessor: 'subtype'
-=======
-                accessor: 'category'
->>>>>>> 143c5bfc8f4b56089f2c1d1e662ae6a30139c2a9
               },
               {
                 Header: 'Status',
@@ -94,10 +90,10 @@ class Accounts extends React.Component {
                   </span>
                 )
               }
-            ]} 
+            ]}
 
             className="-striped -highlight"
-            defaultPageSize={10}           
+            defaultPageSize={10}
         />
       </div>
     )
