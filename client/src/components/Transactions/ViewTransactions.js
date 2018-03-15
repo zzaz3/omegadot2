@@ -31,19 +31,16 @@ class ViewTransactions extends React.Component{
                         {
                             Header: 'Accounts',
                             id: 'accounts',
-                            accessor: d => <TestComponent debit={d.debitAccount} credit={d.creditAccount}/>
+                            accessor: d => <TestComponent debit={d.debitAccount} credit={d.creditAccount} />
                         },
                         {
                             Header: 'Ref #',
                             accessor: 'creditAmount'
                         },
                         {
-                            Header: 'Debit',
-                            accessor: 'debitAmount'
-                        },
-                        {
-                            Header: 'Credit',
-                            accessor: 'creditAmount'
+                            Header: 'Debits / Credits',
+                            id: 'debits/credits',
+                            accessor: d => <DebitsCredits debitAmount={d.debitAmount} creditAmount={d.creditAmount} />
                         },
                         {
                             Header: 'Status',
@@ -80,6 +77,15 @@ function TestComponent(props){
         <div>
             <div className="text-left">{props.debit}</div>
             <div className="text-right">{props.credit}</div>
+        </div>
+    )
+}
+
+function DebitsCredits(props){
+    return (
+        <div>
+            <div className="text-left">{props.debitAmount}</div>
+            <div className="text-right">{props.creditAmount}</div>
         </div>
     )
 }
