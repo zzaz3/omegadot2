@@ -32,6 +32,7 @@ const accountList = require('./api/accountList');
 const accounts = require('./api/accounts');
 const transactions = require('./api/transactions');
 const auth = require('./api/auth');
+const log = require('./api/log');
 
 // Body Parser Middleware
 server.use(bodyParser.urlencoded({ extended: false }));
@@ -48,6 +49,7 @@ server.use('/', accountList);
 server.use('/', accounts);
 server.use('/', transactions);
 server.use('/auth/', auth);
+server.use('/', log);
 
 const port = 5000;
 server.listen(port, () => {

@@ -4,10 +4,11 @@ import {Provider as AlertProvider} from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 
 import Nav from './components/NavBar/NavBarContainer';
+import Log from './components/Log';
 import Routes from './routes/Routes';
 
 export default function App(props) {
-  const { authentication, progress } = props;
+  const { authentication, progress, log } = props;
   const options = {
     position: 'bottom right',
     timeout: 5000,

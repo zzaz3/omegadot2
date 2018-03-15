@@ -1,5 +1,8 @@
 import React from 'react';
 import {withAlert} from 'react-alert';
+import { bindActionCreators } from 'redux';
+import {loadLog, accountCreated} from "../actions/log";
+import {connect} from "react-redux";
 
 class AddAccount extends React.Component {
   constructor(props) {
@@ -46,19 +49,24 @@ class AddAccount extends React.Component {
 
   // POST Request For Adding Account To DB
   createAccount(newAccount) {
+    const { logAction, auth } = this.props;
     fetch('/account/add', {
       method: 'POST',
       body: JSON.stringify(newAccount),
       headers: new Headers({
         "Content-Type": "application/json"
       })
-    }).then(res => res.json())
+    })
+      .then((res) => {
+        logAction(newAccount, auth.username);
+        return res.json();
+    })
       .catch(err => console.log(`ERROR MESSAGE ${err}`));
   }
 
   onSubmit(e) {
     e.preventDefault();
-    
+
     if(this.state.selectedAccount == 'none'){
       return this.props.alert.error('SELECT AN ACCOUNT');
     }
@@ -66,7 +74,7 @@ class AddAccount extends React.Component {
     if(Math.sign(this.refs.initBalance.value) === -1 || isNaN(this.refs.initBalance.value)) {
       return this.props.alert.error('INVALID BALANCE');
     }
-    
+
     const newAccount = {
       name: this.state.selectedAccount,
       number: this.state.accountNumber,
@@ -137,4 +145,17 @@ class AddAccount extends React.Component {
   }
 }
 
-export default withAlert(AddAccount);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logAction: accountCreated,
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    log: state.log,
+    auth: state.authentication
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddAccount);
