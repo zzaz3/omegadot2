@@ -11,7 +11,6 @@ export default function reducer(state = initialState, action) {
         afterValue : 0,
         changedBy : action.user
       }
-      debugger;
       fetch('/log', {
         method: 'POST',
         body: JSON.stringify(newLog),
