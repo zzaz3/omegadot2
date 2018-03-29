@@ -52,19 +52,13 @@ router.post('/transaction/add', (req, res) => {
     });
 });
 
-router.put('transaction/update/status/:id', (req, res) => {
-    Transaction.findOne({
-        _id: req.params.id
-    })
-    .then(transaction => {
-        transaction.status = req.body.status;
-
-        transaction.save(err => {
-            if(err){
-                console.log('ERROR...COULD NOT UPDATE TRANSACTION');
-            }
-        })
-    });
+router.put('/transaction/status/update/:id', (req, res) => {
+    Transaction.findByIdAndUpdate({_id: req.params.id}, req.body)
+        .then(() => {
+            Transaction.findOne({_id: req.params.id}).then(() => {
+                res.send(Transaction);
+            });
+        });
 });
 
 module.exports = router;

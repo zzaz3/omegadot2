@@ -8,14 +8,14 @@ class ReviewTransactions extends React.Component{
             transactions: []
         }
 
-        this.updateTranactionStatus = this.updateTranactionStatus.bind(this);
+        this.updateTransactionStatus = this.updateTransactionStatus.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
     }
 
-    updateTranactionStatus(transaction, transactionStatus){
-        fetch(`/transaction/status/update/${transaction._id}`, {
+    updateTransactionStatus(transactionId, updateData){
+        fetch(`/transaction/status/update/${transactionId}`, {
             method: 'PUT',
-            body: JSON.stringify(transactionStatus),
+            body: JSON.stringify(updateData),
             headers: new Headers({
                 "Content-Type": "application/json"
             })
@@ -23,19 +23,32 @@ class ReviewTransactions extends React.Component{
             .catch(err => console.log(`ERROR MESSAGE ${err}`));
     }
 
-    onAcceptOrReject(){
-        const approved = {status: 'approved'}
-        this.updateTranactionStatus()
+    onAcceptOrReject(e){
+        
     }
 
-    updateStatus(e){
-        console.log(`Status Updated !!! ${e.target.value}`);
+    updateStatus = (id) => (e) => {
+        var updateData = null;
+        if(e.target.value == "accept"){
+            updateData = {"status": "approved"}
+            console.log("ACCEPTED");
+        } else if(e.target.value == "reject"){
+            updateData = {"status": "rejected"}
+            console.log("REJECTED");
+        }
+
+        this.updateTransactionStatus(id, updateData);
+
+        var transactions = this.state.transactions.filter(transId => transId._id != id);
+        this.setState({
+            transactions: transactions
+        });
     }
 
     componentDidMount(){
-        fetch('/transactions')
+        fetch('/transactions/pending')
             .then(res => res.json())
-            .then(transactions => this.setState({transactions: transactions}), () => console.log('Transactions fetched...'));
+            .then(transactions => this.setState({transactions: transactions}, () => console.log('Transactions fetched...', transactions)));
     }
 
     render(){
@@ -67,7 +80,7 @@ class ReviewTransactions extends React.Component{
                         {
                             Header: 'Review',
                             id: 'review',
-                            accessor: d => <AcceptReject updateStatus={this.updateStatus} />
+                            accessor: d => <AcceptReject updateStatus={this.updateStatus(d._id)} />
                         }
                     ]}
                 />
@@ -108,8 +121,8 @@ function DebitsCredits(props){
 function AcceptReject(props){
     return (
         <div className="d-flex flex-row justify-content-around row-hl">
-            <button value="approved" onClick={props.updateStatus} className="btn btn-success">Approve</button>
-            <button value="rejected" onClick={props.updateStatus} className="btn btn-danger">Reject</button>
+            <button value="accept" onClick={props.updateStatus} className="btn btn-success">Approve</button>
+            <button value="reject" onClick={props.updateStatus} className="btn btn-danger">Reject</button>
         </div>
     )
 }

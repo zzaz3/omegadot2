@@ -76,18 +76,29 @@ class RecordTransactions extends React.Component {
     onSubmit(e) {
         e.preventDefault();
 
-        if (this.state.selectedDebitAccount == 'None') {
+        if(this.state.selectedDebitAccount == 'None') {
             return this.props.alert.error('SELECT A DEBIT ACCOUNT');
         }
-        if (this.state.selectedCreditAccount == 'None') {
+        if(this.state.selectedCreditAccount == 'None') {
             return this.props.alert.error('SELECT A CREDIT ACCOUNT');
         }
 
-        if (Math.sign(this.refs.debitAmount.value) === -1 || isNaN(this.refs.debitAmount.value)) {
+        if(Math.sign(this.refs.debitAmount.value) === -1 || isNaN(this.refs.debitAmount.value)) {
             return this.props.alert.error('INVALID DEBIT AMOUNT');
         }
-        if (Math.sign(this.refs.creditAmount.value) === -1 || isNaN(this.refs.creditAmount.value)) {
+        if(Math.sign(this.refs.creditAmount.value) === -1 || isNaN(this.refs.creditAmount.value)) {
             return this.props.alert.error('INVALID CREDIT AMOUNT');
+        }
+
+        if(this.state.debitRefNum == '' || isNaN(this.state.debitRefNum)){
+            return this.props.alert.error('INVALID DEBIT REF#');
+        }
+        if(this.state.creditRefNum == '' || isNaN(this.state.debitRefNum)){
+            return this.props.alert.error('INVALID CREDIT REF#');
+        }
+
+        if(this.refs.debitAmount.value != this.refs.creditAmount.value){
+            return this.props.alert.error("DEBIT AMOUNT DOESN'T MATCH CREDIT AMOUNT");
         }
 
         const newTransaction = {

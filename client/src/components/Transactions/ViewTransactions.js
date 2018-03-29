@@ -39,9 +39,14 @@ class ViewTransactions extends React.Component{
                             accessor: d => <TestComponent debit={d.debitAccount} credit={d.creditAccount} />
                         },
                         {
-                            Header: 'Debits / Credits',
+                            Header: 'Debits',
                             id: 'debits/credits',
-                            accessor: d => <DebitsCredits debitAmount={d.debitAmount} creditAmount={d.creditAmount} />
+                            accessor: d => <Debits debitAmount={d.debitAmount} />
+                        },
+                        {
+                            Header: 'Credits',
+                            id: 'credits',
+                            accessor: d => <Credits creditAmount={d.creditAmount} />
                         },
                         {
                             Header: 'Status',
@@ -79,16 +84,23 @@ function TestComponent(props){
             <div className="text-left">{props.debit}</div>
             <div className="text-right">{props.credit}</div>
         </div>
-    )
+    );
 }
 
-function DebitsCredits(props){
+function Debits(props){
     return (
         <div>
-            <div className="text-left">{props.debitAmount}</div>
-            <div className="text-right">{props.creditAmount}</div>
+            <div className="text-right">{props.debitAmount}</div>
         </div>
-    )
+    );
+}
+
+function Credits(props){
+    return(
+        <div>
+            <div className="text-right mt-3 mb-0">{props.creditAmount}</div>
+        </div>
+    );
 }
 
 function ReferenceNums(props){
@@ -97,5 +109,5 @@ function ReferenceNums(props){
             <div className="text-left">{props.debitRefNum}</div>
             <div className="text-right">{props.creditRefNum}</div>
         </div>
-    )
+    );
 }
