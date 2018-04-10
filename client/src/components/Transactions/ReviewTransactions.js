@@ -75,7 +75,7 @@ class ReviewTransactions extends React.Component{
                         {
                             Header: 'Debits / Credits',
                             id: 'debits/credits',
-                            accessor: d => <DebitsCredits debitAmount={d.debitAmount} creditAmount={d.creditAmount} />
+                            accessor: d => <DebitsCredits debitAmount={d.debitAmount + ".00"} creditAmount={d.creditAmount + ".00"} />
                         },
                         {
                             Header: 'Review',
@@ -84,6 +84,24 @@ class ReviewTransactions extends React.Component{
                         }
                     ]}
                 />
+                
+                <div className="modal" id="rejectModal">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Reason</h5>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div className="modal-body">
+                                <form>
+                                    <textarea ref="rejectReason" cols="30" rows="10"></textarea>
+                                </form>
+                                <button className="btn btn-danger" data-dismiss="modal" onSubmit={this.updateStatus} type="submit">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         );
     }
@@ -122,7 +140,7 @@ function AcceptReject(props){
     return (
         <div className="d-flex flex-row justify-content-around row-hl">
             <button value="accept" onClick={props.updateStatus} className="btn btn-success">Approve</button>
-            <button value="reject" onClick={props.updateStatus} className="btn btn-danger">Reject</button>
+            <button value="reject" data-toggle="modal" data-target="#rejectModal" onClick={props.updateStatus} className="btn btn-danger">Reject</button>
         </div>
     )
 }

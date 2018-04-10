@@ -38,6 +38,9 @@ const TransactionSchema = Schema({
   status: {
       type: String,
       required: true
+  },
+  rejectReason: {
+      type: String
   }
 });
 

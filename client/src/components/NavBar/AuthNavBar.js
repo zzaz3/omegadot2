@@ -49,7 +49,9 @@ class AuthNavBar extends React.Component {
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <NavLink to="/transactions/view" className="dropdown-item">View Transactions</NavLink>
                 <NavLink to="/transactions/record" className="dropdown-item">Record Transactions</NavLink>
+                { this.props.role == "manager" &&
                 <NavLink to="/transactions/review" className="dropdown-item">Review Transactions</NavLink>
+                }
               </div>
             </li>
             <li className="nav-item">

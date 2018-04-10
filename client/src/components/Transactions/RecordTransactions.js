@@ -82,6 +82,9 @@ class RecordTransactions extends React.Component {
         if(this.state.selectedCreditAccount == 'None') {
             return this.props.alert.error('SELECT A CREDIT ACCOUNT');
         }
+        if(this.state.selectedDebitAccount == this.state.selectedCreditAccount){
+            return this.props.alert.error('CANNOT CREDIT AND DEBIT SAME ACCOUNT');
+        }
 
         if(Math.sign(this.refs.debitAmount.value) === -1 || isNaN(this.refs.debitAmount.value)) {
             return this.props.alert.error('INVALID DEBIT AMOUNT');

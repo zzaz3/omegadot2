@@ -41,12 +41,16 @@ class ViewTransactions extends React.Component{
                         {
                             Header: 'Debits',
                             id: 'debits/credits',
-                            accessor: d => <Debits debitAmount={d.debitAmount} />
+                            accessor: d => <Debits debitAmount={d.debitAmount + ".00"} />
                         },
                         {
                             Header: 'Credits',
                             id: 'credits',
-                            accessor: d => <Credits creditAmount={d.creditAmount} />
+                            accessor: d => <Credits creditAmount={d.creditAmount + ".00"} />
+                        },
+                        {
+                            Header: 'Description',
+                            accessor: 'description'
                         },
                         {
                             Header: 'Status',
@@ -68,7 +72,7 @@ class ViewTransactions extends React.Component{
                                     }
                                 </span>
                                 )
-                        }
+                        },
                     ]}
                 />
             </div>
@@ -106,8 +110,8 @@ function Credits(props){
 function ReferenceNums(props){
     return (
         <div>
-            <div className="text-left">{props.debitRefNum}</div>
-            <div className="text-right">{props.creditRefNum}</div>
+            <div className="m-auto">{props.debitRefNum}</div>
+            {/* <div className="text-right">{props.creditRefNum}</div> */}
         </div>
     );
 }
