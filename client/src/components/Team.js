@@ -1,6 +1,9 @@
 import React from 'react';
 // Fetch and Auth
 import fetch from 'isomorphic-fetch';
+import ReactTable from 'react-table';
+
+import TransactionEntry from './Transactions/TransactionEntry';
 
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 // import withRouter from 'react-router-dom';
@@ -15,11 +18,13 @@ class Team extends React.Component {
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onAlert = this.onAlert.bind(this);
+    this.addNewInput = this.addNewInput.bind(this);
 
     this.state = {
       members: [],
       firstName: '',
-      lastName: ''
+      lastName: '',
+      inputArr: []
     };
   }
 
@@ -75,6 +80,13 @@ class Team extends React.Component {
     }
   }
 
+  addNewInput(){
+    const tempInputArr = this.state.inputArr;
+    const placeholderText = tempInputArr.length;
+    tempInputArr.push({placeholderText});
+    this.setState({inputArr: tempInputArr});
+  }
+
   render() {
     const { members, firstName, lastName } = this.state;
 
@@ -82,6 +94,15 @@ class Team extends React.Component {
       <div>
         <div className="row justify-content-center">
           <div className="col-10 col-sm-7 col-md-5 col-lg-4">
+            <TransactionEntry />
+            <button onClick={this.addNewInput} className="btn">New Input</button>
+            <div>
+              {this.state.inputArr.map(input => {
+                return(
+                  <TransactionEntry />
+                )
+              })}
+            </div>
             <Form>
               <FormGroup>
                 <Label for="firstName">First Name</Label>

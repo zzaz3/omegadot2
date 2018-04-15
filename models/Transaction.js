@@ -1,47 +1,49 @@
 const mongoose = require('mongoose');
+const Entry = require('../client/src/components/Transactions/Entry');
 
 const Schema = mongoose.Schema;
 
 const TransactionSchema = Schema({
-  debitAccount: {
-      type: String,
-      required: true
-  },
-  debitAmount: {
-      type: Number,
-      required: true
-  },
-  debitRefNum: {
-    type: Number,
-    required: true
-  },
-  creditAccount: {
-      type: String,
-      required: true
-  },    
-  creditAmount: {
-      type: Number,
-      required: true
-  },
-  creditRefNum: {
-    type: Number,
-    required: true
-  },
-  date: {
-      type: String,
-      required: true
-  },
-  description: {
-      type: String,
-      required: false
-  },
-  status: {
-      type: String,
-      required: true
-  },
-  rejectReason: {
-      type: String
-  }
+  debitEntries: [
+      {
+          account: {
+              type: String,
+              required: true
+          },
+          amount: {
+              type: Number,
+              required: true
+          }
+      }
+  ]//,
+//   creditEntries: [
+//       {
+//         account: {
+//             type: String,
+//             required: true
+//         },
+//         amount: {
+//             type: Number,
+//             required: true
+//         }
+//       }
+//   ],
+//   date: {
+//       type: String,
+//       required: true
+//   },
+//   description: {
+//       type: String,
+//       required: false
+//   },
+//   status: {
+//       type: String,
+//       required: true
+//   },
+//   rejectReason: {
+//       type: String,
+//       required: false
+//   }
 });
 
 mongoose.model('transaction', TransactionSchema);

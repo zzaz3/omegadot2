@@ -5,6 +5,9 @@ import moment from 'moment';
 import { withAlert } from 'react-alert';
 import Dropzone from 'react-dropzone';
 
+import TransactionEntry from './TransactionEntry';
+import Entry from './Entry';
+
 import 'react-datepicker/dist/react-datepicker.css';
 
 class RecordTransactions extends React.Component {
@@ -12,53 +15,74 @@ class RecordTransactions extends React.Component {
         super(props);
         this.state = {
             accounts: [],
+            debitEntries: [
+                new Entry(1, "", 0)
+            ],
+            creditEntries: [
+                new Entry(1, "", 0)
+            ],
+            debitAmountTotal: 0,
+            creditAmountTotal: 0,
+            description: "",
             files: [],
             date: moment(),
             selectedDebitAccount: 'None',
-            selectedCreditAccount: 'None',
-            debitRefNum: '',
-            creditRefNum: ''
+            selectedCreditAccount: 'None'
         }
 
         this.handleChange = this.handleChange.bind(this);
-        this.onAccountChange = this.onAccountChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleRefChange = this.handleRefChange.bind(this);
-        this.handleDebitRefNumChange = this.handleDebitRefNumChange.bind(this);
-        this.handleCreditRefNumChange = this.handleCreditRefNumChange.bind(this);
-        this.onDrop = this.onDrop.bind(this);
-    }
-
-    onDrop(file) {
-        this.setState({
-            files: this.state.files.concat(file)
-        });
-    }
-
-    onAccountChange(e) {
-        switch (e.target.name) {
-            case 'debitAccount':
-                this.setState({ selectedDebitAccount: e.target.value });
-                break;
-            case 'creditAccount':
-                this.setState({ selectedCreditAccount: e.target.value })
-        }
+        this.onTestSubmit = this.onTestSubmit.bind(this);
+        this.addNewTransactionEntry = this.addNewTransactionEntry.bind(this);
+        this.getDebitData = this.getDebitData.bind(this);
+        this.getCreditData = this.getCreditData.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
+        this.onDescriptionChange = this.onDescriptionChange.bind(this);
+        this.formatEntries = this.formatEntries.bind(this);
     }
 
     handleChange(date) {
         this.setState({ date: date });
     }
 
-    handleRefChange(e) {
-        this.setState({ ref: e.target.value });
+    onDateChange(date){
+        this.setState({date: date})
     }
 
-    handleDebitRefNumChange(e) {
-        this.setState({ debitRefNum: e.target.value });
+    onDescriptionChange(e){
+        this.setState({description: e.target.value});
     }
 
-    handleCreditRefNumChange(e) {
-        this.setState({ creditRefNum: e.target.value });
+    addNewTransactionEntry(e){
+        e.preventDefault();
+
+        if(e.target.value === "debit"){
+            const tempDebitEntries = this.state.debitEntries;
+            const entryId = tempDebitEntries.length + 1;
+            const newEntry = new Entry(entryId, "", 0);
+            tempDebitEntries.push(newEntry);
+            console.log(`NEW DEBIT ENTRY INDEX: ${tempDebitEntries.indexOf(newEntry)}`);
+            this.setState({debitEntries: tempDebitEntries});
+        } else if(e.target.value === "credit") {
+            const tempCreditEntries = this.state.creditEntries;
+            const entryId = tempCreditEntries.length + 1;
+            const newEntry = new Entry(entryId, "", 0);
+            tempCreditEntries.push(newEntry);
+            console.log(`NEW CREDIT ENTRY INDEX: ${tempCreditEntries.indexOf(newEntry)}`);
+            this.setState({creditEntries: tempCreditEntries});
+        }
+    }
+
+    formatEntries(entries){
+        let formattedEntries = []
+        entries.forEach(entry => {
+            formattedEntries.push({
+                account: entry.account,
+                amount: entry.amount
+            });
+        });
+
+        return formattedEntries;
     }
 
     // POST Request For Adding Transaction To DB
@@ -128,6 +152,63 @@ class RecordTransactions extends React.Component {
         this.refs.description.value = '';
     }
 
+    onTestSubmit(e){
+        e.preventDefault();
+
+        const debitEntries = this.formatEntries(this.state.debitEntries);
+        const creditEntries = this.formatEntries(this.state.creditEntries);
+
+        const newTransaction = {
+            debitEntries: debitEntries,
+            creditEntries: creditEntries,
+            date: this.state.date.format('L').toString(),
+            description: this.state.description,
+            status: "pending"
+        }
+        this.createTransacton(newTransaction);
+
+        console.log(`NEW TRANSACTION: ${Object.entries(newTransaction).toString()}`);
+        
+
+        // -----------------------------------
+        // const debitEntries = this.state.debitEntries;
+        // debitEntries.forEach(entry => {
+        //     console.log(`ID(debit): ${entry.id} || ACCOUNT(debit): ${entry.account} || AMOUNT(debit): ${entry.amount}`);
+        // });
+
+        // const creditEntries = this.state.creditEntries;
+        // creditEntries.forEach(entry => {
+        //     console.log(`ID(credit): ${entry.id} || ACCOUNT(credit): ${entry.account} || AMOUNT(credit): ${entry.amount}`);
+        // });
+    }
+
+    getDebitData(entry){
+        const tempDebitEntries = this.state.debitEntries;
+        for(let i = 0; i < tempDebitEntries.length; i++) {
+            if(entry.id == tempDebitEntries[i].id){
+                tempDebitEntries[i] = entry;
+            }
+        }
+
+        this.setState({debitEntries: tempDebitEntries});
+
+        console.log(`ACCOUNT DATA (debit): ${entry.id} || ${entry.account} || ${entry.amount}`);
+    }
+
+    getCreditData(entry){
+        const tempCreditEntries = this.state.creditEntries;
+        for(let i = 0; i < tempCreditEntries.length; i++) {
+            if(entry.id == tempCreditEntries[i].id){
+                tempCreditEntries[i] = entry;
+            }
+        }
+
+        this.setState({creditEntries: tempCreditEntries});
+
+        console.log(`ACCOUNT DATA (credit): ${entry.id} || ${entry.account} || ${entry.amount}`);
+    }
+
+    // LIFECYCLE METHODS
     componentDidMount() {
         fetch('/accounts')
             .then(res => res.json())
@@ -137,6 +218,61 @@ class RecordTransactions extends React.Component {
     render() {
         return (
             <div className="container mt-3">
+                <form onSubmit={this.onTestSubmit} className="m-auto">
+                    <div className="row">
+                        <div className="col-md-4">
+                            <div>
+                                <DatePicker
+                                    selected={this.state.date}
+                                    onChange={this.onDateChange}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div>
+                                <textarea onChange={this.onDescriptionChange} name="description" cols="25" rows="5" placeholder="Description" className="form-control" ref="description"></textarea>
+                            </div>
+                        </div>
+                        <div className="col-md-8">
+                            <div>
+                                {
+                                    this.state.debitEntries.map(entry => {
+                                        return(
+                                            <div className="row">
+                                                <div className="col-md-10">
+                                                    <TransactionEntry id={this.state.debitEntries.length} sendAccount={this.getDebitData}
+                                                    sendAmount={this.getDebitData} />
+                                                </div>
+                                                <div className="col-md-2">
+                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="debit">Add New</button>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className="ml-5 mt-3">
+                                {
+                                    this.state.creditEntries.map(entry => {
+                                        return(
+                                            <div className="row">
+                                                <div className="col-md-10">
+                                                    <TransactionEntry id={this.state.creditEntries.length} sendAccount={this.getCreditData}
+                                                    sendAmount={this.getCreditData} />
+                                                </div>
+                                                <div className="col-md-2">
+                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="credit">Add New</button>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                                                 
+                        <input type="submit" value="Submit" className="btn btn-primary ml-auto my-2" />
+                    </div>
+                </form>
+                {/* OLD FORM */}
                 <form onSubmit={this.onSubmit} className="m-auto">
                     <div className="row">
                         <div className="col-md-2">
@@ -145,7 +281,6 @@ class RecordTransactions extends React.Component {
                             <option value="None" selected>None</option>
                             {this.state.accounts.map(account => <option>{account.name}</option>)}
                             </select>
-                            <input type="text" className="my-2" placeholder="ref #" onChange={this.handleDebitRefNumChange} value={this.state.debitRefNum} className="form-control" />
                             <input type="text" placeholder="$0.00" ref="debitAmount" className="form-control" />
                         </div>
                         <div className="col-md-2">
@@ -154,7 +289,6 @@ class RecordTransactions extends React.Component {
                             <option value="None" selected>None</option>
                             {this.state.accounts.map(account => <option>{account.name}</option>)}
                             </select>
-                            <input type="text" className="mt-5" placeholder="ref #" onChange={this.handleCreditRefNumChange} value={this.state.creditRefNum} className="form-control" />
                             <input type="text" placeholder="$0.00" ref="creditAmount" className="form-control" />
                         </div>
                         <div className="col-md-4 d-flex">

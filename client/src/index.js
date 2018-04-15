@@ -10,6 +10,8 @@ import './css/zachCSS.scss';
 import DevTools from './components/Dev/DevTools';
 import configureStore from './store';
 
+import "react-table/react-table.css";
+
 import AppWrapper from './AppWrapper';
 const Store = configureStore();
 

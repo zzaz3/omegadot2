@@ -7,6 +7,7 @@ const router = express.Router();
 require('../models/Transaction');
 const Transaction = mongoose.model('transaction');
 
+// Retrieves All Transaction
 router.get('/transactions', (req, res) => {
     Transaction.find()
      .then(transaction => {
@@ -14,6 +15,7 @@ router.get('/transactions', (req, res) => {
      })
 });
 
+// Retrieves All Pending Transactions
 router.get('/transactions/pending', (req, res) => {
     Transaction.find({
       status: 'pending'  
@@ -22,6 +24,7 @@ router.get('/transactions/pending', (req, res) => {
     });
 });
 
+// Retreives All Approved Transactions
 router.get('/transactions/approved', (req, res) => {
     Transaction.find({
         status: 'approved'
@@ -30,24 +33,21 @@ router.get('/transactions/approved', (req, res) => {
     })
 });
 
+// Saves New Transaction To Database
 router.post('/transaction/add', (req, res) => {
-    // Create Transaction
-    const transaction = new Transaction({
-        debitAccount: req.body.debitAccount,
-        debitAmount: req.body.debitAmount,
-        debitRefNum: req.body.debitRefNum,
-        creditAccount: req.body.creditAccount,
-        creditAmount: req.body.creditAmount,
-        creditRefNum: req.body.creditRefNum,
-        description: req.body.description,
-        date: req.body.date,
-        status: req.body.status
+    const newTransaction = new Transaction({
+        debitEntries: req.body.debitEntries
+        // creditEntries: req.body.creditEntries,
+        // date: req.body.date,
+        // description: req.body.description,
+        // status: req.body.state,
+        // rejectReason: req.body.rejectReason
     });
-    // Save Transaction to Database
-    transaction.save((err) => {
+
+    newTransaction.save((err) => {
         if(err){
             console.log('ERROR...COULD NOT SAVE TRANSACTION');
-            res.status(201).json(transaction);
+            res.status(201).json(newTransaction);
         }
     });
 });

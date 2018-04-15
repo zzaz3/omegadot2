@@ -3,11 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 
 import Home from '../components/Home';
 import Accounts from '../components/Accounts';
-import AddAccount from '../components/AddAccount'
-import ViewTransactions from '../components/Transactions/ViewTransactions'
-import RecordTransactions from '../components/Transactions/RecordTransactions'
-import ReviewTransactions from '../components/Transactions/ReviewTransactions'
-import Post from '../components/Post';
+import AddAccount from '../components/AddAccount';
+import ViewTransactions from '../components/Transactions/ViewTransactions';
+import RecordTransactions from '../components/Transactions/RecordTransactions';
+import ReviewTransactions from '../components/Transactions/ReviewTransactions';
 import Balance from '../components/Balance';
 import LoginContainer from '../components/Login/LoginContainer';
 import Team from '../components/Team';
@@ -25,7 +24,6 @@ function Routes() {
       <Route exact path="/transactions/view" component={ViewTransactions} />
       <Route exact path="/transactions/record" component={RecordTransactions} />
       <Route exact path="/transactions/review" component={ReviewTransactions} />
-      <Route exact path="/post" component={Post}/>
       <Route exact path="/balance" component={Balance} />
       <Route exact path="/login" component={LoginContainer} />
       <Route exact path="/team" component={Team} />
