@@ -36,8 +36,8 @@ router.get('/transactions/approved', (req, res) => {
 // Saves New Transaction To Database
 router.post('/transaction/add', (req, res) => {
     const newTransaction = new Transaction({
-        debitEntries: req.body.debitEntries
-        // creditEntries: req.body.creditEntries,
+        debitEntries: req.body.debitEntries,
+        creditEntries: req.body.creditEntries
         // date: req.body.date,
         // description: req.body.description,
         // status: req.body.state,

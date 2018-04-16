@@ -160,10 +160,10 @@ class RecordTransactions extends React.Component {
 
         const newTransaction = {
             debitEntries: debitEntries,
-            creditEntries: creditEntries,
-            date: this.state.date.format('L').toString(),
-            description: this.state.description,
-            status: "pending"
+            // creditEntries: creditEntries
+            // date: this.state.date.format('L').toString(),
+            // description: this.state.description,
+            // status: "pending"
         }
         this.createTransacton(newTransaction);
 

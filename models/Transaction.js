@@ -7,12 +7,12 @@ const TransactionSchema = Schema({
   debitEntries: [
       {
           account: {
-              type: String,
-              required: true
+            type: String,
+            required: true
           },
           amount: {
-              type: Number,
-              required: true
+            type: Number,
+            required: true
           }
       }
   ]//,
