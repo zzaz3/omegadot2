@@ -5,11 +5,13 @@ class ReviewTransactions extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            transactions: []
+            transactions: [],
+            rejectReason: ""
         }
 
         this.updateTransactionStatus = this.updateTransactionStatus.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
+        this.onRejectReasonChange = this.onRejectReasonChange.bind(this);
     }
 
     updateTransactionStatus(transactionId, updateData){
@@ -23,18 +25,25 @@ class ReviewTransactions extends React.Component{
             .catch(err => console.log(`ERROR MESSAGE ${err}`));
     }
 
-    onAcceptOrReject(e){
-        
+    onRejectReasonChange(e){
+        this.setState({rejectReason: e.target.value}, console.log(this.state.rejectReason));
     }
 
     updateStatus = (id) => (e) => {
+        e.preventDefault();
+        
         var updateData = null;
         if(e.target.value == "accept"){
-            updateData = {"status": "approved"}
+            updateData = {
+                "status": "approved"
+            }
             console.log("ACCEPTED");
         } else if(e.target.value == "reject"){
-            updateData = {"status": "rejected"}
-            console.log("REJECTED");
+            updateData = {
+                "status": "rejected",
+                "rejectReason": this.state.rejectReason
+            }
+            console.log(`REJECTS REASON: ${this.state.rejectReason}`);
         }
 
         this.updateTransactionStatus(id, updateData);
@@ -63,24 +72,24 @@ class ReviewTransactions extends React.Component{
                             accessor: 'date'
                         },
                         {
-                            Header: 'Ref #',
-                            id: 'refNums',
-                            accessor: d => <ReferenceNums debitRefNum={d.debitRefNum} creditRefNum={d.creditRefNum}/>
-                        },
-                        {
                             Header: 'Accounts',
                             id: 'accounts',
-                            accessor: d => <TestComponent debit={d.debitAccount} credit={d.creditAccount} />
+                            accessor: d => <DisplayAccounts debitEntries={d.debitEntries} creditEntries={d.creditEntries} />
                         },
                         {
-                            Header: 'Debits / Credits',
-                            id: 'debits/credits',
-                            accessor: d => <DebitsCredits debitAmount={d.debitAmount + ".00"} creditAmount={d.creditAmount + ".00"} />
+                            Header: 'Debits',
+                            id: 'debits',
+                            accessor: d => <DisplayDebits debitEntries={d.debitEntries} creditEntries={d.creditEntries} />
+                        },
+                        {
+                            Header: 'Credits',
+                            id: 'credits',
+                            accessor: d => <DisplayCredits creditEntries={d.creditEntries} debitEntries={d.debitEntries} />
                         },
                         {
                             Header: 'Review',
                             id: 'review',
-                            accessor: d => <AcceptReject updateStatus={this.updateStatus(d._id)} />
+                            accessor: d => <AcceptReject updateStatus={this.updateStatus(d._id)} onRejectReasonChange={this.onRejectReasonChange}/>
                         }
                     ]}
                 />
@@ -101,7 +110,6 @@ class ReviewTransactions extends React.Component{
                         </div>
                     </div>
                 </div>
-                
             </div>
         );
     }
@@ -109,38 +117,121 @@ class ReviewTransactions extends React.Component{
 
 export default ReviewTransactions;
 
-function TestComponent(props){
+function DisplayAccounts(props){
     return (
         <div>
-            <div className="text-left">{props.debit}</div>
-            <div className="text-right">{props.credit}</div>
+            <div className="text-left">
+                {
+                    props.debitEntries.map(entry => {
+                        return(
+                            <div>
+                                {entry.account}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className="text-left ml-5">
+                {
+                    props.creditEntries.map(entry => {
+                        return(
+                            <div>
+                                {entry.account}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                } 
+            </div>
         </div>
-    )
+    );
 }
 
-function ReferenceNums(props){
+function DisplayDebits(props){
     return (
         <div>
-            <div className="text-left">{props.debitRefNum}</div>
-            <div className="text-right">{props.creditRefNum}</div>
+            <div className="text-right">
+                {
+                    props.debitEntries.map(entry => {
+                        return(
+                            <div>
+                                {`${entry.amount}.00`}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className="text-center">
+                {
+                    props.creditEntries.map(entry => {
+                        return(
+                            <div>
+                                {" - "}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                } 
+            </div>
         </div>
-    )
+    );
 }
 
-function DebitsCredits(props){
-    return (
+function DisplayCredits(props){
+    return(
         <div>
-            <div className="text-left">{props.debitAmount}</div>
-            <div className="text-right">{props.creditAmount}</div>
+            <div className="text-center">
+                {
+                    props.debitEntries.map(entry => {
+                        return(
+                            <div>
+                                {" - "}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className="text-right">
+                {
+                    props.creditEntries.map(entry => {
+                        return(
+                            <div>
+                                {`${entry.amount}.00`}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                } 
+            </div>
         </div>
-    )
+    );
 }
 
 function AcceptReject(props){
     return (
         <div className="d-flex flex-row justify-content-around row-hl">
             <button value="accept" onClick={props.updateStatus} className="btn btn-success">Approve</button>
-            <button value="reject" data-toggle="modal" data-target="#rejectModal" onClick={props.updateStatus} className="btn btn-danger">Reject</button>
+            <button value="reject" data-toggle="modal" data-target="#rejectModal" className="btn btn-danger">Reject</button>
+            <div className="modal" id="rejectModal">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Reason</h5>
+                            <button class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div className="modal-body">
+                            <form onSubmit={props.updateStatus}>
+                                <textarea onChange={props.onRejectReasonChange} ref="rejectReason" cols="30" rows="10"></textarea>
+                                {/* <input type="submit" value="Submit" className="btn btn-danger" data-dismiss="modal"/> */}
+                                <button value="reject" onClick={props.updateStatus} className="btn btn-danger" data-dismiss="modal">Reject</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

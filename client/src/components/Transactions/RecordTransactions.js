@@ -42,6 +42,7 @@ class RecordTransactions extends React.Component {
         this.onDateChange = this.onDateChange.bind(this);
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
         this.formatEntries = this.formatEntries.bind(this);
+        this.debitsEqualCredits = this.debitsEqualCredits.bind(this);
     }
 
     handleChange(date) {
@@ -169,8 +170,31 @@ class RecordTransactions extends React.Component {
         this.refs.description.value = '';
     }
 
+    debitsEqualCredits(){
+        let debits = this.state.debitEntries;
+        let debitsTotal = 0;
+        let credits = this.state.creditEntries;
+        let creditsTotal = 0;
+
+        for(let i = 0; i < debits.length; i++){
+            debitsTotal += debits[i].amount;
+        }
+
+        for(let i = 0; i < credits.length; i++){
+            creditsTotal += credits[i].amount;
+        }
+
+        if(debitsTotal != creditsTotal){
+            return this.props.alert.error('Debits Do Not Equal Credits');
+        }
+    }
+
     onTestSubmit(e){
         e.preventDefault();
+
+        if(this.debitsEqualCredits()){
+            return;
+        }
 
         const debitEntries = this.formatEntries(this.state.debitEntries);
         const creditEntries = this.formatEntries(this.state.creditEntries);
@@ -178,9 +202,10 @@ class RecordTransactions extends React.Component {
         const newTransaction = {
             debitEntries: debitEntries,
             creditEntries: creditEntries,
-            date: this.state.date.format('L').toString(),
+            date: this.state.date.format("L").toString(),
             description: this.state.description,
-            status: "pending"
+            status: "pending",
+            rejectReason: ""
         }
         this.createTransacton(newTransaction);
 
@@ -259,66 +284,72 @@ class RecordTransactions extends React.Component {
     render() {
         return (
             <div className="container mt-3">
-                <form onSubmit={this.onTestSubmit} className="m-auto">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <div>
-                                <DatePicker
-                                    selected={this.state.date}
-                                    onChange={this.onDateChange}
-                                    className="form-control"
-                                />
-                            </div>
-                            <div>
-                                <textarea onChange={this.onDescriptionChange} name="description" cols="25" rows="5" placeholder="Description" className="form-control" ref="description"></textarea>
-                            </div>
-                        </div>
-                        <div className="col-md-8">
-                            <div>
-                                {
-                                    this.state.debitEntries.map(entry => {
-                                        return(
-                                            <div className="row">
-                                                <div className="col-md-10">
-                                                    <TransactionEntry id={this.state.debitEntries.length} sendEntryId={this.removeDebitTransactionEntry} sendAccount={this.getDebitData}
-                                                    sendAmount={this.getDebitData} />
-                                                </div>
-                                                <div className="col-md-1">
-                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="debit">+</button>
-                                                </div>
-                                                <div className="col-md-1">
-                                                    <button onClick={this.removeTransactionEntry} className="btn" value="debit">-</button>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                            <div className="ml-5 mt-3">
-                                {
-                                    this.state.creditEntries.map(entry => {
-                                        return(
-                                            <div className="row">
-                                                <div className="col-md-10">
-                                                    <TransactionEntry id={this.state.creditEntries.length} sendEntryId={this.removeCreditTransactionEntry} sendAccount={this.getCreditData}
-                                                    sendAmount={this.getCreditData} />
-                                                </div>
-                                                <div className="col-md-1">
-                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="credit">+</button>
-                                                </div>
-                                                <div className="col-md-1">
-                                                    <button onClick={this.removeTransactionEntry} className="btn" value="credit">-</button>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                                                 
-                        <input type="submit" value="Submit" className="btn btn-primary ml-auto my-2" />
+                <div className="card">
+                    <div className="card-header text-left">
+                        <h2>New Transaction</h2>
                     </div>
-                </form>
+                    <div className="card-body">
+                        <form onSubmit={this.onTestSubmit} className="m-auto">
+                            <div className="row">
+                                <div className="col-md-4 text-left">
+                                    <div>
+                                        <DatePicker
+                                            selected={this.state.date}
+                                            onChange={this.onDateChange}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                    <div className="mt-2">
+                                        <textarea onChange={this.onDescriptionChange} name="description" cols="25" rows="5" placeholder="Description" className="form-control" ref="description"></textarea>
+                                    </div>
+                                </div>
+                                <div className="col-md-8">
+                                    <div>
+                                        {
+                                            this.state.debitEntries.map(entry => {
+                                                return(
+                                                    <div className="row">
+                                                        <div className="col-md-10">
+                                                            <TransactionEntry id={this.state.debitEntries.length} sendEntryId={this.removeDebitTransactionEntry} sendAccount={this.getDebitData}
+                                                            sendAmount={this.getDebitData} />
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                            <button onClick={this.addNewTransactionEntry} className="btn" value="debit">+</button>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                            <button onClick={this.removeTransactionEntry} className="btn" value="debit">-</button>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    <div className="ml-5 mt-3">
+                                        {
+                                            this.state.creditEntries.map(entry => {
+                                                return(
+                                                    <div className="row">
+                                                        <div className="col-md-10">
+                                                            <TransactionEntry id={this.state.creditEntries.length} sendEntryId={this.removeCreditTransactionEntry} sendAccount={this.getCreditData}
+                                                            sendAmount={this.getCreditData} />
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                            <button onClick={this.addNewTransactionEntry} className="btn" value="credit">+</button>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                            <button onClick={this.removeTransactionEntry} className="btn" value="credit">-</button>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>                 
+                                <input type="submit" value="Submit" className="btn btn-primary ml-auto my-2" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         );
     }

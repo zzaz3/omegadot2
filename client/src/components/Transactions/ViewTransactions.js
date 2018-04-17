@@ -18,7 +18,6 @@ class ViewTransactions extends React.Component{
     render(){
         return(
             <div className="container">
-                <TestComponent />
                 <h2>TRANSACTIONS</h2>
                 <ReactTable
                     data={this.state.transactions}
@@ -31,21 +30,43 @@ class ViewTransactions extends React.Component{
                         {
                             Header: 'Accounts',
                             id: 'accounts',
-                            accessor: d => <TestComponent debit={d.debitAccount} credit={d.creditAccount} />
+                            accessor: d => <DisplayAccounts debitEntries={d.debitEntries} creditEntries={d.creditEntries} />
                         },
                         {
                             Header: 'Debits',
-                            id: 'debits/credits',
-                            accessor: d => <Debits debitAmount={d.debitAmount + ".00"} />
+                            id: 'debits',
+                            accessor: d => <DisplayDebits debitEntries={d.debitEntries} creditEntries={d.creditEntries} />
                         },
                         {
                             Header: 'Credits',
                             id: 'credits',
-                            accessor: d => <Credits creditAmount={d.creditAmount + ".00"} />
+                            accessor: d => <DisplayCredits creditEntries={d.creditEntries} debitEntries={d.debitEntries} />
                         },
                         {
                             Header: 'Description',
-                            accessor: 'description'
+                            accessor: 'description',
+                            Cell: row => (
+                                <div className="text-nowrap">{row.value}</div>
+                            )
+                        },
+                        {
+                            Header: "",
+                            accessor: "description",
+                            expander: true,
+                            width: 50,
+                            Expander: ({ isExpanded, ...rest }) =>
+                            <div>
+                                {/* {
+                                    isExpanded
+                                    ? <button className="btn btn-danger">-</button>
+                                    : <button className="btn btn-success">+</button>
+                                } */}
+                                {
+                                    isExpanded
+                                    ? <span>&#x2299;</span>
+                                    : <span>&#x2295;</span>
+                                }
+                            </div>
                         },
                         {
                             Header: 'Status',
@@ -69,6 +90,13 @@ class ViewTransactions extends React.Component{
                                 )
                         },
                     ]}
+                    SubComponent={(row) => {
+                        return(
+                            <div>
+                                {row.original}
+                            </div>
+                        )
+                    }}
                 />
             </div>
         );
@@ -77,27 +105,95 @@ class ViewTransactions extends React.Component{
 
 export default ViewTransactions;
 
-function TestComponent(props){
+function DisplayAccounts(props){
     return (
         <div>
-            <div className="text-left">{props.debit}</div>
-            <div className="text-right">{props.credit}</div>
+            <div className="text-left">
+                {
+                    props.debitEntries.map(entry => {
+                        return(
+                            <div>
+                                {entry.account}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className="text-left ml-5">
+                {
+                    props.creditEntries.map(entry => {
+                        return(
+                            <div>
+                                {entry.account}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                } 
+            </div>
         </div>
     );
 }
 
-function Debits(props){
+function DisplayDebits(props){
     return (
         <div>
-            <div className="text-right">{props.debitAmount}</div>
+            <div className="text-right">
+                {
+                    props.debitEntries.map(entry => {
+                        return(
+                            <div>
+                                {`${entry.amount}.00`}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className="text-center">
+                {
+                    props.creditEntries.map(entry => {
+                        return(
+                            <div>
+                                {" - "}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                } 
+            </div>
         </div>
     );
 }
 
-function Credits(props){
+function DisplayCredits(props){
     return(
         <div>
-            <div className="text-right mt-3 mb-0">{props.creditAmount}</div>
+            <div className="text-center">
+                {
+                    props.debitEntries.map(entry => {
+                        return(
+                            <div>
+                                {" - "}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            <div className="text-right">
+                {
+                    props.creditEntries.map(entry => {
+                        return(
+                            <div>
+                                {`${entry.amount}.00`}
+                                <hr className="m-1"/>
+                            </div>
+                        )
+                    })
+                } 
+            </div>
         </div>
     );
 }

@@ -68,11 +68,8 @@ class TransactionEntry extends React.Component {
                         </select>
                     </div>
                     <div className="col-md-6">
-                        <input onChange={this.onAmountChange} type="text" id="entryAmount" placeholder="$0.00" className="form-control"/>
+                        <input onChange={this.onAmountChange} type="text" id="entryAmount" placeholder="$0.00" className="form-control"/>               
                     </div>
-                    {/* <div className="col-md-2">
-                        <button onClick={this.onRemoveButtonClick} className="btn" value="debit">-</button>
-                    </div> */}
                 </div>
             </div>
         )

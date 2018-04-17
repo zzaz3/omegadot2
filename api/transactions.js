@@ -41,7 +41,7 @@ router.post('/transaction/add', (req, res) => {
         date: req.body.date,
         description: req.body.description,
         status: req.body.status,
-        // rejectReason: req.body.rejectReason
+        rejectReason: req.body.rejectReason
     });
 
     newTransaction.save((err) => {
