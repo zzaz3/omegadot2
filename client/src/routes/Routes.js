@@ -14,6 +14,9 @@ import Register from '../components/Register';
 import Log from '../components/Log';
 import Journalize from '../components/Journalize';
 
+import CashLedger from '../components/AccountLedgers/Cash';
+import AccountsReceivableLedger from '../components/AccountLedgers/AccountsReceivable';
+
 function Routes() {
   return (
     <Switch>
@@ -29,6 +32,9 @@ function Routes() {
       <Route exact path="/team" component={Team} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/log" component={Log} />
+
+      <Route exact path="/accounts/cash" component={CashLedger}/>
+      <Route exact path="/accounts/accountsreceivable" component={AccountsReceivableLedger}/>
     </Switch>
   )
 }

@@ -39,7 +39,8 @@ class Accounts extends React.Component {
             columns={[
               {
                 Header: 'Account #',
-                accessor: 'number'
+                id: "number",
+                accessor: d => <AccountNumberLink number={d.number} name={d.name} />
               },
               {
                 Header: 'Account Name',
@@ -81,3 +82,11 @@ class Accounts extends React.Component {
 }
 
 export default Accounts;
+
+function AccountNumberLink(props){
+  return(
+    <div>
+      <Link to={`accounts/${props.name}`}>{props.number}</Link>
+    </div>
+  )
+}
