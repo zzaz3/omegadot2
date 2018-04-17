@@ -33,7 +33,8 @@ router.post('/account/add', (req, res) => {
     type: req.body.type,
     subtype: req.body.subtype,
     balance: req.body.initBalance,
-    isActive: req.body.isActive
+    isActive: req.body.isActive,
+    routeName: req.body.routeName
   });
   // Save Account to Database
   account.save((err) => {

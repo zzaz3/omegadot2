@@ -4,7 +4,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { withAlert } from 'react-alert';
 import Dropzone from 'react-dropzone';
-import {loadLog, transactionOccured} from "../../actions/log";
 
 import TransactionEntry from './TransactionEntry';
 import Entry from './Entry';
@@ -106,14 +105,13 @@ class RecordTransactions extends React.Component {
 
     // POST Request For Adding Transaction To DB
     createTransacton(newTransaction) {
-      const { transactionOccured, auth } = this.props;
         fetch('/transaction/add', {
             method: 'POST',
             body: JSON.stringify(newTransaction),
             headers: new Headers({
                 "Content-Type": "application/json"
             })
-        }).then(res => {transactionOccured(newTransaction, auth.username); res.json();})
+        }).then(res => res.json())
             .catch(err => console.log(`ERROR MESSAGE ${err}`));
     }
 
@@ -179,12 +177,14 @@ class RecordTransactions extends React.Component {
         let creditsTotal = 0;
 
         for(let i = 0; i < debits.length; i++){
-            debitsTotal += debits[i].amount;
+            debitsTotal += Number(debits[i].amount);
         }
 
         for(let i = 0; i < credits.length; i++){
-            creditsTotal += credits[i].amount;
+            creditsTotal += Number(credits[i].amount);
         }
+
+        console.log(`DEBIT TOTAL: ${debitsTotal} | CREDIT TOTAL: ${creditsTotal}`);
 
         if(debitsTotal != creditsTotal){
             return this.props.alert.error('Debits Do Not Equal Credits');
