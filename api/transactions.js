@@ -37,10 +37,10 @@ router.get('/transactions/approved', (req, res) => {
 router.post('/transaction/add', (req, res) => {
     const newTransaction = new Transaction({
         debitEntries: req.body.debitEntries,
-        creditEntries: req.body.creditEntries
-        // date: req.body.date,
-        // description: req.body.description,
-        // status: req.body.state,
+        creditEntries: req.body.creditEntries,
+        date: req.body.date,
+        description: req.body.description,
+        status: req.body.status,
         // rejectReason: req.body.rejectReason
     });
 

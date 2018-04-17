@@ -11,6 +11,7 @@ class TransactionEntry extends React.Component {
 
         this.onAccountChange = this.onAccountChange.bind(this);
         this.onAmountChange = this.onAmountChange.bind(this);
+        this.onRemoveButtonClick = this.onRemoveButtonClick.bind(this);
     }
 
     onAccountChange(e){
@@ -21,22 +22,27 @@ class TransactionEntry extends React.Component {
         this.setState({entry: new Entry(id, account, amount)}, () => {
             this.props.sendAccount(this.state.entry);
 
-            var entry = Object.entries(this.state.entry);
+            const entry = Object.entries(this.state.entry);
             console.log(`ACCOUNT CHANGE: ${entry.toString()}`);
         });
     }
 
     onAmountChange(e){
-        var id = this.state.entry.id;
-        var account = this.state.entry.account;
-        var amount = e.target.value;
+        const id = this.state.entry.id;
+        const account = this.state.entry.account;
+        const amount = e.target.value;
 
         this.setState({entry: new Entry(id, account, amount)}, () => {
             this.props.sendAmount(this.state.entry);
 
-            var entry = Object.entries(this.state.entry);
+            const entry = Object.entries(this.state.entry);
             console.log(`AMOUNT CHANGE: ${entry.toString()}`);
         }); 
+    }
+
+    onRemoveButtonClick(e){
+        console.log(`ENTRY ID: ${this.state.entry.id}`);
+        this.props.sendEntryId(this.state.entry.id);
     }
 
     componentDidMount(){
@@ -64,6 +70,9 @@ class TransactionEntry extends React.Component {
                     <div className="col-md-6">
                         <input onChange={this.onAmountChange} type="text" id="entryAmount" placeholder="$0.00" className="form-control"/>
                     </div>
+                    {/* <div className="col-md-2">
+                        <button onClick={this.onRemoveButtonClick} className="btn" value="debit">-</button>
+                    </div> */}
                 </div>
             </div>
         )

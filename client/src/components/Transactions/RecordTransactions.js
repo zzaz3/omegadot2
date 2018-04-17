@@ -34,6 +34,9 @@ class RecordTransactions extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onTestSubmit = this.onTestSubmit.bind(this);
         this.addNewTransactionEntry = this.addNewTransactionEntry.bind(this);
+        this.removeTransactionEntry = this.removeTransactionEntry.bind(this);
+        this.removeDebitTransactionEntry = this.removeDebitTransactionEntry.bind(this);
+        this.removeCreditTransactionEntry = this.removeCreditTransactionEntry.bind(this);
         this.getDebitData = this.getDebitData.bind(this);
         this.getCreditData = this.getCreditData.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
@@ -69,6 +72,20 @@ class RecordTransactions extends React.Component {
             const newEntry = new Entry(entryId, "", 0);
             tempCreditEntries.push(newEntry);
             console.log(`NEW CREDIT ENTRY INDEX: ${tempCreditEntries.indexOf(newEntry)}`);
+            this.setState({creditEntries: tempCreditEntries});
+        }
+    }
+
+    removeTransactionEntry(e){
+        e.preventDefault();
+
+        if(e.target.value === "debit" && this.state.debitEntries.length > 1){
+            const tempDebitEntries = this.state.debitEntries;
+            tempDebitEntries.pop();
+            this.setState({debitEntries: tempDebitEntries});
+        } else if(e.target.value === "credit" && this.state.creditEntries.length > 1){
+            const tempCreditEntries = this.state.creditEntries;
+            tempCreditEntries.pop();
             this.setState({creditEntries: tempCreditEntries});
         }
     }
@@ -160,26 +177,22 @@ class RecordTransactions extends React.Component {
 
         const newTransaction = {
             debitEntries: debitEntries,
-            // creditEntries: creditEntries
-            // date: this.state.date.format('L').toString(),
-            // description: this.state.description,
-            // status: "pending"
+            creditEntries: creditEntries,
+            date: this.state.date.format('L').toString(),
+            description: this.state.description,
+            status: "pending"
         }
         this.createTransacton(newTransaction);
 
+        // Reset the state of all the form items
+        this.setState({
+            debitEntries: [new Entry(1, "", 0)],
+            creditEntries: [new Entry(1, "", 0)],
+            date: moment(),
+            description: ""
+        });
+
         console.log(`NEW TRANSACTION: ${Object.entries(newTransaction).toString()}`);
-        
-
-        // -----------------------------------
-        // const debitEntries = this.state.debitEntries;
-        // debitEntries.forEach(entry => {
-        //     console.log(`ID(debit): ${entry.id} || ACCOUNT(debit): ${entry.account} || AMOUNT(debit): ${entry.amount}`);
-        // });
-
-        // const creditEntries = this.state.creditEntries;
-        // creditEntries.forEach(entry => {
-        //     console.log(`ID(credit): ${entry.id} || ACCOUNT(credit): ${entry.account} || AMOUNT(credit): ${entry.amount}`);
-        // });
     }
 
     getDebitData(entry){
@@ -206,6 +219,34 @@ class RecordTransactions extends React.Component {
         this.setState({creditEntries: tempCreditEntries});
 
         console.log(`ACCOUNT DATA (credit): ${entry.id} || ${entry.account} || ${entry.amount}`);
+    }
+
+    removeDebitTransactionEntry(id){
+        const tempDebitEntries = this.state.debitEntries;
+        console.log(`DEBIT ENTRIES LENGTH: ${tempDebitEntries.length}`);
+        if(tempDebitEntries.length > 1){
+            for(let i = 1; i < tempDebitEntries.length + 1; i++){
+                if(id == tempDebitEntries[i].id){
+                    tempDebitEntries.pop(tempDebitEntries[i]);
+                }
+            }
+    
+            this.setState({debitEntries: tempDebitEntries});
+        }
+    }
+
+    removeCreditTransactionEntry(id){
+        const tempCreditEntries = this.state.creditEntries;
+        console.log(`CREDIT ENTRIES LENGTH: ${tempCreditEntries.length}`);
+        if(tempCreditEntries.length > 1){
+            for(let i = 1; i < tempCreditEntries.length + 1; i++){
+                if(id == tempCreditEntries[i].id){
+                    tempCreditEntries.pop(tempCreditEntries[i]);
+                }
+            }
+
+            this.setState({creditEntries: tempCreditEntries});
+        }
     }
 
     // LIFECYCLE METHODS
@@ -239,11 +280,14 @@ class RecordTransactions extends React.Component {
                                         return(
                                             <div className="row">
                                                 <div className="col-md-10">
-                                                    <TransactionEntry id={this.state.debitEntries.length} sendAccount={this.getDebitData}
+                                                    <TransactionEntry id={this.state.debitEntries.length} sendEntryId={this.removeDebitTransactionEntry} sendAccount={this.getDebitData}
                                                     sendAmount={this.getDebitData} />
                                                 </div>
-                                                <div className="col-md-2">
-                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="debit">Add New</button>
+                                                <div className="col-md-1">
+                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="debit">+</button>
+                                                </div>
+                                                <div className="col-md-1">
+                                                    <button onClick={this.removeTransactionEntry} className="btn" value="debit">-</button>
                                                 </div>
                                             </div>
                                         )
@@ -256,11 +300,14 @@ class RecordTransactions extends React.Component {
                                         return(
                                             <div className="row">
                                                 <div className="col-md-10">
-                                                    <TransactionEntry id={this.state.creditEntries.length} sendAccount={this.getCreditData}
+                                                    <TransactionEntry id={this.state.creditEntries.length} sendEntryId={this.removeCreditTransactionEntry} sendAccount={this.getCreditData}
                                                     sendAmount={this.getCreditData} />
                                                 </div>
-                                                <div className="col-md-2">
-                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="credit">Add New</button>
+                                                <div className="col-md-1">
+                                                    <button onClick={this.addNewTransactionEntry} className="btn" value="credit">+</button>
+                                                </div>
+                                                <div className="col-md-1">
+                                                    <button onClick={this.removeTransactionEntry} className="btn" value="credit">-</button>
                                                 </div>
                                             </div>
                                         )
@@ -270,58 +317,6 @@ class RecordTransactions extends React.Component {
                         </div>
                                                  
                         <input type="submit" value="Submit" className="btn btn-primary ml-auto my-2" />
-                    </div>
-                </form>
-                {/* OLD FORM */}
-                <form onSubmit={this.onSubmit} className="m-auto">
-                    <div className="row">
-                        <div className="col-md-2">
-                            <label htmlFor="debit">Debit</label>
-                            <select onChange={this.onAccountChange} value={this.state.selectedDebitAccount} className="form-control" name="debitAccount">
-                            <option value="None" selected>None</option>
-                            {this.state.accounts.map(account => <option>{account.name}</option>)}
-                            </select>
-                            <input type="text" placeholder="$0.00" ref="debitAmount" className="form-control" />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="credit">Credit</label>
-                            <select onChange={this.onAccountChange} value={this.state.selectedCreditAccount} className="form-control" name="creditAccount">
-                            <option value="None" selected>None</option>
-                            {this.state.accounts.map(account => <option>{account.name}</option>)}
-                            </select>
-                            <input type="text" placeholder="$0.00" ref="creditAmount" className="form-control" />
-                        </div>
-                        <div className="col-md-4 d-flex">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="row">
-                                        <textarea name="description" cols="25" rows="5" placeholder="Description" className="form-control" ref="description"></textarea>
-                                    </div>
-                                    <div className="row">
-                                        <Dropzone className="ignore ml-auto my-2" onDrop={this.onDrop}>
-                                            <button type="button" className="btn btn-success">Attach</button>
-                                        </Dropzone>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-4 d-flex">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="row">
-                                        <DatePicker
-                                            inline
-                                            selected={this.state.date}
-                                            onChange={this.handleChange}
-                                            className="form-control"
-                                        />
-                                    </div>
-                                    <div className="row">
-                                        <input type="submit" value="Create" className="btn btn-primary ml-auto my-2" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </form>
             </div>
