@@ -5,8 +5,8 @@ import NonAuthNavBar from './NonAuthNavBar';
 
 export default function Nav(props) {
 
-  const { role, isLoggedIn } = props.auth;
+  const { role, isLoggedIn, firstName, lastName } = props.auth;
 
-  return isLoggedIn ? <AuthNavBar role={role} /> : <NonAuthNavBar />;
+  return isLoggedIn ? <AuthNavBar role={role} name={firstName + " " + lastName} /> : <NonAuthNavBar />;
 
 };
