@@ -34,6 +34,7 @@ class AuthNavBar extends React.Component {
   }
 
   render() {
+    const {name, role} = this.props;
     return (
       <nav className="navbar navbar-expand navbar-light bg-light">
         <div className="collapse navbar-collapse">
@@ -49,10 +50,11 @@ class AuthNavBar extends React.Component {
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <NavLink to="/transactions/view" className="dropdown-item">View Transactions</NavLink>
                 <NavLink to="/transactions/record" className="dropdown-item">Record Transactions</NavLink>
-                { this.props.role == "manager" &&
                 <NavLink to="/transactions/review" className="dropdown-item">Review Transactions</NavLink>
-                }
               </div>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/post" className="nav-link">Post</NavLink>
             </li>
             <li className="nav-item">
               <NavLink to="/balance" className="nav-link">Balance</NavLink>
@@ -61,10 +63,13 @@ class AuthNavBar extends React.Component {
               <NavLink to="/log" className="nav-link">Log</NavLink>
             </li>
           </ul>
-
+          { name &&
+            <div>
+              <p>Welcome, {name}! </p>
+            </div>
+          }
           <Link to="/" onClick={this.tryLogout} className="btn btn-primary mr-2" role="button">Logout</Link>
-          <Link to="/team" className="btn btn-success" role="button">Team</Link>
-          { this.props.role == "admin" &&
+          { role == "admin" &&
             <Link to="/register" className="btn btn-success" role="button">Register</Link>
           }
 
