@@ -177,12 +177,14 @@ class RecordTransactions extends React.Component {
         let creditsTotal = 0;
 
         for(let i = 0; i < debits.length; i++){
-            debitsTotal += debits[i].amount;
+            debitsTotal += Number(debits[i].amount);
         }
 
         for(let i = 0; i < credits.length; i++){
-            creditsTotal += credits[i].amount;
+            creditsTotal += Number(credits[i].amount);
         }
+
+        console.log(`DEBIT TOTAL: ${debitsTotal} | CREDIT TOTAL: ${creditsTotal}`);
 
         if(debitsTotal != creditsTotal){
             return this.props.alert.error('Debits Do Not Equal Credits');

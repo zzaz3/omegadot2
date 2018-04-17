@@ -14,7 +14,8 @@ class AddAccount extends React.Component {
       accountType: '',
       accountSubType: '',
       initBalance: "0.00",
-      isActive: true
+      isActive: true,
+      routeName: ''
     }
 
     this.onInitBalanceChange = this.onInitBalanceChange.bind(this);
@@ -28,9 +29,10 @@ class AddAccount extends React.Component {
         this.setState({
           accountNumber: account.number,
           accountType: account.type,
-          accountSubType: account.subtype
+          accountSubType: account.subtype,
+          routeName: account.routeName
         });
-        console.log(`${account.name} ${account.number} ${account.type}`);
+        console.log(`${account.name} ${account.number} ${account.type} ${account.routeName}`);
       }
     });
   }
@@ -88,7 +90,8 @@ class AddAccount extends React.Component {
       type: this.state.accountType,
       subtype: this.state.accountSubType,
       initBalance: this.state.initBalance,
-      isActive: this.state.isActive
+      isActive: this.state.isActive,
+      routeName: this.state.routeName
     }
     this.createAccount(newAccount);
     this.setState({
@@ -96,7 +99,7 @@ class AddAccount extends React.Component {
       accountNumber: '',
       accountType: '',
       accountSubType: '',
-      initBalance: ''
+      initBalance: '0.00'
     });
   }
 

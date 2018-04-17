@@ -39,6 +39,10 @@ const AccountSchema = Schema({
     type: Boolean,
     required: true
   },
+  routeName: {
+    type: String,
+    required: true
+  }
   // normalSide: {
   //     type: String,
   //     required: false

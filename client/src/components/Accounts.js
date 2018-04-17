@@ -40,7 +40,7 @@ class Accounts extends React.Component {
               {
                 Header: 'Account #',
                 id: "number",
-                accessor: d => <AccountNumberLink number={d.number} name={d.name} />
+                accessor: d => <AccountNumberLink number={d.number} routeName={d.routeName} />
               },
               {
                 Header: 'Account Name',
@@ -86,7 +86,7 @@ export default Accounts;
 function AccountNumberLink(props){
   return(
     <div>
-      <Link to={`accounts/${props.name}`}>{props.number}</Link>
+      <Link to={`accounts/${props.routeName}`}>{props.number}</Link>
     </div>
   )
 }
