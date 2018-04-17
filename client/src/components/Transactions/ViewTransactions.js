@@ -87,17 +87,17 @@ class ViewTransactions extends React.Component{
                                         : 'Accepted'
                                     }
                                 </span>
-                                )
+                            )
                         },
                     ]}
                     SubComponent={(row) => {
-                        return(
-                            <div>
-                                {row.original}
-                            </div>
-                        )
+                        const columns = [
+                        {
+                            Header: "Desc.",
+                            accessor: "description",
+                        }]
                     }}
-                />
+                    />
             </div>
         );
     }

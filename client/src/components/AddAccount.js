@@ -13,7 +13,7 @@ class AddAccount extends React.Component {
       accountNumber: '',
       accountType: '',
       accountSubType: '',
-      initBalance: '',
+      initBalance: "0.00",
       isActive: true
     }
 
