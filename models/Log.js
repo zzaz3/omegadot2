@@ -19,13 +19,9 @@ const LogSchema = Schema({
     type: String,
     required: true
   },
-  beforeValue: {
-    type: Number,
-    required: true
-  },
-  afterValue: {
-    type: Number,
-    required: true
+  data: {
+    type: {},
+    required: false
   }
 });
 

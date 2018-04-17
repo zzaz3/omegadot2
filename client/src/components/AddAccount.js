@@ -3,6 +3,7 @@ import {withAlert} from 'react-alert';
 import { bindActionCreators } from 'redux';
 import {loadLog, accountCreated} from "../actions/log";
 import {connect} from "react-redux";
+import { Redirect } from 'react-router-dom';
 
 class AddAccount extends React.Component {
   constructor(props) {
@@ -14,7 +15,8 @@ class AddAccount extends React.Component {
       accountType: '',
       accountSubType: '',
       initBalance: "0.00",
-      isActive: true
+      isActive: true,
+      redirect: false,
     }
 
     this.onInitBalanceChange = this.onInitBalanceChange.bind(this);
@@ -69,6 +71,8 @@ class AddAccount extends React.Component {
         return res.json();
     })
       .catch(err => console.log(`ERROR MESSAGE ${err}`));
+
+    this.setState({ redirect: true });
   }
 
   onSubmit(e) {
@@ -108,6 +112,14 @@ class AddAccount extends React.Component {
   }
 
   render() {
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return (
+        <Redirect to="/accounts" />
+      );
+    }
+
     return (
       <div>
         <h1>Create Account</h1>

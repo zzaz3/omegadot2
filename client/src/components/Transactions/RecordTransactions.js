@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { withAlert } from 'react-alert';
 import Dropzone from 'react-dropzone';
+import {loadLog, transactionOccured} from "../../actions/log";
 
 import TransactionEntry from './TransactionEntry';
 import Entry from './Entry';
@@ -105,13 +106,14 @@ class RecordTransactions extends React.Component {
 
     // POST Request For Adding Transaction To DB
     createTransacton(newTransaction) {
+      const { transactionOccured, auth } = this.props;
         fetch('/transaction/add', {
             method: 'POST',
             body: JSON.stringify(newTransaction),
             headers: new Headers({
                 "Content-Type": "application/json"
             })
-        }).then(res => res.json())
+        }).then(res => {transactionOccured(newTransaction, auth.username); res.json();})
             .catch(err => console.log(`ERROR MESSAGE ${err}`));
     }
 
@@ -255,7 +257,7 @@ class RecordTransactions extends React.Component {
                     tempDebitEntries.pop(tempDebitEntries[i]);
                 }
             }
-    
+
             this.setState({debitEntries: tempDebitEntries});
         }
     }
@@ -344,7 +346,7 @@ class RecordTransactions extends React.Component {
                                             })
                                         }
                                     </div>
-                                </div>                 
+                                </div>
                                 <input type="submit" value="Submit" className="btn btn-primary ml-auto my-2" />
                             </div>
                         </form>

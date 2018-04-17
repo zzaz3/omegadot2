@@ -22,10 +22,12 @@ router.post('/log', (req, res) => {
     name: req.body.name,
     time: req.body.time,
     type: req.body.type,
-    changedBy: req.body.changedBy,
-    beforeValue: req.body.beforeValue,
-    afterValue: req.body.afterValue,
+    changedBy: req.body.changedBy
   });
+  if(req.body.data){
+    newLog.data = req.body.data;
+    newLog.markModified('data');
+  }
 
   newLog.save((err) => {
     if (err)
