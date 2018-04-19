@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTable from 'react-table';
 
-class CashLedger extends React.Component {
+class SalariesExpenseLedger extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -22,7 +22,7 @@ class CashLedger extends React.Component {
         tempTransactions.forEach(transaction => {
             let debitEntries = transaction.debitEntries;
             debitEntries.forEach(entry => {
-                if(entry.account == "Cash"){
+                if(entry.account == "Salaries Expense"){
                     entry.date = transaction.date;
                     entry.type = "debit";
                     debits.push(entry);
@@ -43,7 +43,7 @@ class CashLedger extends React.Component {
         tempTransactions.forEach(transaction => {
             let creditEntries = transaction.creditEntries;
             creditEntries.forEach(entry => {
-                if(entry.account == "Cash"){
+                if(entry.account == "Salaries Expense"){
                     entry.date = transaction.date;
                     entry.type = "credit";
                     credits.push(entry);
@@ -77,6 +77,8 @@ class CashLedger extends React.Component {
             return {balanceType: "debit", balance: balance}
         } else if(creditTotal > debitTotal){
             return {balanceType: "credit", balance: balance}
+        } else {
+            return {balanceType: "none", balance: balance}
         }
     }
 
@@ -109,7 +111,7 @@ class CashLedger extends React.Component {
     render(){
         return(
             <div className="container">
-                <h1>CASH</h1>
+                <h1>Salaries Expense</h1>
                 <ReactTable
                 data={this.state.data}
                 columns={[
@@ -152,7 +154,7 @@ class CashLedger extends React.Component {
     }
 }
 
-export default CashLedger;
+export default SalariesExpenseLedger;
 
 function DisplayDebits(props){
     if(props.type == "debit"){

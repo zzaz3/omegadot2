@@ -62,7 +62,7 @@ class TransactionEntry extends React.Component {
                             <option value="none" selected>None</option>
                             {
                                 this.state.accounts.map(
-                                    account => <option>{account.name}</option>
+                                    account => <option key={account.id}>{account.name}</option>
                                 )
                             }
                         </select>

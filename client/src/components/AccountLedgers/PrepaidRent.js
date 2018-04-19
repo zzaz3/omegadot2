@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTable from 'react-table';
 
-class CashLedger extends React.Component {
+class PrepaidRentLedger extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -22,7 +22,7 @@ class CashLedger extends React.Component {
         tempTransactions.forEach(transaction => {
             let debitEntries = transaction.debitEntries;
             debitEntries.forEach(entry => {
-                if(entry.account == "Cash"){
+                if(entry.account == "Prepaid Rent"){
                     entry.date = transaction.date;
                     entry.type = "debit";
                     debits.push(entry);
@@ -43,7 +43,7 @@ class CashLedger extends React.Component {
         tempTransactions.forEach(transaction => {
             let creditEntries = transaction.creditEntries;
             creditEntries.forEach(entry => {
-                if(entry.account == "Cash"){
+                if(entry.account == "Prepaid Rent"){
                     entry.date = transaction.date;
                     entry.type = "credit";
                     credits.push(entry);
@@ -109,19 +109,14 @@ class CashLedger extends React.Component {
     render(){
         return(
             <div className="container">
-                <h1>CASH</h1>
+                <h1>Prepaid Rent</h1>
                 <ReactTable
                 data={this.state.data}
                 columns={[
                     {
                         Header: 'Date',
                         id: 'date',
-                        accessor: d => d.date,
-                        Footer: (
-                            <div>
-                                {this.state.balance.balanceType == "none" ? <strong>{`BALANCE: ${(this.state.balance.balance).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`}</strong> : ""}
-                            </div>
-                        ) 
+                        accessor: d => d.date
                     },
                     {
                         Header: 'Debit',
@@ -152,7 +147,7 @@ class CashLedger extends React.Component {
     }
 }
 
-export default CashLedger;
+export default PrepaidRentLedger;
 
 function DisplayDebits(props){
     if(props.type == "debit"){
