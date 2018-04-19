@@ -18,7 +18,7 @@ router.get('/transactions', (req, res) => {
 // Retrieves All Pending Transactions
 router.get('/transactions/pending', (req, res) => {
     Transaction.find({
-      status: 'pending'  
+      status: 'pending'
     }).then(transactions => {
         res.json(transactions);
     });
@@ -41,7 +41,9 @@ router.post('/transaction/add', (req, res) => {
         date: req.body.date,
         description: req.body.description,
         status: req.body.status,
-        rejectReason: req.body.rejectReason
+        rejectReason: req.body.rejectReason,
+        file: req.body.file,
+        fileType: req.body.fileType
     });
 
     newTransaction.save((err) => {

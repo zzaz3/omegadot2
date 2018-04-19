@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactTable from 'react-table';
 import DatePicker from 'react-datepicker';
+
+import { bindActionCreators } from 'redux';
+import {connect} from "react-redux";
+import { Redirect } from 'react-router-dom';
+
 import moment from 'moment';
 import { withAlert } from 'react-alert';
 import Dropzone from 'react-dropzone';
+import {loadLog, transactionOccured} from "../../actions/log";
+import {Button} from 'reactstrap';
 
 import TransactionEntry from './TransactionEntry';
 import Entry from './Entry';
 
 import 'react-datepicker/dist/react-datepicker.css';
+
 
 class RecordTransactions extends React.Component {
     constructor(props) {
@@ -24,10 +32,11 @@ class RecordTransactions extends React.Component {
             debitAmountTotal: 0,
             creditAmountTotal: 0,
             description: "",
-            files: [],
+            file: "",
             date: moment(),
             selectedDebitAccount: 'None',
-            selectedCreditAccount: 'None'
+            selectedCreditAccount: 'None',
+            redirect: false,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -43,6 +52,7 @@ class RecordTransactions extends React.Component {
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
         this.formatEntries = this.formatEntries.bind(this);
         this.debitsEqualCredits = this.debitsEqualCredits.bind(this);
+        this.setFile = this.setFile.bind(this);
     }
 
     handleChange(date) {
@@ -55,6 +65,13 @@ class RecordTransactions extends React.Component {
 
     onDescriptionChange(e){
         this.setState({description: e.target.value});
+    }
+
+    setFile() {
+      var file    = document.querySelector('input[type=file]').files[0];
+
+      this.setState({file: file});
+      debugger;
     }
 
     addNewTransactionEntry(e){
@@ -105,14 +122,21 @@ class RecordTransactions extends React.Component {
 
     // POST Request For Adding Transaction To DB
     createTransacton(newTransaction) {
+      const { logAction, auth } = this.props;
+      logAction(newTransaction, auth.username);
         fetch('/transaction/add', {
             method: 'POST',
             body: JSON.stringify(newTransaction),
             headers: new Headers({
                 "Content-Type": "application/json"
             })
-        }).then(res => res.json())
-            .catch(err => console.log(`ERROR MESSAGE ${err}`));
+        }).then(res => {
+          return res.json();
+      })
+        .catch(err => console.log(`ERROR MESSAGE ${err}`));
+
+            this.setState({ redirect: true });
+
     }
 
     onSubmit(e) {
@@ -191,12 +215,24 @@ class RecordTransactions extends React.Component {
         }
     }
 
-    onTestSubmit(e){
+    sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async onTestSubmit(e){
         e.preventDefault();
 
         if(this.debitsEqualCredits()){
             return;
         }
+        debugger;
+
+        var reader  = new FileReader();
+
+        if (this.state.file) {
+          reader.readAsDataURL(this.state.file);
+        }
+        await this.sleep(2000);
 
         const debitEntries = this.formatEntries(this.state.debitEntries);
         const creditEntries = this.formatEntries(this.state.creditEntries);
@@ -207,7 +243,8 @@ class RecordTransactions extends React.Component {
             date: this.state.date.format("L").toString(),
             description: this.state.description,
             status: "pending",
-            rejectReason: ""
+            rejectReason: "",
+            file: reader.result
         }
         this.createTransacton(newTransaction);
 
@@ -284,6 +321,14 @@ class RecordTransactions extends React.Component {
     }
 
     render() {
+      const { redirect } = this.state;
+
+      if (redirect) {
+        return (
+          <Redirect to="/transactions/view" />
+        );
+      }
+
         return (
             <div className="container mt-3">
                 <div className="card">
@@ -347,6 +392,7 @@ class RecordTransactions extends React.Component {
                                         }
                                     </div>
                                 </div>
+                                <input type="file" onChange={this.setFile} className="btn btn-primary ml-auto my-2"/>
                                 <input type="submit" value="Submit" className="btn btn-primary ml-auto my-2" />
                             </div>
                         </form>
@@ -357,4 +403,18 @@ class RecordTransactions extends React.Component {
     }
 }
 
-export default withAlert(RecordTransactions);
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logAction: transactionOccured,
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    log: state.log,
+    auth: state.authentication
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(RecordTransactions));

@@ -18,14 +18,39 @@ export default function reducer(state = initialState, action) {
       })
        return [...state,...newLog];
     }
-    case 'TRANSACTION_OCCURED': {
+    case 'USER_CREATED': {
       const newLog = {
         name : action.json.name,
-        type : "Account Created",
+        type : "User Created",
         time : new Date(),
-        data: action.json.data,
         changedBy : action.user
       }
+      fetch('/log', {
+        method: 'POST',
+        body: JSON.stringify(newLog),
+        headers: new Headers({
+          "Content-Type": "application/json"
+        })
+      })
+       return [...state,...newLog];
+    }
+    case 'TRANSACTION_OCCURED': {
+      debugger;
+      var newData = {
+        debits: action.json.debitEntries,
+        credits: action.json.creditEntries,
+        description: action.json.description,
+        status: "pending",
+        rejectReason: action.json.rejectReason,
+      }
+      var newLog = {
+        name : action.json.name,
+        type : "Transaction",
+        time : new Date(),
+        data: newData,
+        changedBy : action.user
+      }
+      debugger;
       fetch('/log', {
         method: 'POST',
         body: JSON.stringify(newLog),

@@ -69,18 +69,15 @@ class Log extends React.Component {
                 padding: "0",
                 textAlign: "center",
                 userSelect: "none"
-              },
-              Footer: () => <span>&hearts;</span>
+              }
             },
             {
               Header: 'Event Type',
-              accessor: 'type',
-              width: 200,
+              accessor: 'type'
             },
             {
               Header: 'Performed by',
-              accessor: 'changedBy',
-              width: 150,
+              accessor: 'changedBy'
             },
             {
               Header: 'Date and Time',
@@ -95,44 +92,41 @@ class Log extends React.Component {
           ]}
           SubComponent={e => {
             console.log(e);
-            if (e.row._original.debits) {
+            if (e.row._original.data) {
               return (
                 <div>
-                  <h2>Debits</h2>
+                  { e.row._original.data.description &&
+                  <p>Description: {e.row._original.data.description}</p>
+                  }
                   <ReactTable
-                    data={e.row._original.debits}
+                    data={e.row._original.data.debits}
                     columns={[
-                      {
-                        Header: 'ID',
-                        accessor: 'id'
-                      },
                       {
                         Header: 'Account',
                         accessor: 'account'
                       },
                       {
-                        Header: 'Amount',
+                        Header: 'Debited',
                         accessor: 'amount'
                       },
                     ]}
+                    defaultPageSize={e.row._original.data.debits.length}
+                    showPaginationBottom={false}
                   />
-                  <h2>Credits</h2>
                   <ReactTable
-                    data={e.row._original.credits}
+                    data={e.row._original.data.credits}
                     columns={[
                       {
                         Header: 'Account',
                         accessor: 'account'
                       },
                       {
-                        Header: 'Type',
-                        accessor: 'type'
-                      },
-                      {
-                        Header: 'Amount',
+                        Header: 'Credited',
                         accessor: 'amount'
                       },
                     ]}
+                    defaultPageSize={e.row._original.data.credits.length}
+                    showPaginationBottom={false}
                   />
                 </div>
               );

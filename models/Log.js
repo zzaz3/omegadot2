@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const LogSchema = Schema({
   name: {
     type: String,
-    required: true
+    required: false
   },
   time: {
     type: Date,

@@ -32,6 +32,14 @@ const TransactionSchema = Schema({
       type: String,
       required: true
   },
+  file: {
+    type: String,
+    required: false
+  },
+  fileType: {
+    type: String,
+    required: false
+  },
   description: {
       type: String,
       required: false
