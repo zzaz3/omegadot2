@@ -92,6 +92,11 @@ class ReviewTransactions extends React.Component{
                             accessor: d => <DisplayCredits creditEntries={d.creditEntries} debitEntries={d.debitEntries} />
                         },
                         {
+                            Header: 'Description',
+                            id: 'description',
+                            accessor: d => d.description
+                        },
+                        {
                             Header: 'Review',
                             id: 'review',
                             accessor: d => <AcceptReject updateStatus={this.updateStatus(d._id)} onRejectReasonChange={this.onRejectReasonChange}/>
