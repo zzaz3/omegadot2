@@ -40,7 +40,11 @@ class Accounts extends React.Component {
               {
                 Header: 'Account #',
                 id: "number",
+<<<<<<< HEAD
                 accessor: d => <AccountNumberLink number={d.number} routeName={d.routeName} />
+=======
+                accessor: d => <AccountNumberLink number={d.number} name={d.routeName} />
+>>>>>>> finished cash ledger
               },
               {
                 Header: 'Account Name',

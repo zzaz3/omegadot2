@@ -45,4 +45,13 @@ router.post('/account/add', (req, res) => {
   });
 });
 
+router.put('/accounts/balance/update/:id', (req, res) => {
+  Account.findByIdAndUpdate({_id: req.params.id}, req.body)
+      .then(() => {
+          Account.findOne({_id: req.params.id}).then(() => {
+              res.send(Account);
+          });
+      });
+});
+
 module.exports = router;

@@ -171,6 +171,7 @@ class RecordTransactions extends React.Component {
     }
 
     debitsEqualCredits(){
+        // debugger;
         let debits = this.state.debitEntries;
         let debitsTotal = 0;
         let credits = this.state.creditEntries;
@@ -218,6 +219,10 @@ class RecordTransactions extends React.Component {
             date: moment(),
             description: ""
         });
+
+        // this.setState({
+        //     state: this.state
+        // });
 
         console.log(`NEW TRANSACTION: ${Object.entries(newTransaction).toString()}`);
     }

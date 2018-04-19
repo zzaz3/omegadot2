@@ -6,7 +6,8 @@ class ReviewTransactions extends React.Component{
         super(props);
         this.state = {
             transactions: [],
-            rejectReason: ""
+            rejectReason: "",
+            accounts: []
         }
 
         this.updateTransactionStatus = this.updateTransactionStatus.bind(this);
@@ -58,6 +59,10 @@ class ReviewTransactions extends React.Component{
         fetch('/transactions/pending')
             .then(res => res.json())
             .then(transactions => this.setState({transactions: transactions}, () => console.log('Transactions fetched...', transactions)));
+        
+        fetch('/accounts')
+            .then(res => res.json())
+            .then(accounts => this.setState({accounts: accounts}, () => console.log('Accounts fetch...', accounts)));
     }
 
     render(){
