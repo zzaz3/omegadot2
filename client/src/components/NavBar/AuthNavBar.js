@@ -54,10 +54,7 @@ class AuthNavBar extends React.Component {
               </div>
             </li>
             <li className="nav-item">
-              <NavLink to="/post" className="nav-link">Post</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/balance" className="nav-link">Balance</NavLink>
+              <NavLink to="/balance" className="nav-link">Trial Balance</NavLink>
             </li>
             <li className="nav-item">
               <NavLink to="/log" className="nav-link">Log</NavLink>

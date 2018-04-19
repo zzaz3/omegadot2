@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactTable from 'react-table';
 
 class Balance extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class Balance extends React.Component {
   render() {
     return (
       <div>
-        <h1>BALANCE</h1>
+        <h1>TRIAL BALANCE</h1>
       </div>
     )
   }

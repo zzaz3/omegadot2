@@ -32,7 +32,6 @@ class RecordTransactions extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.onTestSubmit = this.onTestSubmit.bind(this);
         this.addNewTransactionEntry = this.addNewTransactionEntry.bind(this);
         this.removeTransactionEntry = this.removeTransactionEntry.bind(this);
         this.removeDebitTransactionEntry = this.removeDebitTransactionEntry.bind(this);
@@ -115,61 +114,6 @@ class RecordTransactions extends React.Component {
             .catch(err => console.log(`ERROR MESSAGE ${err}`));
     }
 
-    onSubmit(e) {
-        e.preventDefault();
-
-        if(this.state.selectedDebitAccount == 'None') {
-            return this.props.alert.error('SELECT A DEBIT ACCOUNT');
-        }
-        if(this.state.selectedCreditAccount == 'None') {
-            return this.props.alert.error('SELECT A CREDIT ACCOUNT');
-        }
-        if(this.state.selectedDebitAccount == this.state.selectedCreditAccount){
-            return this.props.alert.error('CANNOT CREDIT AND DEBIT SAME ACCOUNT');
-        }
-
-        if(Math.sign(this.refs.debitAmount.value) === -1 || isNaN(this.refs.debitAmount.value)) {
-            return this.props.alert.error('INVALID DEBIT AMOUNT');
-        }
-        if(Math.sign(this.refs.creditAmount.value) === -1 || isNaN(this.refs.creditAmount.value)) {
-            return this.props.alert.error('INVALID CREDIT AMOUNT');
-        }
-
-        if(this.state.debitRefNum == '' || isNaN(this.state.debitRefNum)){
-            return this.props.alert.error('INVALID DEBIT REF#');
-        }
-        if(this.state.creditRefNum == '' || isNaN(this.state.debitRefNum)){
-            return this.props.alert.error('INVALID CREDIT REF#');
-        }
-
-        if(this.refs.debitAmount.value != this.refs.creditAmount.value){
-            return this.props.alert.error("DEBIT AMOUNT DOESN'T MATCH CREDIT AMOUNT");
-        }
-
-        const newTransaction = {
-            debitAccount: this.state.selectedDebitAccount,
-            debitAmount: this.refs.debitAmount.value,
-            debitRefNum: this.state.debitRefNum,
-            creditAccount: this.state.selectedCreditAccount,
-            creditAmount: this.refs.creditAmount.value,
-            creditRefNum: this.state.creditRefNum,
-            description: this.refs.description.value,
-            date: this.state.date.format('L').toString(),
-            status: 'pending'
-        }
-        this.createTransacton(newTransaction);
-        this.setState({
-            selectedDebitAccount: 'None',
-            selectedCreditAccount: 'None',
-            debitRefNum: '',
-            creditRefNum: '',
-            date: moment()
-        });
-        this.refs.debitAmount.value = '';
-        this.refs.creditAmount.value = '';
-        this.refs.description.value = '';
-    }
-
     debitsEqualCredits(){
         // debugger;
         let debits = this.state.debitEntries;
@@ -192,7 +136,7 @@ class RecordTransactions extends React.Component {
         }
     }
 
-    onTestSubmit(e){
+    onSubmit(e){
         e.preventDefault();
 
         if(this.debitsEqualCredits()){
@@ -210,21 +154,26 @@ class RecordTransactions extends React.Component {
             status: "pending",
             rejectReason: ""
         }
-        this.createTransacton(newTransaction);
+        
+        if(this.createTransacton(newTransaction)){
+            // Reset the state of all the form items
+            this.setState({
+                debitEntries: [new Entry(1, "", 0)],
+                creditEntries: [new Entry(1, "", 0)],
+                date: moment(),
+                description: ""
+            }, () => {
+                console.log("TRANSACTIONS SUBMITTED");
+                return this.props.alert.success("Transaction Submitted");
+            });
+            
+        }
+        
 
-        // Reset the state of all the form items
-        this.setState({
-            debitEntries: [new Entry(1, "", 0)],
-            creditEntries: [new Entry(1, "", 0)],
-            date: moment(),
-            description: ""
-        });
+        
 
-        // this.setState({
-        //     state: this.state
-        // });
-
-        console.log(`NEW TRANSACTION: ${Object.entries(newTransaction).toString()}`);
+        // console.log(`NEW TRANSACTION: ${Object.entries(newTransaction).toString()}`);
+        
     }
 
     getDebitData(entry){
@@ -296,7 +245,7 @@ class RecordTransactions extends React.Component {
                         <h2>New Transaction</h2>
                     </div>
                     <div className="card-body">
-                        <form onSubmit={this.onTestSubmit} className="m-auto">
+                        <form onSubmit={this.onSubmit} className="m-auto">
                             <div className="row">
                                 <div className="col-md-4 text-left">
                                     <div>

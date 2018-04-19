@@ -44,29 +44,8 @@ class ViewTransactions extends React.Component{
                         },
                         {
                             Header: 'Description',
-                            accessor: 'description',
-                            Cell: row => (
-                                <div className="text-nowrap">{row.value}</div>
-                            )
-                        },
-                        {
-                            Header: "",
-                            accessor: "description",
-                            expander: true,
-                            width: 50,
-                            Expander: ({ isExpanded, ...rest }) =>
-                            <div>
-                                {/* {
-                                    isExpanded
-                                    ? <button className="btn btn-danger">-</button>
-                                    : <button className="btn btn-success">+</button>
-                                } */}
-                                {
-                                    isExpanded
-                                    ? <span>&#x2299;</span>
-                                    : <span>&#x2295;</span>
-                                }
-                            </div>
+                            id: 'description',
+                            accessor: d => d.description
                         },
                         {
                             Header: 'Status',
@@ -90,13 +69,6 @@ class ViewTransactions extends React.Component{
                             )
                         },
                     ]}
-                    SubComponent={(row) => {
-                        const columns = [
-                        {
-                            Header: "Desc.",
-                            accessor: "description",
-                        }]
-                    }}
                     />
             </div>
         );
@@ -144,7 +116,7 @@ function DisplayDebits(props){
                     props.debitEntries.map(entry => {
                         return(
                             <div>
-                                {`${entry.amount}.00`}
+                                {`${entry.amount.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`}
                                 <hr className="m-1"/>
                             </div>
                         )
@@ -187,7 +159,7 @@ function DisplayCredits(props){
                     props.creditEntries.map(entry => {
                         return(
                             <div>
-                                {`${entry.amount}.00`}
+                                {`${entry.amount.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`}
                                 <hr className="m-1"/>
                             </div>
                         )

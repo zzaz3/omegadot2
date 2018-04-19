@@ -22,7 +22,7 @@ class AccumulatedDepricationLedger extends React.Component {
         tempTransactions.forEach(transaction => {
             let debitEntries = transaction.debitEntries;
             debitEntries.forEach(entry => {
-                if(entry.account == "Accumulated Deprication"){
+                if(entry.account == "Accumulated Depreciation"){
                     entry.date = transaction.date;
                     entry.type = "debit";
                     debits.push(entry);
@@ -43,7 +43,7 @@ class AccumulatedDepricationLedger extends React.Component {
         tempTransactions.forEach(transaction => {
             let creditEntries = transaction.creditEntries;
             creditEntries.forEach(entry => {
-                if(entry.account == "Accumulated Deprication"){
+                if(entry.account == "Accumulated Depreciation"){
                     entry.date = transaction.date;
                     entry.type = "credit";
                     credits.push(entry);

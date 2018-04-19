@@ -161,7 +161,7 @@ function DisplayDebits(props){
                     props.debitEntries.map(entry => {
                         return(
                             <div>
-                                {`${entry.amount}.00`}
+                                {`${entry.amount.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`}
                                 <hr className="m-1"/>
                             </div>
                         )
@@ -204,7 +204,7 @@ function DisplayCredits(props){
                     props.creditEntries.map(entry => {
                         return(
                             <div>
-                                {`${entry.amount}.00`}
+                                {`${entry.amount.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`}
                                 <hr className="m-1"/>
                             </div>
                         )
@@ -229,9 +229,14 @@ function AcceptReject(props){
                         </div>
                         <div className="modal-body">
                             <form onSubmit={props.updateStatus}>
-                                <textarea onChange={props.onRejectReasonChange} ref="rejectReason" cols="30" rows="10"></textarea>
-                                {/* <input type="submit" value="Submit" className="btn btn-danger" data-dismiss="modal"/> */}
-                                <button value="reject" onClick={props.updateStatus} className="btn btn-danger" data-dismiss="modal">Reject</button>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <textarea onChange={props.onRejectReasonChange} ref="rejectReason" cols="30" rows="10"></textarea>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <button value="reject" onClick={props.updateStatus} className="btn btn-danger" data-dismiss="modal">Reject</button>
+                                    </div>
+                                </div>                                                        
                             </form>
                         </div>
                     </div>
