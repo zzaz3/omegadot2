@@ -5,28 +5,13 @@ class CashLedger extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-<<<<<<< HEAD
-            transactions: ""
-=======
             transactions: "",
             data: [],
             balance: {}
->>>>>>> finished cash ledger
         }
 
         this.getDebits = this.getDebits.bind(this);
         this.getCredits = this.getCredits.bind(this);
-<<<<<<< HEAD
-    }
-
-    getDebits(){
-        // debugger;
-        let debits = [];
-        let tempTransactions = this.state.transactions;
-        tempTransactions.forEach(transaction => {
-            // debits.push(transaction.debitEntries);
-            // debits = transaction.debitEntries;
-=======
         this.getApprovedTransactions = this.getApprovedTransactions.bind(this);
         this.calculateBalance = this.calculateBalance.bind(this);
     }
@@ -35,29 +20,17 @@ class CashLedger extends React.Component {
         let debits = [];
         let tempTransactions = this.state.transactions;
         tempTransactions.forEach(transaction => {
->>>>>>> finished cash ledger
             let debitEntries = transaction.debitEntries;
             debitEntries.forEach(entry => {
                 if(entry.account == "Cash"){
                     entry.date = transaction.date;
-<<<<<<< HEAD
-=======
                     entry.type = "debit";
->>>>>>> finished cash ledger
                     debits.push(entry);
                 }
             });
         });
         
         debits.forEach(debit => {
-<<<<<<< HEAD
-            console.log(`ACCOUNT: ${debit.account} || AMOUNT: ${debit.amount} || DATE: ${debit.date}`);
-        });
-    }
-
-    getCredits(){
-
-=======
             console.log(`ACCOUNT: ${debit.account} || AMOUNT: ${debit.amount} || DATE: ${debit.date} || TYPE: ${debit.type}`);
         });
 
@@ -126,7 +99,6 @@ class CashLedger extends React.Component {
         let balance = this.calculateBalance(this.state.data);
         this.setState({balance: balance});
         console.log(`BALANCE TYPE: ${balance.balanceType} | BALANCE AMOUNT: ${balance.balance}`);
->>>>>>> finished cash ledger
     }
 
     componentDidMount(){
@@ -138,9 +110,6 @@ class CashLedger extends React.Component {
         return(
             <div className="container">
                 <h1>CASH LEDGER</h1>
-<<<<<<< HEAD
-                <button onClick={this.getDebits}>Get Debits</button>
-=======
                 <ReactTable
                 data={this.state.data}
                 columns={[
@@ -173,7 +142,6 @@ class CashLedger extends React.Component {
                 ]}
                 defaultPageSize={15}
                 />
->>>>>>> finished cash ledger
             </div>
         )
     }
