@@ -26,23 +26,23 @@ class Log extends React.Component {
         credentials: 'same-origin',
       },
     )
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      return null
-    })
-    .then((json) => {
-      loadLogAction(json);
-    })
-    .catch((error) => {
-      // Error handling here.
-    });
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        return null
+      })
+      .then((json) => {
+        loadLogAction(json);
+      })
+      .catch((error) => {
+        // Error handling here.
+      });
   }
 
   getFormattedDate(data) {
     let date = new Date(data.time)
-    return date.toDateString();
+    return date.toDateString() + " at " + date.toLocaleTimeString('en-US');
   }
 
   render() {
@@ -51,42 +51,96 @@ class Log extends React.Component {
       <div className="container text-left mt-5">
         <h2>LOG</h2>
         <ReactTable
-            data={log}
-            columns={[
-              {
-                Header: 'Name',
-                accessor: 'name'
-              },
-              {
-                Header: 'Type',
-                accessor: 'type'
-              },
-              {
-                Header: 'ChangedBy',
-                accessor: 'changedBy'
-              },
-              {
-                Header: 'From',
-                accessor: 'beforeValue'
-              },
-              {
-                Header: 'To',
-                accessor: 'afterValue'
-              },
-              {
-                Header: 'Date',
-                id: 'time',
-                accessor: d => this.getFormattedDate(d),
-                Cell: row => (
-                  <span>
-                    {row.value}
-                  </span>
-                )
+          data={log}
+          columns={[
+            {
+              expander: true,
+              Header: () => <strong>More</strong>,
+              width: 65,
+              Expander: ({ isExpanded, ...rest }) =>
+                <div>
+                  {isExpanded
+                    ? <span>&#x2299;</span>
+                    : <span>&#x2295;</span>}
+                </div>,
+              style: {
+                cursor: "pointer",
+                fontSize: 25,
+                padding: "0",
+                textAlign: "center",
+                userSelect: "none"
               }
-            ]}
-
-            className="-striped -highlight"
-            defaultPageSize={10}
+            },
+            {
+              Header: 'Event Type',
+              accessor: 'type'
+            },
+            {
+              Header: 'Performed by',
+              accessor: 'changedBy'
+            },
+            {
+              Header: 'Date and Time',
+              id: 'time',
+              accessor: d => this.getFormattedDate(d),
+              Cell: row => (
+                <span>
+                  {row.value}
+                </span>
+              )
+            }
+          ]}
+          SubComponent={e => {
+            console.log(e);
+            if (e.row._original.data) {
+              return (
+                <div>
+                  { e.row._original.data.description &&
+                  <p>Description: {e.row._original.data.description}</p>
+                  }
+                  <ReactTable
+                    data={e.row._original.data.debits}
+                    columns={[
+                      {
+                        Header: 'Account',
+                        accessor: 'account'
+                      },
+                      {
+                        Header: 'Debited',
+                        accessor: 'amount'
+                      },
+                    ]}
+                    defaultPageSize={e.row._original.data.debits.length}
+                    showPaginationBottom={false}
+                  />
+                  <ReactTable
+                    data={e.row._original.data.credits}
+                    columns={[
+                      {
+                        Header: 'Account',
+                        accessor: 'account'
+                      },
+                      {
+                        Header: 'Credited',
+                        accessor: 'amount'
+                      },
+                    ]}
+                    defaultPageSize={e.row._original.data.credits.length}
+                    showPaginationBottom={false}
+                  />
+                </div>
+              );
+            }
+            else if (e.row._original.type == "Account Created") {
+              return(
+                <div>
+                  <p>Account name: {e.row._original.name}</p>
+                </div>
+              );
+            }
+          }}
+          className="-striped -highlight"
+          defaultPageSize={10}
         />
       </div>
     )

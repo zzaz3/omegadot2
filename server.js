@@ -33,6 +33,7 @@ const accounts = require('./api/accounts');
 const transactions = require('./api/transactions');
 const auth = require('./api/auth');
 const log = require('./api/log');
+const uploadFile = require('./api/uploadFile');
 
 // Body Parser Middleware
 server.use(bodyParser.urlencoded({ extended: false }));
@@ -50,6 +51,7 @@ server.use('/', accounts);
 server.use('/', transactions);
 server.use('/auth/', auth);
 server.use('/', log);
+server.use('/', uploadFile);
 
 const port = 5000;
 server.listen(port, () => {

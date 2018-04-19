@@ -151,13 +151,16 @@ class Register extends React.Component {
               <FormGroup>
                 <Label for="role">Role</Label>
                 <Input
-                  type="role"
-                  name="role"
-                  id="role"
-                  placeholder="role"
-                  value={role}
-                  onChange={this.handleRoleChange}
-                />
+                type="select"
+                name="role"
+                id="role"
+                placeholder="role"
+                value={role}
+                onChange={this.handleRoleChange}>
+                  <option>general</option>
+                  <option>manager</option>
+                  <option>admin</option>
+                </Input>
               </FormGroup>
               <Button onClick={this.onSubmit.bind(this)}>Create Account</Button>
             </Form>

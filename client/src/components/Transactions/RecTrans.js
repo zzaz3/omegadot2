@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {withAlert} from 'react-alert';
 import Dropzone from 'react-dropzone';
+import {Button, Panel} from 'reactstrap';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -56,7 +57,7 @@ class RecordTransactions extends React.Component{
 
     onSubmit(e) {
         e.preventDefault();
-        
+
         if(this.state.selectedDebitAccount == 'None'){
             return this.props.alert.error('SELECT A DEBIT ACCOUNT');
         }
@@ -103,11 +104,11 @@ class RecordTransactions extends React.Component{
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <DatePicker 
+                        <DatePicker
                             inline
                             selected={this.state.date}
                             onChange={this.handleChange}
-                        />  
+                        />
                     </div>
                 </div>
                 <div className="row">
@@ -133,11 +134,9 @@ class RecordTransactions extends React.Component{
                             <div className="col-md-6">
                                 <textarea className="form-control" name="comments" ref="comments" cols="30" rows="10"></textarea>
                             </div>
-                            <div className="col-md-6">
-                                <Dropzone onDrop={this.onDrop}>
-                                    <p>Click or Drag and Drop to Add Files</p>
-                                </Dropzone>
-                            </div> 
+                  <div className="col-md-6">
+
+                            </div>
                         </div>
                     </div>
                 </div>
