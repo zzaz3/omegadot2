@@ -33,6 +33,7 @@ class RecordTransactions extends React.Component {
             creditAmountTotal: 0,
             description: "",
             file: "",
+            fileName: "",
             date: moment(),
             selectedDebitAccount: 'None',
             selectedCreditAccount: 'None',
@@ -244,7 +245,8 @@ class RecordTransactions extends React.Component {
             description: this.state.description,
             status: "pending",
             rejectReason: "",
-            file: reader.result
+            file: reader.result,
+            fileName:reader.name
         }
         this.createTransacton(newTransaction);
 
