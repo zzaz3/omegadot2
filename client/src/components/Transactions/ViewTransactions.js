@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactTable from 'react-table';
+import dataURLToBlob from 'dataurl-to-blob';
 
 class ViewTransactions extends React.Component {
   constructor(props) {
@@ -13,6 +14,10 @@ class ViewTransactions extends React.Component {
     fetch('/transactions')
       .then(res => res.json())
       .then(transactions => this.setState({ transactions: transactions }, () => console.log('Transactions fetched...', transactions)));
+  }
+
+  getFormattedData(data) {
+    return data.file;
   }
 
   render() {
@@ -89,6 +94,14 @@ class ViewTransactions extends React.Component {
                 </span>
               )
             },
+            {
+              Header: 'Attatchment(s)',
+              id: 'file',
+              accessor: d => this.getFormattedData(d),
+              Cell: row => ( row.value &&
+                <a href={row.value} download="">file</a>
+              )
+            }
           ]}
           SubComponent={(row) => {
             const columns = [
