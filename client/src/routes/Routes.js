@@ -14,6 +14,13 @@ import Register from '../components/Register';
 import Log from '../components/Log';
 import Journalize from '../components/Journalize';
 
+import UnadjustedTrialBalance from '../components/Reports/UnadjustedTrialBalance';
+import AdjustedTrialBalance from '../components/Reports/AdjustedTrialBalance';
+import ClosingTrialBalance from '../components/Reports/ClosingTrialBalance';
+import IncomeStatement from '../components/Reports/IncomeStatement';
+import RetainedEarnings from '../components/Reports/RetainedEarnings';
+import BalanceSheet from '../components/Reports/BalanceSheet';
+
 import CashLedger from '../components/AccountLedgers/Cash';
 import AccountsReceivableLedger from '../components/AccountLedgers/AccountsReceivable';
 import PrepaidRentLedger from '../components/AccountLedgers/PrepaidRent';
@@ -46,11 +53,19 @@ function Routes() {
       <Route exact path="/transactions/view" component={ViewTransactions} />
       <Route exact path="/transactions/record" component={RecordTransactions} />
       <Route exact path="/transactions/review" component={ReviewTransactions} />
-      <Route exact path="/balance" component={Balance} />
       <Route exact path="/login" component={LoginContainer} />
       <Route exact path="/team" component={Team} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/log" component={Log} />
+
+      {/* REPORTS */}
+      <Route exact path="/reports/unadjustedtrialbalance" component={UnadjustedTrialBalance} />
+      <Route exact path="/reports/adjustedtrialbalance" component={AdjustedTrialBalance} />
+      <Route exact path="/reports/closingtrialbalance" component={ClosingTrialBalance} />
+      <Route exact path="/reports/incomestatement" component={IncomeStatement} />
+      <Route exact path="/reports/retainedearnings" component={RetainedEarnings} />
+      <Route exact path="/reports/balancesheet" component={BalanceSheet} />
+
 
       {/* LEDGERS */}
       <Route exact path="/accounts/cash" component={CashLedger}/>

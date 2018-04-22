@@ -53,8 +53,16 @@ class AuthNavBar extends React.Component {
                 <NavLink to="/transactions/review" className="dropdown-item">Review Transactions</NavLink>
               </div>
             </li>
-            <li className="nav-item">
-              <NavLink to="/balance" className="nav-link">Trial Balance</NavLink>
+            <li className="nav-item dropdown">
+              <NavLink to="#" className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</NavLink>
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <NavLink to="/reports/unadjustedtrialbalance" className="dropdown-item">Unadjusted Trial Balance</NavLink>
+                <NavLink to="/reports/adjustedtrialbalance" className="dropdown-item">Adjusted Trial Balance</NavLink>
+                <NavLink to="/reports/closingtrialbalance" className="dropdown-item">Closing Trial Balance</NavLink>
+                <NavLink to="/reports/incomestatement" className="dropdown-item">Income Statement</NavLink>
+                <NavLink to="/reports/retainedearnings" className="dropdown-item">Retained Earnings</NavLink>
+                <NavLink to="/reports/balancesheet" className="dropdown-item">Balance Sheet</NavLink>
+              </div>
             </li>
             <li className="nav-item">
               <NavLink to="/log" className="nav-link">Log</NavLink>
