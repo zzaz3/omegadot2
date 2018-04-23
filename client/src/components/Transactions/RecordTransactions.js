@@ -51,6 +51,7 @@ class RecordTransactions extends React.Component {
         this.getCreditData = this.getCreditData.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
+        this.onFormClear = this.onFormClear.bind(this);
         this.formatEntries = this.formatEntries.bind(this);
         this.debitsEqualCredits = this.debitsEqualCredits.bind(this);
         this.setFile = this.setFile.bind(this);
@@ -68,11 +69,16 @@ class RecordTransactions extends React.Component {
         this.setState({description: e.target.value});
     }
 
-    setFile() {
-      var file    = document.querySelector('input[type=file]').files[0];
+    onFormClear(e){
+        e.preventDefault();
+        window.location.reload();
+    }
 
-      this.setState({file: file});
-      debugger;
+    setFile(e) {
+        e.preventDefault();
+        var file    = document.querySelector('input[type=file]').files[0];
+
+        this.setState({file: file});
     }
 
     addNewTransactionEntry(e){
@@ -226,7 +232,6 @@ class RecordTransactions extends React.Component {
         if(this.debitsEqualCredits()){
             return;
         }
-        debugger;
 
         var reader  = new FileReader();
 
@@ -351,6 +356,9 @@ class RecordTransactions extends React.Component {
                                     <div className="mt-2">
                                         <textarea onChange={this.onDescriptionChange} name="description" cols="25" rows="5" placeholder="Description" className="form-control" ref="description"></textarea>
                                     </div>
+                                    <div className="mt-2">
+                                        <input type="file" onChange={this.setFile} className="btn btn-primary mr-auto my-2"/>         
+                                    </div>
                                 </div>
                                 <div className="col-md-8">
                                     <div>
@@ -393,9 +401,11 @@ class RecordTransactions extends React.Component {
                                             })
                                         }
                                     </div>
-                                </div>
-                                <input type="file" onChange={this.setFile} className="btn btn-primary ml-auto my-2"/>
-                                <input type="submit" value="Submit" className="btn btn-primary ml-auto my-2" />
+                                </div>                                
+                                <div className="ml-auto my-2">
+                                    <button onClick={this.onFormClear} className="btn btn-danger mr-2">Clear</button>
+                                    <input type="submit" value="Submit" className="btn btn-primary" />
+                                </div>                                           
                             </div>
                         </form>
                     </div>

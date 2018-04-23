@@ -35,7 +35,6 @@ export default function reducer(state = initialState, action) {
        return [...state,...newLog];
     }
     case 'TRANSACTION_OCCURED': {
-      debugger;
       var newData = {
         debits: action.json.debitEntries,
         credits: action.json.creditEntries,
@@ -50,7 +49,6 @@ export default function reducer(state = initialState, action) {
         data: newData,
         changedBy : action.user
       }
-      debugger;
       fetch('/log', {
         method: 'POST',
         body: JSON.stringify(newLog),
