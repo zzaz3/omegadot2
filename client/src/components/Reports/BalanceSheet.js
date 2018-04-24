@@ -10,9 +10,27 @@ class BalanceSheet extends React.Component {
   }
 
   render() {
+    const data = [
+      {
+        firstName: "Stephens",
+        lastName: "Jean-Jacques",
+        age: 23
+      }
+    ]
+
     return (
       <div>
         <h1>BALANCE SHEET</h1>
+        <ReactTable 
+          data={data}
+          columns={[
+            {
+              Header: "Header 1",
+              accessor: 'firstName'
+              
+            }
+          ]}
+        />
       </div>
     )
   }

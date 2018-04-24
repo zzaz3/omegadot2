@@ -20,6 +20,7 @@ class AddAccount extends React.Component {
     }
 
     this.onInitBalanceChange = this.onInitBalanceChange.bind(this);
+    this.removeAccountFromList = this.removeAccountFromList.bind(this);
   }
 
   onAccountChange(e) {
@@ -76,6 +77,17 @@ class AddAccount extends React.Component {
     this.setState({ redirect: true });
   }
 
+  removeAccountFromList(account){
+    let updatedAccounts = []
+    for(let i = 0; i < this.state.accounts.length; i++){
+      if(this.state.accounts[i].name != account.name){
+        updatedAccounts.push(this.state.accounts[i]);
+      }
+    }
+
+    return updatedAccounts;
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -98,6 +110,7 @@ class AddAccount extends React.Component {
     }
     this.createAccount(newAccount);
     this.setState({
+      accounts: this.removeAccountFromList(newAccount),
       selectedAccount: 'none',
       accountNumber: '',
       accountType: '',
@@ -111,6 +124,23 @@ class AddAccount extends React.Component {
     fetch('/accounts/list')
       .then(res => res.json())
       .then(accounts => this.setState({ accounts: accounts }));
+    
+    // fetch('/accounts/list')
+    //   .then(res => res.json())
+    //   .then(accounts => {
+    //     console.log("Account...", accounts);
+    //     fetch('/accounts')
+    //       .then(res => res.json())
+    //       .then(myAccounts => {
+    //         console.log("My Accounts...", myAccounts)
+    //         let updatedAccounts = accounts.filter(account => !myAccounts.includes(account));
+    //         this.setState({accounts: updatedAccounts}, () => {
+    //           console.log("Fetched accounts...", updatedAccounts);
+    //         })
+    //       })
+    //   });
+
+    
   }
 
   render() {
