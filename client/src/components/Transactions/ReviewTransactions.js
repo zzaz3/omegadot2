@@ -7,12 +7,15 @@ class ReviewTransactions extends React.Component{
         this.state = {
             transactions: [],
             rejectReason: "",
-            accounts: []
+            accounts: [],
+            tempDebits: "",
+            tempCredits: ""
         }
 
         this.updateTransactionStatus = this.updateTransactionStatus.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
         this.onRejectReasonChange = this.onRejectReasonChange.bind(this);
+        this.getTransaction = this.getTransaction.bind(this);
     }
 
     updateTransactionStatus(transactionId, updateData){
@@ -30,9 +33,55 @@ class ReviewTransactions extends React.Component{
         this.setState({rejectReason: e.target.value}, console.log(this.state.rejectReason));
     }
 
+    getTransaction(id){
+        
+    }
+
     updateStatus = (id) => (e) => {
         e.preventDefault();
+
+        console.log(`TRANSACTION ID: ${id}`);
+        fetch(`/transaction/${id}`)
+            .then(res => res.json())
+            .then(transaction => {
+                this.setState({
+                    tempDebits: transaction.debitEntries,
+                    tempCredits: transaction.creditEntries
+                }, () => {
+                    let tempDebits = this.state.tempDebits
+                    for(let i = 0; i < tempDebits.length; i++){
+                        let updateData = {
+                            "debitBalance": `${tempDebits[i].amount}`
+                        };
+                        fetch(`/account/${tempDebits[i].account}`, {
+                            method: 'PUT',
+                            body: JSON.stringify(updateData),
+                            headers: new Headers({
+                                "Content-Type": "application/json"
+                            }) 
+                        }).then(res => res.json())
+                            .catch(err => console.log(`ERROR MESSAGE ${err}`));
+                    }
+
+                    let tempCredits = this.state.tempCredits
+                    for(let i = 0; i < tempCredits.length; i++){
+                        let updateData = {
+                            "creditBalance": `${tempCredits[i].amount}`
+                        };
+                        fetch(`/account/${tempCredits[i].account}`, {
+                            method: 'PUT',
+                            body: JSON.stringify(updateData),
+                            headers: new Headers({
+                                "Content-Type": "application/json"
+                            }) 
+                        }).then(res => res.json())
+                            .catch(err => console.log(`ERROR MESSAGE ${err}`));
+                    }
+                });
+            });
+
         
+
         var updateData = null;
         if(e.target.value == "accept"){
             updateData = {
@@ -74,7 +123,8 @@ class ReviewTransactions extends React.Component{
                     columns={[
                         {
                             Header: 'Date',
-                            accessor: 'date'
+                            id: 'date',
+                            accessor: d => d.date                        
                         },
                         {
                             Header: 'Accounts',
@@ -100,6 +150,12 @@ class ReviewTransactions extends React.Component{
                             Header: 'Review',
                             id: 'review',
                             accessor: d => <AcceptReject updateStatus={this.updateStatus(d._id)} onRejectReasonChange={this.onRejectReasonChange}/>
+                        }
+                    ]}
+                    defaultSorted={[
+                        {
+                            id: "date",
+                            desc: true
                         }
                     ]}
                 />

@@ -28,6 +28,10 @@ const TransactionSchema = Schema({
         }
       }
   ],
+  transactionType: {
+    type: String,
+    required: true
+  },
   date: {
       type: String,
       required: true

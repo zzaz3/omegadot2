@@ -35,6 +35,16 @@ const AccountSchema = Schema({
     type: Number,
     required: true
   },
+  debitBalance: {
+    type: Number,
+    required: false,
+    default: 0
+  },
+  creditBalance: {
+    type: Number,
+    required: false,
+    default: 0
+  },
   isActive: {
     type: Boolean,
     required: true
@@ -42,11 +52,11 @@ const AccountSchema = Schema({
   routeName: {
     type: String,
     required: true
-  }
-  // normalSide: {
-  //     type: String,
-  //     required: false
-  // },
+  },
+  normalSide: {
+      type: String,
+      required: false
+  },
   // date: {
   //     type: Date,
   //     default: Date.now,

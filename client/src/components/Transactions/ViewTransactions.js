@@ -103,13 +103,12 @@ class ViewTransactions extends React.Component {
               )
             }
           ]}
-          SubComponent={(row) => {
-            const columns = [
-              {
-                Header: "Desc.",
-                accessor: "description",
-              }]
-          }}
+          defaultSorted={[
+            {
+              id: "date",
+              desc: true
+            }
+          ]}
         />
       </div>
     );

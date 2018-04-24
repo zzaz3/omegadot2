@@ -33,6 +33,37 @@ router.get('/transactions/approved', (req, res) => {
     })
 });
 
+// Retrieves A Transaction By Id
+router.get('/transaction/:id', (req, res) => {
+    // Transaction.findById(req.params.id)
+    //     .then(transaction => {
+    //         res.json(transaction);
+    //     });
+
+    Transaction.findById(req.params.id)
+        .then(transaction => {
+            if(!transaction) {return res.status(404).end();}
+            return res.status(200).json(transaction);
+        })
+        .catch(err => next(err));
+});
+
+// Retrieves All REG Transactions
+router.get('/transactions/reg', (req, res) => {
+    Transaction.find({transactionType: "REG", "status": "approved"})
+        .then(transactions => {
+            res.json(transactions);
+        });
+});
+
+// Retrieves All Adjusting Entries for A Specific Account
+router.get('/transactions/aje/:account', (req, res) => {
+    Transaction.find({transactionType: "AJE", "status": "approved"})
+        .then(transactions => {
+            res.json(transactions);
+        });
+});
+
 // Saves New Transaction To Database
 router.post('/transaction/add', (req, res) => {
     const newTransaction = new Transaction({
@@ -43,7 +74,8 @@ router.post('/transaction/add', (req, res) => {
         status: req.body.status,
         rejectReason: req.body.rejectReason,
         file: req.body.file,
-        fileType: req.body.fileType
+        fileType: req.body.fileType,
+        transactionType: req.body.transactionType
     });
 
     newTransaction.save((err) => {

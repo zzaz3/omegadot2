@@ -74,7 +74,7 @@ class Accounts extends React.Component {
             ]}
 
             className="-striped -highlight"
-            defaultPageSize={10}
+            defaultPageSize={21}
         />
       </div>
     )

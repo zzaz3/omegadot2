@@ -35,6 +35,7 @@ class RecordTransactions extends React.Component {
             file: "",
             fileName: "",
             date: moment(),
+            transactionType: "REG",
             selectedDebitAccount: 'None',
             selectedCreditAccount: 'None',
             redirect: false,
@@ -54,7 +55,12 @@ class RecordTransactions extends React.Component {
         this.onFormClear = this.onFormClear.bind(this);
         this.formatEntries = this.formatEntries.bind(this);
         this.debitsEqualCredits = this.debitsEqualCredits.bind(this);
+        this.amountIsNumber = this.amountIsNumber.bind(this);
+        this.accountIsSelected = this.accountIsSelected.bind(this);
+        this.amountIsZero = this.amountIsZero.bind(this);
         this.setFile = this.setFile.bind(this);
+        this.updateTempAccountBalances = this.updateTempAccountBalances.bind(this);
+        this.onTransactionTypeChange = this.onTransactionTypeChange.bind(this);
     }
 
     handleChange(date) {
@@ -67,6 +73,10 @@ class RecordTransactions extends React.Component {
 
     onDescriptionChange(e){
         this.setState({description: e.target.value});
+    }
+
+    onTransactionTypeChange(e){
+        this.setState({transactionType: e.target.value});
     }
 
     onFormClear(e){
@@ -115,6 +125,13 @@ class RecordTransactions extends React.Component {
         }
     }
 
+    updateTempAccountBalances(){
+        let debits = this.state.debitEntries;
+        for(let i = 0; i < debits.length; i++){
+            
+        }
+    }
+
     formatEntries(entries){
         let formattedEntries = []
         entries.forEach(entry => {
@@ -138,11 +155,11 @@ class RecordTransactions extends React.Component {
                 "Content-Type": "application/json"
             })
         }).then(res => {
-          return res.json();
+          res.json();
       })
         .catch(err => console.log(`ERROR MESSAGE ${err}`));
 
-            this.setState({ redirect: true });
+        // this.setState({ redirect: true });
 
     }
 
@@ -222,6 +239,72 @@ class RecordTransactions extends React.Component {
         }
     }
 
+    amountIsNumber(){
+        let debits = this.state.debitEntries;
+        for(let i = 0; i < debits.length; i++){
+            if(isNaN(debits[i].amount)){
+                // return this.props.alert.error("Amount Must Be A Number");
+                return "Amount Must Be A Number";
+            }
+        }
+
+        let credits = this.state.creditEntries;
+        for(let i = 0; i < credits.length; i++){
+            if(isNaN(credits[i].amount)){
+                // return this.props.alert.error("Amount Must Be A Number");
+                return "Amount Must Be A Number";
+            }
+        }
+    }
+
+    accountIsSelected(){
+        let debits = this.state.debitEntries;
+        for(let i = 0; i < debits.length; i++){
+            if(debits[i].account == ""){
+                // return this.props.alert.error("Account Cannot Be Blank");
+                return "Account Cannot Be Blank";
+            }
+        }
+
+        let credits = this.state.creditEntries;
+        for(let i = 0; i < credits.length; i++){
+            if(credits[i].account == ""){
+                // return this.props.alert.error("Account Cannot Be Blank");
+                return "Account Cannot Be Blance";
+            }
+        }
+    }
+
+    amountIsZero(){
+        let debits = this.state.debitEntries;
+        for(let i = 0; i < debits.length; i++){
+            if(debits[i].amount == 0){
+                // return this.props.alert.error("Amount Cannot Equal Zero");
+                return "Amount Cannot Equal Zero";
+            }
+        }
+
+        let credits = this.state.creditEntries;
+        for(let i = 0; i < credits.length; i++){
+            if(credits[i].amount == 0){
+                // return this.props.alert.error("Amount Cannot Equal Zero");
+                return "Amount Cannot Equal Zero";
+            }
+        }
+    }
+
+    duplicateAccounts(){
+        let debits = this.state.debitEntries;
+        for(let i = 0; i < debits.length; i++){
+            for(let j = 1; i < debits.length; i++){
+                if(debits[i].account == debits[j].account){
+                    // return this.props.alert.error("Duplicate Accounts");
+                    return "Duplicate Accounts";
+                }
+            }
+        }
+    }
+
     sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -229,11 +312,64 @@ class RecordTransactions extends React.Component {
     async onTestSubmit(e){
         e.preventDefault();
 
+        let errors = [];
+        let errorNum = 1;
+        // if(this.duplicateAccounts()){
+        //     errors.push(this.duplicateAccounts());
+        //     // return;
+        // }
+        if(this.amountIsZero()){
+            let error = {
+                num: errorNum,
+                error: this.amountIsZero()
+            };
+            errors.push(error);
+            errorNum += 1;
+            // errors.push(this.amountIsZero());
+            // return;
+        }
+        if(this.accountIsSelected()){
+            let error = {
+                num: errorNum,
+                error: this.accountIsSelected()
+            };         
+            errors.push(error);
+            errorNum += 1;
+            // errors.push(this.accountIsSelected());
+            // return;
+        }
+        if(this.amountIsNumber()){
+            let error = {
+                num: errorNum,
+                error: this.amountIsNumber()
+            }
+            errors.push(error);
+            errorNum += 1;
+            // errors.push(this.amountIsNumber());
+            // return;
+        }
         if(this.debitsEqualCredits()){
-            return;
+            let error = {
+                num: errorNum,
+                error: this.debitsEqualCredits()
+            }
+            errors.push(error);
+            errorNum += 1;
+            // errors.push(this.debitsEqualCredits());
+            // return;
+        }
+        if(errors.length >= 1){
+            console.log(errors);
+            this.props.alert.error(<div>
+                {errors.map(err => {
+                    return(
+                        <div style={{display: "block"}}>{err.num}. {err.error}</div>
+                    ); 
+                })}
+            </div>);
         }
 
-        var reader  = new FileReader();
+        var reader = new FileReader();
 
         if (this.state.file) {
           reader.readAsDataURL(this.state.file);
@@ -251,17 +387,15 @@ class RecordTransactions extends React.Component {
             status: "pending",
             rejectReason: "",
             file: reader.result,
-            fileName:reader.name
+            fileName: reader.name,
+            transactionType: this.state.transactionType 
         }
-        this.createTransacton(newTransaction);
 
-        // Reset the state of all the form items
-        this.setState({
-            debitEntries: [new Entry(1, "", 0)],
-            creditEntries: [new Entry(1, "", 0)],
-            date: moment(),
-            description: ""
-        });
+        if(this.createTransacton(newTransaction)){
+            return this.props.alert.success("Transaction Created");
+        }
+        
+        // window.location.reload();
 
         console.log(`NEW TRANSACTION: ${Object.entries(newTransaction).toString()}`);
     }
@@ -340,7 +474,18 @@ class RecordTransactions extends React.Component {
             <div className="container mt-3">
                 <div className="card">
                     <div className="card-header text-left">
-                        <h2>New Transaction</h2>
+                        <div className="row">
+                            <div className="col-md-5">
+                                <h2>New Transaction</h2>
+                            </div>
+                            <div className="col-md-2 ml-auto">
+                                <select onChange={this.onTransactionTypeChange} value={this.state.transactionType} className="form-control">
+                                    <option selected>REG</option>
+                                    <option>AJE</option>
+                                    <option>CJE</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div className="card-body">
                         <form onSubmit={this.onTestSubmit} className="m-auto">

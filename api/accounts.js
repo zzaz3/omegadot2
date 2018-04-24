@@ -14,6 +14,29 @@ router.get('/accounts', (req, res) => {
     });
 });
 
+// Find The Specified Account Using URL Params
+router.get('/account/:routeName', (req, res) => {
+  Account.findOne({routeName: req.params.routeName})
+    .then(account => {
+      res.json(account);
+    });
+});
+
+// Find All Expense Accounts
+router.get('/accounts/expense', (req, res) => {
+  Account.find({type: "expense"})
+    .then(accounts => res.json(accounts));
+})
+
+// Find The Specified Account And Update
+router.put('/account/:name', (req, res) => {
+  Account.findOneAndUpdate({name: req.params.name}, {$inc: req.body})
+    .then(() => {
+      Account.findOne({name: req.params.name})
+        .then(() => res.send(Account));
+    });
+});
+
 // Save New Account to Database
 router.post('/account/add', (req, res) => {
   let errors = [];
@@ -46,7 +69,7 @@ router.post('/account/add', (req, res) => {
 });
 
 router.put('/accounts/balance/update/:id', (req, res) => {
-  Account.findByIdAndUpdate({_id: req.params.id}, req.body)
+  Account.findByIdAndUpdate({_id: req.params.id}, {$inc: req.body})
       .then(() => {
           Account.findOne({_id: req.params.id}).then(() => {
               res.send(Account);

@@ -11,7 +11,7 @@ export default function App(props) {
   const { authentication, progress, log } = props;
   const options = {
     position: 'bottom right',
-    timeout: 5000,
+    // timeout: 5000,
     transition: 'scale'
   }
 

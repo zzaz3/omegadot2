@@ -7,7 +7,8 @@ class CashLedger extends React.Component {
         this.state = {
             transactions: "",
             data: [],
-            balance: {}
+            balance: {},
+            account: ""
         }
 
         this.getDebits = this.getDebits.bind(this);
@@ -103,6 +104,24 @@ class CashLedger extends React.Component {
 
     componentDidMount(){
         this.getApprovedTransactions();
+
+        // TESTING "FIND CASH ACCOUNT" ENDPOINT
+        let name = "Accounts Receivable";
+        fetch(`/account/${name}`)
+            .then(res => res.json())
+            .then(account => this.setState({ account: account }, () => console.log('Cash account fetched...', account)));
+
+        // TESTING "UPDATE ACCOUNT AMOUNT"
+        let account = "Cash";
+        let reqBody = {balance: 0};
+        fetch(`/account/${account}`, {
+            method: 'PUT',
+            body: JSON.stringify(reqBody),
+            headers: new Headers({
+                "Content-Type": "application/json"
+            })
+        }).then(res => res.json())
+            .catch(err => console.log(`ACCOUNT AMOUNT COULD NOT BE UPDATED ${err}`));
     }
 
 
