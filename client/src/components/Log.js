@@ -54,24 +54,6 @@ class Log extends React.Component {
           data={log}
           columns={[
             {
-              expander: true,
-              Header: () => <strong>More</strong>,
-              width: 65,
-              Expander: ({ isExpanded, ...rest }) =>
-                <div>
-                  {isExpanded
-                    ? <span>&#x2299;</span>
-                    : <span>&#x2295;</span>}
-                </div>,
-              style: {
-                cursor: "pointer",
-                fontSize: 25,
-                padding: "0",
-                textAlign: "center",
-                userSelect: "none"
-              }
-            },
-            {
               Header: 'Event Type',
               accessor: 'type'
             },
@@ -139,6 +121,12 @@ class Log extends React.Component {
               );
             }
           }}
+          defaultSorted={[
+            {
+              id: "time",
+              desc: true
+            }
+          ]}
           className="-striped -highlight"
           defaultPageSize={10}
         />

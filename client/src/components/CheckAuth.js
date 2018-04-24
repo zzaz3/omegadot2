@@ -6,6 +6,7 @@ async function checkAuthentication() {
       this.setState({ authenticated, userinfo });
     } else {
       this.setState({ authenticated });
+      return true;
     }
   }
 }

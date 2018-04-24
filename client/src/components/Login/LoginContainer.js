@@ -69,7 +69,7 @@ export class LoginContainer extends React.Component {
 
     if (redirect) {
       return (
-        <Redirect to="/" />
+        <Redirect to="/charts" />
       );
     }
 

@@ -1,19 +1,24 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import dataURLToBlob from 'dataurl-to-blob';
 
 class ViewTransactions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      transactions: []
+      transactions: [],
+      expandedColumns: []
     }
   }
 
   componentDidMount() {
     fetch('/transactions')
       .then(res => res.json())
-      .then(transactions => this.setState({ transactions: transactions }, () => console.log('Transactions fetched...', transactions)));
+      .then(transactions => {
+          var temp = transactions.map(x => true);
+          debugger;
+          this.setState({ transactions: transactions, expandedColumns: temp});
+          console.log('Transactions fetched...', transactions, this.state.expandedColumns);
+        })
   }
 
   getFormattedData(data) {
@@ -27,6 +32,24 @@ class ViewTransactions extends React.Component {
         <ReactTable
           data={this.state.transactions}
           columns={[
+            {
+                expander: true,
+                Header: () => <p></p>,
+                width: 0,
+                Expander: ({ isExpanded, ...rest }) =>
+                  <div>
+                    {isExpanded
+                      ? <span>&#x2299;</span>
+                      : <span>&#x2295;</span>}
+                  </div>,
+                style: {
+                  cursor: "pointer",
+                  fontSize: 25,
+                  padding: "0",
+                  textAlign: "center",
+                  userSelect: "none"
+                }
+              },
             {
               Header: 'Date',
               id: 'date',
@@ -46,32 +69,6 @@ class ViewTransactions extends React.Component {
               Header: 'Credits',
               id: 'credits',
               accessor: d => <DisplayCredits creditEntries={d.creditEntries} debitEntries={d.debitEntries} />
-            },
-            {
-              Header: 'Description',
-              accessor: 'description',
-              Cell: row => (
-                <div className="text-nowrap">{row.value}</div>
-              )
-            },
-            {
-              Header: "",
-              accessor: "description",
-              expander: true,
-              width: 50,
-              Expander: ({ isExpanded, ...rest }) =>
-                <div>
-                  {/* {
-                                    isExpanded
-                                    ? <button className="btn btn-danger">-</button>
-                                    : <button className="btn btn-success">+</button>
-                                } */}
-                  {
-                    isExpanded
-                      ? <span>&#x2299;</span>
-                      : <span>&#x2295;</span>
-                  }
-                </div>
             },
             {
               Header: 'Status',
@@ -95,21 +92,33 @@ class ViewTransactions extends React.Component {
               )
             },
             {
-              Header: 'Attatchment(s)',
+              Header: 'Attatchments',
               id: 'file',
               accessor: d => this.getFormattedData(d),
-              Cell: row => ( row.value &&
-                <a href={row.value} download="">file</a>
+              Cell: row => ( row.value ?
+                <a href={row.value} download="">download</a> :
+                <p>n/a</p>
               )
             }
           ]}
-          SubComponent={(row) => {
-            const columns = [
-              {
-                Header: "Desc.",
-                accessor: "description",
-              }]
+          defaultSorted={[
+            {
+              id: "date",
+              desc: true
+            }
+          ]}
+          SubComponent={e => {
+            if (e.row._original.description) {
+              return (
+                <div>
+                  { e.row._original.description &&
+                  <p>Description: {e.row._original.description}</p>
+                  }
+                </div>
+              );
+            }
           }}
+          expanded={this.state.expandedColumns}
         />
       </div>
     );

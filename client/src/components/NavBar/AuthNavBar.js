@@ -40,7 +40,7 @@ class AuthNavBar extends React.Component {
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <NavLink exact to="/" className="nav-link">Home</NavLink>
+              <NavLink exact to="/charts" className="nav-link">Dashboard</NavLink>
             </li>
             <li className="nav-item">
               <NavLink to="/accounts" className="nav-link">Accounts</NavLink>

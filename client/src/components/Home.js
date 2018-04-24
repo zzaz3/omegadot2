@@ -1,19 +1,21 @@
 import React from 'react';
-import RecordTransactions from './Transactions/RecTrans' 
-import Basic from './BasicAttachment';
+import ReactTable from 'react-table';
 
-class Home extends React.Component {
+class Balance extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+  }
+
   render() {
     return (
       <div>
-        <h1>NORMAL</h1>
-        <h1>SIDE</h1>
-        <h1>ACCOUNTING</h1>
-        <h4>(You Won't Remember Us.)</h4>
-        {/* <RecordTransactions /> */}
+        <h1>Welcome, please sign in.</h1>
       </div>
     )
   }
 }
 
-export default Home;
+export default Balance;

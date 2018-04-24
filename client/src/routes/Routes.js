@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Home from '../components/Home';
+import Charts from '../components/Charts';
 import Accounts from '../components/Accounts';
 import AddAccount from '../components/AddAccount';
 import ViewTransactions from '../components/Transactions/ViewTransactions';
@@ -48,6 +49,7 @@ function Routes() {
     <Switch>
       <Route exact path="/" exact={true} component={Home} />
       <Route exact path="/accounts" component={Accounts} />
+      <Route exact path="/charts" component={Charts} />
       <Route exact path="/accounts/add" component={AddAccount} />
       <Route exact path="/journalize" component={Journalize} />
       <Route exact path="/transactions/view" component={ViewTransactions} />
