@@ -15,7 +15,6 @@ class ViewTransactions extends React.Component {
       .then(res => res.json())
       .then(transactions => {
           var temp = transactions.map(x => true);
-          debugger;
           this.setState({ transactions: transactions, expandedColumns: temp});
           console.log('Transactions fetched...', transactions, this.state.expandedColumns);
         })

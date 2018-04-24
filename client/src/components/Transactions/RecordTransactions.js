@@ -325,6 +325,7 @@ class RecordTransactions extends React.Component {
             };
             errors.push(error);
             errorNum += 1;
+            return this.props.alert.error("Amount Cannot Be Zero");
             // errors.push(this.amountIsZero());
             // return;
         }
@@ -335,6 +336,7 @@ class RecordTransactions extends React.Component {
             };         
             errors.push(error);
             errorNum += 1;
+            return this.props.alert.error("Must Select An Account");
             // errors.push(this.accountIsSelected());
             // return;
         }
@@ -345,6 +347,7 @@ class RecordTransactions extends React.Component {
             }
             errors.push(error);
             errorNum += 1;
+            return this.props.alert.error("Amount Must Be A Number");
             // errors.push(this.amountIsNumber());
             // return;
         }
@@ -355,6 +358,7 @@ class RecordTransactions extends React.Component {
             }
             errors.push(error);
             errorNum += 1;
+            return this.props.alert.error("Debits Don't Equal Credits");
             // errors.push(this.debitsEqualCredits());
             // return;
         }
