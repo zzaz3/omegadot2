@@ -26,7 +26,49 @@ router.get('/account/:routeName', (req, res) => {
 router.get('/accounts/expense', (req, res) => {
   Account.find({type: "expense"})
     .then(accounts => res.json(accounts));
-})
+});
+
+// Find All Asset Accounts
+router.get('/accounts/asset', (req, res) => {
+  Account.find({type: "asset"})
+    .then(accounts => res.json(accounts))
+});
+
+// Find All Current Asset Accounts
+router.get('/accounts/asset/current', (req, res) => {
+  Account.find({type: "asset", subtype: "current"})
+    .then(accounts => res.json(accounts))
+});
+
+// Find All Non-Current Asset Accounts
+router.get('/accounts/asset/na', (req, res) => {
+  Account.find({type: "asset", subtype: "n/a"})
+    .then(accounts => res.json(accounts))
+});
+
+// Find All Liability Accounts
+router.get('/accounts/liability', (req, res) => {
+  Account.find({type: "liability"})
+    .then(accounts => res.json(accounts))
+});
+
+// Find All Current Liability Accounts
+router.get('/accounts/liability/current', (req, res) => {
+  Account.find({type: "liability", subtype: "current"})
+    .then(accounts => res.json(accounts))
+});
+
+// Find All Non-Current Liability Accounts
+router.get('/accounts/liability/na', (req, res) => {
+  Account.find({type: "liability", subtype: "n/a"})
+    .then(accounts => res.json(accounts))
+});
+
+// Find All Equity Accounts
+router.get('/accounts/equity', (req, res) => {
+  Account.find({type: "owner's equity"})
+    .then(accounts => res.json(accounts))
+});
 
 // Find The Specified Account And Update
 router.put('/account/:name', (req, res) => {
