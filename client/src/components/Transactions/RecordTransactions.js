@@ -61,7 +61,6 @@ class RecordTransactions extends React.Component {
         this.setFile = this.setFile.bind(this);
         this.updateTempAccountBalances = this.updateTempAccountBalances.bind(this);
         this.onTransactionTypeChange = this.onTransactionTypeChange.bind(this);
-        this.successfulTrans = this.successfulTrans.bind(this);
     }
 
     handleChange(date) {
@@ -157,13 +156,11 @@ class RecordTransactions extends React.Component {
             })
         }).then(res => {
             if(res.status === 200){
-                return res.json();
+                return res.json
             }
+          res.json();
       })
         .catch(err => console.log(`ERROR MESSAGE ${err}`));
-
-         
-
     }
 
     onSubmit(e) {
@@ -308,10 +305,6 @@ class RecordTransactions extends React.Component {
         }
     }
 
-    successfulTrans(){
-        return "Transaction added successfully!";
-    }
-
     sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -397,11 +390,10 @@ class RecordTransactions extends React.Component {
             fileName: reader.name,
             transactionType: this.state.transactionType 
         }
+
         this.createTransacton(newTransaction);
         return this.props.alert.success("Transaction Created");
         
-        
-        //errors.push(successfulTrans());
         
         // window.location.reload();
 
