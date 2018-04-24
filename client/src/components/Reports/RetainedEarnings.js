@@ -103,7 +103,7 @@ class RetainedEarnings extends React.Component {
             Statement of Retained Earnings
           </div>
           <div className="col-md-12">
-            For the Year Ended December 31st, 2018
+            For the Year Ended April 30th, 2018
           </div>
         </h3>
 
