@@ -165,7 +165,7 @@ class ReviewTransactions extends React.Component{
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Reason</h5>
-                                <button class="close" data-dismiss="modal">&times;</button>
+                                <button className="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div className="modal-body">
                                 <form>

@@ -2,7 +2,7 @@ import React from 'react';
 import RecordTransactions from './Transactions/RecTrans' 
 import Basic from './BasicAttachment';
 import { Card, CardImg, CardText,
-  CardTitle, CardSubtitle, Button,CardColumns,Container } from 'reactstrap';
+  CardTitle, CardSubtitle, Button,CardColumns,Container,Row,Col } from 'reactstrap';
 import {PieChart, Pie, Legend, Label, Tooltip} from 'recharts';
 
 const RADIAN = Math.PI / 180;                    
@@ -62,39 +62,48 @@ class Charts extends React.Component {
     return (
       <div>
         <h1>Dashboard</h1>
-        
-        <CardColumns>
+        <Container>
+        <Row>
+          <Col>
         <Card>
           <CardTitle>Turnover Assets</CardTitle>
-          <PieChart width={800} height={400}>
-            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={220} cy={200} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
+          <PieChart width={500} height={400}>
+            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
             <Tooltip />
           </PieChart>
         </Card>
+        </Col>
+        <Col>
         <Card>
           <CardTitle>Assets</CardTitle>
-          <PieChart width={800} height={400}>
-            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={220} cy={200} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
+          <PieChart width={500} height={400}>
+            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
             <Tooltip />
           </PieChart>
         </Card>
-        </CardColumns>
-        <CardColumns>
+        </Col>
+        </Row>
+        <Row>
+          <Col>
         <Card>
           <CardTitle>Current Ratio</CardTitle>
-          <PieChart width={800} height={400}>
-            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={220} cy={200} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
+          <PieChart width={500} height={400}>
+            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
             <Tooltip />
           </PieChart>
         </Card>
+        </Col>
+        <Col>
         <Card>
           <CardTitle>Quick Ratio</CardTitle>
-          <PieChart width={800} height={400}>
-            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={220} cy={200} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
+          <PieChart width={500} height={400}>
+            <Pie startAngle={180} endAngle={0} data={this.state.turnoverAssetData} cx={260} cy={260} outerRadius={200} fill={this.state.turnoverColor} labelLine={false} label={renderCustomizedLabel}/>
             <Tooltip />
           </PieChart>
         </Card>
-        </CardColumns>
+        </Col>
+        </Row>
+        </Container>
        </div>
     )
   }
