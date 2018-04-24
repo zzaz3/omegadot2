@@ -90,17 +90,29 @@ class BalanceSheet extends React.Component {
           data={this.state.naAssetAccounts}
           columns={[
             {
-                Header: "Property Plant & Equip.",
-                id: 'name',
-                accessor: d => <div className="container text-left">{d.name}</div>,
-                Footer: (
-                  <span>
-                    <strong>Total Current Assets</strong>
-                  </span>
-                )
+              Header: "Property Plant & Equip.",
+              id: 'name',
+              accessor: d => <div className="container text-left">{d.name}</div>,
+              Footer: (
+                <span>
+                  <strong>Property Plant & Equip., Net</strong>
+                </span>
+              )
+            },
+            {
+              Header: '',
+              id: 'amount',
+              accessor: d => {return <div className="container text-right">{(d.debitBalance - d.creditBalance).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>},
+              Footer: (
+                <span>
+                  {
+                    "$" + (_.sumBy(this.state.naAssetAccounts, d => (d.debitBalance - d.creditBalance))).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+                  }
+                </span>                
+              )
             }
           ]}
-          defaultPageSize={5}
+          defaultPageSize={2}
           showPagination={false}
         />
       </div>
