@@ -20,7 +20,7 @@ router.get('/logout', (req, res) => {
 });
 
 // POST to /register
-router.post('/register', roleAuth(['admin']), (req, res) => {
+router.post('/register', (req, res) => {
   // Create a new user object from the req's JSON.
   const newUser = User({
     username: req.body.username,
