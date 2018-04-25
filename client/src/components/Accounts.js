@@ -47,10 +47,6 @@ class Accounts extends React.Component {
                 accessor: 'name'
               },
               {
-                Header: 'Balance',
-                accessor: 'balance'
-              },
-              {
                 Header: 'Type',
                 accessor: 'type'
               },

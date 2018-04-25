@@ -54,6 +54,6 @@ server.use('/', log);
 server.use('/', uploadFile);
 
 const port = 5000;
-server.listen(port, () => {
+server.listen(process.env.PORT || port, () => {
   console.log(`Server running on port ${port}`)
 });
