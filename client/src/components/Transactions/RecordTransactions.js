@@ -482,7 +482,8 @@ class RecordTransactions extends React.Component {
                             <div className="col-md-5">
                                 <h2>New Transaction</h2>
                             </div>
-                            <div className="col-md-2 ml-auto">
+                            <div className="col-md-4 ml-auto">
+                                <button className="btn btn-danger">Close Accounts</button>
                                 <select onChange={this.onTransactionTypeChange} value={this.state.transactionType} className="form-control">
                                     <option selected>REG</option>
                                     <option>AJE</option>

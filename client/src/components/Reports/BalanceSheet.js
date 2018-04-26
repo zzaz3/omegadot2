@@ -12,12 +12,65 @@ class BalanceSheet extends React.Component {
       allLiabilityAccounts: [],
       currentLiabilityAccounts: [],
       naLiabilityAccounts: [],
-      equityAccounts: []
+      equityAccounts: [],
+      expenseAccounts: [],
+      revenue: "",
+      equityData: []
     }
+
+    
+
+    this.calculateTotalExpenses = this.calculateTotalExpenses.bind(this);
+    this.formatEquityData = this.formatEquityData.bind(this);
   }
 
+  calculateTotalExpenses(){
+    let expenses = this.state.expenseAccounts;
+    let total = 0;
+    for(let i = 0; i < expenses.length; i++){
+      total += expenses[i].debitBalance;
+    }
+
+    return total;
+  }
+
+  formatEquityData(){
+    let stockholdersEquityData = [];
+    let equity = this.state.equityAccounts;
+
+    stockholdersEquityData.push({
+      name: "RetainedEarnings",
+      balance: Number(this.calculateTotalExpenses())
+    });
+
+    stockholdersEquityData.push({
+      name: "Contributed Capital",
+      balance: Number(equity.creditBalance)
+    })
+
+    return stockholdersEquityData;
+  }
 
   componentDidMount(){
+    fetch('/accounts/equity')
+      .then(res => res.json())
+      .then(accounts => this.setState({equityAccounts: accounts}, () => {
+        console.log("Equity Accounts...", accounts);
+      }));
+
+    fetch('/account/servicerevenue')
+      .then(res => res.json())
+      .then(account => this.setState({revenue: account}, () => {
+        console.log("Service Revenue...", account);
+      }));
+
+    fetch('/accounts/expense')
+      .then(res => res.json())
+      .then(accounts => this.setState({expenseAccounts: accounts}, () => {
+        console.log("Fetched Expense accounts...", accounts);
+      }));
+
+
     fetch('/accounts/asset')
     .then(res => res.json())
     .then(accounts => this.setState({allAssetAccounts: accounts}, () => {
@@ -54,14 +107,11 @@ class BalanceSheet extends React.Component {
         console.log("N/A Liability Accounts...", accounts);
       }));
 
-    fetch('/accounts/equity')
-      .then(res => res.json())
-      .then(accounts => this.setState({equityAccounts: accounts}, () => {
-        console.log("Equity Accounts...", accounts);
-      }));
+    
   }
 
   render() {
+
     return (
       <div className="container">
       <h3 className="row text-center">
@@ -75,6 +125,7 @@ class BalanceSheet extends React.Component {
             At April 30, 2018
           </div>
         </h3>
+        {/* ASSETS */}
         <ReactTable 
           data={this.state.currentAssetAccounts}
           columns={[
@@ -240,7 +291,7 @@ class BalanceSheet extends React.Component {
           defaultPageSize={2}
           showPagination={false}
         />
-
+        {/* EQUITY */}
         <ReactTable 
           data={this.state.equityAccounts}
           columns={[
@@ -257,11 +308,11 @@ class BalanceSheet extends React.Component {
             {
               Header: '',
               id: 'amount',
-              accessor: d => {return <div className="container text-right">{(d.creditBalance - d.debitBalance).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>},
+              accessor: d => {return <div className="container text-right">{(d.balance).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}</div>},
               Footer: (
                 <span style={{ "border-bottom": "3px double" }}>
                   {
-                    "$" + (_.sumBy(this.state.equityAccounts, d => (d.creditBalance - d.debitBalance))).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+                    "$" + (_.sumBy(this.state.equityAccounts, d => d.balance)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
                   }
                 </span>                
               )

@@ -4,9 +4,9 @@
   "description": "Accounting Application",
   "main": "server.js",
   "scripts": {
-    "client-install": "cd client && npm install", 
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node server.js --exec babel-node --presets es2015,stage-2",
+    "client-install": "cd client && npm install",
+    "start": "node server.js",
+    "server": "nodemon server.js --exec babel-node --presets es2015,stage-2",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
